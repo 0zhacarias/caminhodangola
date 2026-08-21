@@ -29,7 +29,6 @@ return new class extends Migration
             $table->json('observacoes_importantes')->nullable();
             $table->unsignedInteger('ordem')->default(0);
             $table->boolean('ativo')->default(true);
-            $table->foreignIdFor(App\Models\CategoriaPacote::class)->nullable()->nullOnDelete();
 
             $table->timestamps();
         });

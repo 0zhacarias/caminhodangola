@@ -1,5 +1,21 @@
 <?php
 
+use App\Models\CategoriaPacote;
+use App\Models\Configuracao;
+use App\Models\Depoimento;
+use App\Models\DiaItinerario;
+use App\Models\Estatistica;
+use App\Models\Galeria;
+use App\Models\GaleriaPacote;
+use App\Models\ItemMenu;
+use App\Models\MembroEquipa;
+use App\Models\Pacote;
+use App\Models\PerguntaFrequente;
+use App\Models\Seccao;
+use App\Models\SlideHero;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 
 return [
@@ -131,6 +147,23 @@ return [
     |
     */
 
-    'serializable_classes' => false,
+    'serializable_classes' => [
+        Collection::class,
+        Carbon::class,
+        CarbonImmutable::class,
+        Configuracao::class,
+        ItemMenu::class,
+        Pacote::class,
+        DiaItinerario::class,
+        GaleriaPacote::class,
+        Galeria::class,
+        Depoimento::class,
+        PerguntaFrequente::class,
+        MembroEquipa::class,
+        SlideHero::class,
+        Seccao::class,
+        Estatistica::class,
+        CategoriaPacote::class,
+    ],
 
 ];
