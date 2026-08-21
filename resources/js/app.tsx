@@ -14,11 +14,13 @@ createInertiaApp({
     layout: (name) => {
         switch (true) {
             case name === 'welcome':
-                return PortalLayout;
+                return null;
             case name.startsWith('auth/'):
                 return AuthLayout;
             case name.startsWith('settings/'):
                 return [AppLayout, SettingsLayout];
+            case name.startsWith('site/'):
+                return PortalLayout;
             default:
                 return AppLayout;
         }
