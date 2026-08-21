@@ -39,7 +39,8 @@ final class SlideHeroService
     {
         $slide = SlideHero::create($dados);
 
-        Cache::forget(['slides.home', 'slides.pagina.'.$slide->pagina]);
+        Cache::forget('slides.home');
+        Cache::forget('slides.pagina.'.$slide->pagina);
 
         return $slide;
     }
@@ -51,14 +52,16 @@ final class SlideHeroService
     {
         $slide->update($dados);
 
-        Cache::forget(['slides.home', 'slides.pagina.'.$slide->pagina]);
+        Cache::forget('slides.home');
+        Cache::forget('slides.pagina.'.$slide->pagina);
 
         return $slide;
     }
 
     public function remover(SlideHero $slide): void
     {
-        Cache::forget(['slides.home', 'slides.pagina.'.$slide->pagina]);
+        Cache::forget('slides.home');
+        Cache::forget('slides.pagina.'.$slide->pagina);
 
         $slide->delete();
     }
