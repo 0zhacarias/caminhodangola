@@ -14,11 +14,11 @@ export default function Header() {
 
     const menu: MenuItem[] = [
         { label: 'Home', path: '/', subItems: [] },
-        { label: 'Reviews', path: '/reviews', subItems: [] },
-        { label: 'Private Tours', path: '/private-tours', subItems: [] },
-        { label: 'Group Tours', path: '/group-tours', subItems: [] },
-        { label: 'About Us', path: '/about-us', subItems: [] },
-        { label: 'Gallery', path: '/gallery', subItems: [] },
+        { label: 'Reviews', path: '/avaliacoes', subItems: [] },
+        { label: 'Private Tours', path: '/pacotes', subItems: [] },
+        { label: 'Group Tours', path: '/pacotes', subItems: [] },
+        { label: 'About Us', path: '/sobre', subItems: [] },
+        { label: 'Gallery', path: '/galeria', subItems: [] },
     ];
 
     // Close mobile menu with Escape
@@ -37,20 +37,20 @@ export default function Header() {
     }, [mobileOpen]);
 
     return (
-        <header className="relative flex flex-1 items-center justify-between border-b-2 border-slate-600 bg-slate-50 px-8 py-6 md:px-32">
+        <header className="relative flex items-center justify-between border-b border-slate-600 bg-slate-50 px-4 py-2 md:px-8">
             {/* Logo */}
-            <div className="flex min-w-[8rem] shrink-0 items-center">
+            <div className="flex shrink-0 items-center">
                 <Link href="/">
                     <img
                         src="/logotipo-caminhosdangola.svg"
                         alt="Logotipo Caminhos de Angola"
-                        className="w-32 object-contain"
+                        className="h-10 w-auto object-contain"
                     />
                 </Link>
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="relative hidden items-center gap-8 xl:flex">
+            <nav className="relative hidden items-center gap-4 xl:flex">
                 {menu.map((item, idx) => (
                     <div
                         key={item.label}
@@ -60,7 +60,7 @@ export default function Header() {
                     >
                         <Link
                             href={item.path}
-                            className="w-32 whitespace-nowrap text-slate-950 hover:text-yellow-500"
+                            className="text-sm whitespace-nowrap text-slate-950 hover:text-yellow-500"
                         >
                             {item.label}
                         </Link>
@@ -94,18 +94,26 @@ export default function Header() {
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hidden rounded-full bg-yellow-500 p-2 px-6 xl:inline-block"
+                    className="hidden rounded-full bg-yellow-500 px-4 py-1 text-sm xl:inline-block"
                 >
                     Reserve
                 </a>
+
+                {/* Login - desktop only */}
+                <Link
+                    href="/login"
+                    className="hidden rounded-full border border-slate-300 px-4 py-1 text-sm text-slate-950 hover:bg-slate-200 xl:inline-block"
+                >
+                    Login
+                </Link>
 
                 {/* Hamburger (mobile) */}
                 <button
                     onClick={() => setMobileOpen(true)}
                     aria-label="Open menu"
-                    className="rounded-md p-2 text-slate-950 hover:bg-slate-200 focus:ring-2 focus:ring-yellow-500 focus:outline-none xl:hidden"
+                    className="rounded-md p-1.5 text-slate-950 hover:bg-slate-200 focus:ring-2 focus:ring-yellow-500 focus:outline-none xl:hidden"
                 >
-                    <Menu size={28} />
+                    <Menu size={24} />
                 </button>
             </div>
 
@@ -158,6 +166,14 @@ export default function Header() {
                         >
                             Reserve
                         </a>
+
+                        <Link
+                            href="/login"
+                            className="inline-block rounded-full border border-slate-500 p-2 px-6 text-center text-slate-100 hover:bg-slate-800"
+                            onClick={() => setMobileOpen(false)}
+                        >
+                            Login
+                        </Link>
                     </nav>
                 </div>
             )}
