@@ -1,4 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
+import HeroCarousel from '@/components/hero-carousel';
 import type {
     Depoimento,
     Estatistica,
@@ -32,32 +33,15 @@ export default function Home({
     return (
         <>
             <Head title="Caminhos d'Angola" />
+            <HeroCarousel
+                slides={slides.map((slide) => ({
+                    image: slide.imagem,
+                    title: slide.titulo,
+                    subtitle: slide.subtitulo ?? '',
+                    text: slide.texto ?? '',
+                }))}
+            />
             <main className="mx-auto w-full max-w-5xl px-6 py-12">
-                {slides.length > 0 && (
-                    <section className="mb-12">
-                        {slides.map((slide) => (
-                            <div
-                                key={slide.id}
-                                className="mb-4 rounded-xl border border-sidebar-border p-8"
-                            >
-                                <h2 className="text-2xl font-semibold">
-                                    {slide.titulo}
-                                </h2>
-                                {slide.subtitulo && (
-                                    <p className="mt-2 text-muted-foreground">
-                                        {slide.subtitulo}
-                                    </p>
-                                )}
-                                {slide.texto && (
-                                    <p className="mt-2 text-sm">
-                                        {slide.texto}
-                                    </p>
-                                )}
-                            </div>
-                        ))}
-                    </section>
-                )}
-
                 {seccoes.map((seccao) => (
                     <section key={seccao.id} className="mb-12">
                         {seccao.sobretitulo && (
