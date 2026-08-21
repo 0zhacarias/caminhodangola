@@ -99,6 +99,14 @@ export default function Header() {
                     Reserve
                 </a>
 
+                {/* Login - desktop only */}
+                <Link
+                    href="/login"
+                    className="hidden rounded-full border border-slate-300 px-4 py-1 text-sm text-slate-950 hover:bg-slate-200 xl:inline-block"
+                >
+                    Login
+                </Link>
+
                 {/* Hamburger (mobile) */}
                 <button
                     onClick={() => setMobileOpen(true)}
@@ -158,6 +166,14 @@ export default function Header() {
                         >
                             Reserve
                         </a>
+
+                        <Link
+                            href="/login"
+                            className="inline-block rounded-full border border-slate-500 p-2 px-6 text-center text-slate-100 hover:bg-slate-800"
+                            onClick={() => setMobileOpen(false)}
+                        >
+                            Login
+                        </Link>
                     </nav>
                 </div>
             )}
