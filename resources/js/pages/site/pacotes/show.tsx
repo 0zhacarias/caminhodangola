@@ -1,25 +1,76 @@
 import { Head, Link } from '@inertiajs/react';
+import { useState } from 'react';
+import ImageLightbox from '@/components/image-lightbox';
 import type { Pacote } from '@/types/site';
 
 interface PacoteShowProps {
     pacote: Pacote;
 }
 
+function urlAbsoluta(caminho: string | null): string | null {
+    if (!caminho) {
+        return null;
+    }
+
+    if (/^https?:\/\//i.test(caminho)) {
+        return caminho;
+    }
+
+    return `${window.location.origin}${caminho}`;
+}
+
 export default function PacoteShow({ pacote }: PacoteShowProps) {
+    const imagemOg = urlAbsoluta(pacote.imagem_og);
+    const [indiceAberto, setIndiceAberto] = useState<number | null>(null);
+
+    const imagens = [
+        ...(pacote.imagem
+            ? [{ src: pacote.imagem, alt: pacote.titulo }]
+            : []),
+        ...(pacote.galerias ?? []).map((imagem) => ({
+            src: imagem.imagem,
+            alt: pacote.titulo,
+        })),
+    ];
+
+    const inicioGalerias = pacote.imagem ? 1 : 0;
+
     return (
         <>
-            <Head title={pacote.meta_titulo ?? pacote.titulo} />
+            <Head title={pacote.meta_titulo ?? pacote.titulo}>
+                <meta
+                    name="description"
+                    content={pacote.meta_descricao ?? pacote.descricao ?? ''}
+                />
+                <meta
+                    property="og:title"
+                    content={pacote.meta_titulo ?? pacote.titulo}
+                />
+                <meta
+                    property="og:description"
+                    content={pacote.meta_descricao ?? pacote.descricao ?? ''}
+                />
+                <meta property="og:type" content="website" />
+                {imagemOg && <meta property="og:image" content={imagemOg} />}
+            </Head>
             <main className="mx-auto w-full max-w-5xl px-6 py-12">
                 <Link href="/pacotes" className="text-sm font-medium underline">
                     ← Todos os pacotes
                 </Link>
 
                 {pacote.imagem && (
-                    <img
-                        src={pacote.imagem}
-                        alt={pacote.titulo}
-                        className="mt-6 aspect-video w-full rounded-xl object-cover"
-                    />
+                    <button
+                        type="button"
+                        onClick={() => setIndiceAberto(0)}
+                        aria-label={`Abrir imagem de ${pacote.titulo} em tamanho maior`}
+                        className="mt-6 block w-full cursor-zoom-in overflow-hidden rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                    >
+                        <img
+                            src={pacote.imagem}
+                            alt={pacote.titulo}
+                            className="aspect-video w-full rounded-xl object-cover transition-transform duration-300 hover:scale-[1.02]"
+                        />
+                    </button>
                 )}
 
                 <div className="mt-8">
@@ -89,13 +140,24 @@ export default function PacoteShow({ pacote }: PacoteShowProps) {
                     <section className="mt-12">
                         <h2 className="text-2xl font-bold">Galeria</h2>
                         <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                            {pacote.galerias.map((imagem) => (
-                                <img
+                            {pacote.galerias.map((imagem, indice) => (
+                                <button
                                     key={imagem.id}
-                                    src={imagem.imagem}
-                                    alt={pacote.titulo}
-                                    className="aspect-square w-full rounded-lg object-cover"
-                                />
+                                    type="button"
+                                    onClick={() =>
+                                        setIndiceAberto(
+                                            inicioGalerias + indice,
+                                        )
+                                    }
+                                    aria-label={`Abrir imagem ${indice + 1} da galeria em tamanho maior`}
+                                    className="cursor-zoom-in overflow-hidden rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                                >
+                                    <img
+                                        src={imagem.imagem}
+                                        alt={pacote.titulo}
+                                        className="aspect-square w-full rounded-lg object-cover transition-transform duration-300 hover:scale-105"
+                                    />
+                                </button>
                             ))}
                         </div>
                     </section>
@@ -122,7 +184,105 @@ export default function PacoteShow({ pacote }: PacoteShowProps) {
                         </ul>
                     </section>
                 )}
+
+                {pacote.condicaoPagamento && (
+                    <section className="mt-12">
+                        <h2 className="text-2xl font-bold">
+                            Condições de pagamento
+                        </h2>
+
+                        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                            {pacote.condicaoPagamento.preco_base_por_pessoa && (
+                                <div className="rounded-xl border border-sidebar-border p-6">
+                                    <p className="text-sm text-muted-foreground">
+                                        Preço base por pessoa
+                                    </p>
+                                    <p className="mt-1 text-lg font-semibold">
+                                        €{' '}
+                                        {
+                                            pacote.condicaoPagamento
+                                                .preco_base_por_pessoa
+                                        }
+                                    </p>
+                                </div>
+                            )}
+
+                            {pacote.condicaoPagamento
+                                .gasto_pessoal_estimado && (
+                                <div className="rounded-xl border border-sidebar-border p-6">
+                                    <p className="text-sm text-muted-foreground">
+                                        Gasto pessoal estimado
+                                    </p>
+                                    <p className="mt-1 text-lg font-semibold">
+                                        €{' '}
+                                        {
+                                            pacote.condicaoPagamento
+                                                .gasto_pessoal_estimado
+                                        }
+                                    </p>
+                                </div>
+                            )}
+
+                            {pacote.condicaoPagamento.deposito_percentagem !==
+                                null && (
+                                <div className="rounded-xl border border-sidebar-border p-6">
+                                    <p className="text-sm text-muted-foreground">
+                                        Depósito
+                                    </p>
+                                    <p className="mt-1 text-lg font-semibold">
+                                        {
+                                            pacote.condicaoPagamento
+                                                .deposito_percentagem
+                                        }
+                                        %
+                                    </p>
+                                </div>
+                            )}
+
+                            {pacote.condicaoPagamento
+                                .saldo_dias_antes_partida !== null && (
+                                <div className="rounded-xl border border-sidebar-border p-6">
+                                    <p className="text-sm text-muted-foreground">
+                                        Saldo até
+                                    </p>
+                                    <p className="mt-1 text-lg font-semibold">
+                                        {
+                                            pacote.condicaoPagamento
+                                                .saldo_dias_antes_partida
+                                        }{' '}
+                                        dias antes da partida
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+
+                        {pacote.condicaoPagamento.metodos_pagamento &&
+                            pacote.condicaoPagamento.metodos_pagamento.length >
+                                0 && (
+                                <div className="mt-6">
+                                    <h3 className="text-lg font-semibold">
+                                        Métodos de pagamento
+                                    </h3>
+                                    <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
+                                        {pacote.condicaoPagamento.metodos_pagamento.map(
+                                            (metodo) => (
+                                                <li key={metodo}>{metodo}</li>
+                                            ),
+                                        )}
+                                    </ul>
+                                </div>
+                            )}
+                    </section>
+                )}
             </main>
+
+            {indiceAberto !== null && imagens.length > 0 && (
+                <ImageLightbox
+                    imagens={imagens}
+                    indiceInicial={indiceAberto}
+                    onClose={() => setIndiceAberto(null)}
+                />
+            )}
         </>
     );
 }

@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useAnimation } from 'framer-motion';
 import type { PanInfo } from 'framer-motion';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface HeroSlide {
     image: string;
@@ -106,7 +106,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
 
     return (
         <div
-            className="bg-slate-950 relative z-0 flex flex-col overflow-hidden"
+            className="relative z-0 flex flex-col overflow-hidden bg-slate-950"
             onMouseDown={() => setIsPaused(true)}
             onMouseUp={() => setIsPaused(false)}
         >
@@ -147,25 +147,34 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
                                 animate={{ x: 0, opacity: 1 }}
                                 exit={{ x: -300, opacity: 0 }}
                                 transition={{ duration: 0.8 }}
-                                className="my-8 flex flex-1 cursor-grab items-center justify-start gap-8 p-8 md:px-16 max-md:flex-wrap"
+                                className="my-8 flex flex-1 cursor-grab items-center justify-start gap-8 p-8 max-md:flex-wrap md:px-16"
                             >
                                 <div className="flex flex-col gap-4 md:w-2/5">
                                     <div>
                                         <h5
                                             className="font-serif text-2xl text-slate-50"
-                                            style={{ textShadow: '2px 2px 16px rgba(0, 0, 0, 0.8)' }}
+                                            style={{
+                                                textShadow:
+                                                    '2px 2px 16px rgba(0, 0, 0, 0.8)',
+                                            }}
                                         >
                                             {slides[index]!.title}
                                         </h5>
                                         <h4
                                             className="font-serif text-5xl text-slate-50"
-                                            style={{ textShadow: '2px 2px 16px rgba(0, 0, 0, 0.8)' }}
+                                            style={{
+                                                textShadow:
+                                                    '2px 2px 16px rgba(0, 0, 0, 0.8)',
+                                            }}
                                         >
                                             {slides[index]!.subtitle}
                                         </h4>
                                         <p
                                             className="my-4 text-justify text-white"
-                                            style={{ textShadow: '2px 2px 16px rgba(0, 0, 0, 0.8)' }}
+                                            style={{
+                                                textShadow:
+                                                    '2px 2px 16px rgba(0, 0, 0, 0.8)',
+                                            }}
                                         >
                                             {slides[index]!.text}
                                         </p>

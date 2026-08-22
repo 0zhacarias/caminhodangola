@@ -10,3 +10,13 @@ export function cn(...inputs: ClassValue[]) {
 export function toUrl(url: NonNullable<InertiaLinkProps['href']>): string {
     return typeof url === 'string' ? url : url.url;
 }
+
+export function isGetHref(href: NonNullable<InertiaLinkProps['href']>): boolean {
+    if (typeof href === 'string') {
+        return true;
+    }
+
+    const metodo = (href as { method?: string }).method;
+
+    return metodo === undefined || metodo === 'get';
+}

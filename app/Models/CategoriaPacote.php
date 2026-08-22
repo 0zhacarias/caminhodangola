@@ -41,6 +41,6 @@ class CategoriaPacote extends Model
      */
     public function pacotes(): HasMany
     {
-        return $this->hasMany(Pacote::class, 'categoria_id')->orderBy('ordem');
+        return $this->hasMany(Pacote::class, 'categoria_pacote_id')->orderBy('ordem');
     }
 }

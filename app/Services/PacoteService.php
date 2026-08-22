@@ -25,14 +25,14 @@ final class PacoteService
      */
     public function listarPorCategoria(int $categoriaId): EloquentCollection
     {
-        return Pacote::query()->with('categoria')->where('ativo', true)->where('categoria_id', $categoriaId)->orderBy('ordem')->get();
+        return Pacote::query()->with('categoria')->where('ativo', true)->where('categoria_pacote_id', $categoriaId)->orderBy('ordem')->get();
     }
 
     public function obterPorSlug(string $slug): ?Pacote
     {
         return Cache::remember('pacote.'.$slug, self::TTL, function () use ($slug): ?Pacote {
             return Pacote::query()
-                ->with(['categoria', 'diasItinerario', 'galerias'])
+                ->with(['categoria', 'condicaoPagamento', 'diasItinerario', 'galerias'])
                 ->where('ativo', true)
                 ->where('slug', $slug)
                 ->first();

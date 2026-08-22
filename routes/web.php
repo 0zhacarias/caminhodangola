@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Web\DepoimentosController;
 use App\Http\Controllers\Web\GaleriasController;
 use App\Http\Controllers\Web\HomeController;
@@ -23,7 +24,8 @@ Route::get('reservar', [ReservasController::class, 'create'])->name('reservar');
 Route::post('reservas', [ReservasController::class, 'store'])->name('reservas.store');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('dashboard', 'dashboard')->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 });
 
 require __DIR__.'/settings.php';
+require __DIR__.'/admin.php';

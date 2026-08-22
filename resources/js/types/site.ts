@@ -13,6 +13,7 @@ export interface ItemMenu {
     rota: string;
     ordem: number;
     ativo: boolean;
+    pai?: Pick<ItemMenu, 'id' | 'rotulo'> | null;
     filhos?: ItemMenu[];
     created_at: string | null;
     updated_at: string | null;
@@ -26,6 +27,7 @@ export interface CategoriaPacote {
     ordem: number;
     ativo: boolean;
     pacotes?: Pacote[];
+    pacotes_count?: number;
     created_at: string | null;
     updated_at: string | null;
 }
@@ -38,6 +40,7 @@ export interface DiaItinerario {
     descricao: string;
     imagem: string | null;
     ordem: number;
+    pacote?: Pick<Pacote, 'id' | 'titulo'> | null;
     created_at: string | null;
     updated_at: string | null;
 }
@@ -47,13 +50,26 @@ export interface GaleriaPacote {
     pacote_id: number;
     imagem: string;
     ordem: number;
+    pacote?: Pick<Pacote, 'id' | 'titulo'> | null;
+    created_at: string | null;
+    updated_at: string | null;
+}
+
+export interface CondicaoPagamento {
+    id: number;
+    pacote_id: number;
+    preco_base_por_pessoa: string | null;
+    gasto_pessoal_estimado: string | null;
+    deposito_percentagem: number | null;
+    saldo_dias_antes_partida: number | null;
+    metodos_pagamento: string[] | null;
     created_at: string | null;
     updated_at: string | null;
 }
 
 export interface Pacote {
     id: number;
-    categoria_id: number | null;
+    categoria_pacote_id: number | null;
     slug: string;
     titulo: string;
     subtitulo: string | null;
@@ -74,6 +90,7 @@ export interface Pacote {
     meta_descricao: string | null;
     imagem_og: string | null;
     categoria?: CategoriaPacote | null;
+    condicaoPagamento?: CondicaoPagamento | null;
     dias_itinerario?: DiaItinerario[];
     galerias?: GaleriaPacote[];
     created_at: string | null;

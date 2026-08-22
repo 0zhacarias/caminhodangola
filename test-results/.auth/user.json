@@ -1,0 +1,45 @@
+{
+  "cookies": [
+    {
+      "name": "appearance",
+      "value": "system",
+      "domain": "127.0.0.1",
+      "path": "/",
+      "expires": 1818939611.48285,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "XSRF-TOKEN",
+      "value": "eyJpdiI6ImFBem02d01SV3pKTVdpdFNQd3NwS1E9PSIsInZhbHVlIjoicG1IM1hHQXdKejJXTG55anBrTnZkNi9aM2pWYzhQd1JCaFdNcStYUGpBK3VpTG05YWVoZ3UvbGY0TFd6bllEV0VLaTZPejNCTGU4NEZVbCtjdEtPaGV5UW1iUEZibDlyUDMyajJjb3VQNmRZaW95VTZwWVNxVUl1MzRySDBBTnciLCJtYWMiOiIxMjFmMzRkYjViZGY1MWE0NjY2NjJjMWRkNTE0Nzk3NTdhNzgxNTg3YWU0NjkxM2I0YTlmYmMzMjYxNDUyZjBhIiwidGFnIjoiIn0%3D",
+      "domain": "127.0.0.1",
+      "path": "/",
+      "expires": 1787410813.300412,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "caminho-dangola-session",
+      "value": "eyJpdiI6IkRaTDUzUHJ2TUR4S3VYYUdpRW40elE9PSIsInZhbHVlIjoiR2RDc3R3ZGZrMjQvN0h3ZjFXUFJnVk03eU0zanBtNHBLY3Q5YXdVV0IzazBxaWFtVzR6WWU3MXE2Q2lGYmlpTzFQQUVBMTJQQURXckFTM3Rpd1FlMi93elVMYlpDN3JDU0RML2JRTGdTMTVXQ0pyYnlCZDQwOE5FeVJPeVhmSXkiLCJtYWMiOiIwZDM5YmU5NzkyYTI0YjdiNmIwZmZhNjQ2Y2Q3YWI5NjNlMWRmZWM2N2Y0NGU4ZWQxMTQ1M2MzMGQ0MDA1ZmI2IiwidGFnIjoiIn0%3D",
+      "domain": "127.0.0.1",
+      "path": "/",
+      "expires": 1787410813.300753,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "http://127.0.0.1:8001",
+      "localStorage": [
+        {
+          "name": "appearance",
+          "value": "system"
+        }
+      ]
+    }
+  ]
+}
