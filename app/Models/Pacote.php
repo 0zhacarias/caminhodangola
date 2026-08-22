@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property int|null $categoria_id
+ * @property int|null $categoria_pacote_id
  * @property string $slug
  * @property string $titulo
  * @property string|null $subtitulo
@@ -34,12 +35,13 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read CategoriaPacote|null $categoria
+ * @property-read CondicaoPagamento|null $condicaoPagamento
  * @property-read Collection<int, DiaItinerario> $diasItinerario
  * @property-read Collection<int, GaleriaPacote> $galerias
  * @property-read Collection<int, Reserva> $reservas
  */
 #[Fillable([
-    'categoria_id',
+    'categoria_pacote_id',
     'slug',
     'titulo',
     'subtitulo',
@@ -88,7 +90,15 @@ class Pacote extends Model
      */
     public function categoria(): BelongsTo
     {
-        return $this->belongsTo(CategoriaPacote::class, 'categoria_id');
+        return $this->belongsTo(CategoriaPacote::class, 'categoria_pacote_id');
+    }
+
+    /**
+     * @return HasOne<CondicaoPagamento, $this>
+     */
+    public function condicaoPagamento(): HasOne
+    {
+        return $this->hasOne(CondicaoPagamento::class);
     }
 
     /**

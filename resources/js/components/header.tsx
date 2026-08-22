@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
 import { Link } from '@inertiajs/react';
 import { Menu, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface MenuItem {
     label: string;
