@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { ReactNode } from 'react';
 import ImageLightbox from '@/components/image-lightbox';
 import type { ImagemLightbox } from '@/components/image-lightbox';
+import { storageUrl } from '@/lib/utils';
 
 export interface DetailField {
     label: string;
@@ -107,10 +108,6 @@ function humanize(key: string): string {
 
 function ehUrlImagem(value: string): boolean {
     return /^(https?:\/\/|\/|data:image\/)/i.test(value.trim());
-}
-
-function normalizarUrlImagem(value: string): string {
-    return value.replace(/^https?:\/\/[^/]+\/storage\//i, '/storage/');
 }
 
 export function nodeToText(node: unknown): string {
@@ -245,14 +242,14 @@ function formatValue(
             return value;
         }
 
-        const src = normalizarUrlImagem(value);
+        const src = storageUrl(value);
         const indice = imagens.findIndex((imagem) => imagem.src === value);
 
         return (
             <ImagePreview
                 imagens={imagens.map((imagem) => ({
                     ...imagem,
-                    src: normalizarUrlImagem(imagem.src),
+                    src: storageUrl(imagem.src),
                 }))}
                 indiceInicial={indice === -1 ? 0 : indice}
                 src={src}

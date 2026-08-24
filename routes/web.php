@@ -12,6 +12,8 @@ use App\Http\Controllers\Web\SobreController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('private-tours', [HomeController::class, 'privateTours'])->name('private-tours');
+Route::get('group-tours', [HomeController::class, 'groupTours'])->name('group-tours');
 
 Route::get('galeria', [GaleriasController::class, 'index'])->name('galeria');
 Route::get('avaliacoes', [DepoimentosController::class, 'index'])->name('avaliacoes');

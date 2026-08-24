@@ -11,6 +11,7 @@ use App\Services\MembroEquipaService;
 use App\Services\PacoteService;
 use App\Services\SeccaoService;
 use App\Services\SlideHeroService;
+use App\Services\PerguntaFrequenteService;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -25,6 +26,7 @@ class HomeController extends Controller
         private readonly EstatisticaService $estatisticas,
         private readonly GaleriaService $galerias,
         private readonly MembroEquipaService $membros,
+        private readonly PerguntaFrequenteService $faqs,
     ) {}
 
     public function index(): Response
@@ -38,6 +40,21 @@ class HomeController extends Controller
             'estatisticas' => $this->estatisticas->listarAtivas(),
             'galeria' => $this->galerias->previa(),
             'membros' => $this->membros->listarAtivos(),
+            'faqs' => $this->faqs->listarAtivas(),
+        ]);
+    }
+
+    public function privateTours(): Response
+    {
+        return Inertia::render('site/private-tours', [
+            'depoimentos' => $this->depoimentos->listarDestaques(),
+        ]);
+    }
+
+    public function groupTours(): Response
+    {
+        return Inertia::render('site/group-tours', [
+            'depoimentos' => $this->depoimentos->listarDestaques(),
         ]);
     }
 }
