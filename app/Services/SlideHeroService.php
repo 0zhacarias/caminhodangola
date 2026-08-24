@@ -18,7 +18,13 @@ final class SlideHeroService
     public function listarHome(): EloquentCollection
     {
         return Cache::remember('slides.home', self::TTL, function (): EloquentCollection {
-            return SlideHero::query()->where('ativo', true)->whereNull('pagina')->orderBy('ordem')->get();
+            return SlideHero::query()
+                ->where('ativo', true)
+                ->where(static function ($query): void {
+                    $query->whereNull('pagina')->orWhere('pagina', 'home');
+                })
+                ->orderBy('ordem')
+                ->get();
         });
     }
 
