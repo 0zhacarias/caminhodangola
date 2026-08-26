@@ -32,6 +32,44 @@ export interface CategoriaPacote {
     updated_at: string | null;
 }
 
+export interface CategoriaPerguntaFrequente {
+    id: number;
+    nome: string;
+    ordem: number;
+    ativo: boolean;
+    created_at: string | null;
+    updated_at: string | null;
+}
+
+export type PorqueNosTipo = 'cabecalho' | 'destaque' | 'valor';
+
+export interface PorqueNos {
+    id: number;
+    tipo: PorqueNosTipo;
+    titulo: string;
+    descricao: string | null;
+    icone: string | null;
+    ordem: number;
+    ativo: boolean;
+    created_at: string | null;
+    updated_at: string | null;
+}
+
+export type SobreNosTipo =
+    'cabecalho' | 'quem_somos' | 'unico' | 'citacao' | 'destaque';
+
+export interface SobreNos {
+    id: number;
+    tipo: SobreNosTipo;
+    titulo: string | null;
+    descricao: string | null;
+    icone: string | null;
+    ordem: number;
+    ativo: boolean;
+    created_at: string | null;
+    updated_at: string | null;
+}
+
 export interface DiaItinerario {
     id: number;
     pacote_id: number;
@@ -165,10 +203,12 @@ export interface Cargo {
 export interface SlideHero {
     id: number;
     pagina: string | null;
-    imagem: string;
-    titulo: string;
+    imagem: string | null;
+    titulo: string | null;
     subtitulo: string | null;
     texto: string | null;
+    botao_rotulo: string | null;
+    botao_url: string | null;
     ordem: number;
     ativo: boolean;
     created_at: string | null;

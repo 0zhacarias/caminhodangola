@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('slides_hero', function (Blueprint $table) {
             $table->id();
             $table->string('pagina')->nullable();
-            $table->string('imagem');
-            $table->string('titulo');
-            $table->string('subtitulo')->nullable();
+            $table->string('imagem')->nullable();
+            $table->string('titulo')->nullable();
             $table->text('texto')->nullable();
+            $table->string('subtitulo')->nullable();
+               $table->string('botao_rotulo')->nullable();
+            $table->string('botao_url')->nullable();
             $table->unsignedInteger('ordem')->default(0);
             $table->boolean('ativo')->default(true);
             $table->timestamps();

@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Configuracao;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Facades\Cache;
 
 final class ConfiguracaoService
@@ -19,11 +18,14 @@ final class ConfiguracaoService
     }
 
     /**
-     * @return EloquentCollection<int, Configuracao>
+     * @return array<string, string|null>
      */
-    public function todas(): EloquentCollection
+    public function todas(): array
     {
-        return Cache::remember('configuracoes', self::TTL, fn (): EloquentCollection => Configuracao::query()->orderBy('chave')->get());
+        /** @var array<string, string|null> $valores */
+        $valores = Cache::remember('configuracoes', self::TTL, fn (): array => Configuracao::query()->orderBy('chave')->pluck('valor', 'chave')->all());
+
+        return $valores;
     }
 
     /**
@@ -48,6 +50,22 @@ final class ConfiguracaoService
         Cache::forget(['configuracoes', 'configuracao.'.$configuracao->chave]);
 
         return $configuracao;
+    }
+
+    /**
+     * @param  array<string, string|null>  $valores
+     */
+    public function gravarMuitos(array $valores): void
+    {
+        foreach ($valores as $chave => $valor) {
+            Configuracao::updateOrCreate(['chave' => $chave], ['valor' => $valor]);
+        }
+
+        Cache::forget('configuracoes');
+
+        foreach (array_keys($valores) as $chave) {
+            Cache::forget('configuracao.'.$chave);
+        }
     }
 
     public function remover(Configuracao $configuracao): void

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\CategoriaPerguntaFrequente;
 use App\Models\PerguntaFrequente;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ class PerguntasFrequentesController extends AdminController
     {
         return $this->render('admin/perguntas-frequentes/index', [
             'perguntas' => PerguntaFrequente::orderBy('categoria')->orderBy('ordem')->orderByDesc('id')->get(),
+            'categorias' => $this->categoriasComoOpcoes(),
         ]);
     }
 
@@ -35,6 +37,20 @@ class PerguntasFrequentesController extends AdminController
         $perguntasFrequente->delete();
 
         return $this->backWithSuccess('Pergunta frequente eliminada com sucesso.');
+    }
+
+    /**
+     * @return array<int, array{value: string, label: string}>
+     */
+    private function categoriasComoOpcoes(): array
+    {
+        return CategoriaPerguntaFrequente::orderBy('ordem')->orderBy('nome')->get()
+            ->map(static fn (CategoriaPerguntaFrequente $categoria): array => [
+                'value' => $categoria->nome,
+                'label' => $categoria->nome,
+            ])
+            ->values()
+            ->all();
     }
 
     /**

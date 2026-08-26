@@ -3,14 +3,23 @@ import CrudDialog from '@/components/admin/dialogs/crud-dialog';
 import { BooleanField, Field } from '@/components/admin/form-field';
 import ImageUpload from '@/components/admin/image-upload';
 import { Input } from '@/components/ui/input';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import type { SlideHero } from '@/types/admin';
 
 export default function SlideHeroDialog({
     item,
+    paginas,
     onClose,
 }: {
     item: SlideHero | null;
+    paginas: Record<string, string>;
     onClose: () => void;
 }) {
     const { data, setData, post, put, processing, errors } = useForm<{
@@ -19,14 +28,18 @@ export default function SlideHeroDialog({
         titulo: string;
         subtitulo: string;
         texto: string;
+        botao_rotulo: string;
+        botao_url: string;
         ordem: number;
         ativo: boolean;
     }>({
-        pagina: item?.pagina ?? '',
+        pagina: item?.pagina ?? 'home',
         imagem: item?.imagem ?? '',
         titulo: item?.titulo ?? '',
         subtitulo: item?.subtitulo ?? '',
         texto: item?.texto ?? '',
+        botao_rotulo: item?.botao_rotulo ?? '',
+        botao_url: item?.botao_url ?? '',
         ordem: item?.ordem ?? 0,
         ativo: item?.ativo ?? true,
     });
@@ -58,19 +71,26 @@ export default function SlideHeroDialog({
                         onChange={(event) =>
                             setData('titulo', event.target.value)
                         }
-                        required
                     />
                 </Field>
 
                 <Field id="pagina" label="Página" error={errors.pagina}>
-                    <Input
-                        id="pagina"
+                    <Select
                         value={data.pagina}
-                        onChange={(event) =>
-                            setData('pagina', event.target.value)
-                        }
-                        placeholder="home"
-                    />
+                        onValueChange={(value) => setData('pagina', value)}
+                        required
+                    >
+                        <SelectTrigger id="pagina" className="w-full">
+                            <SelectValue placeholder="Seleciona a página" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {Object.entries(paginas).map(([valor, rotulo]) => (
+                                <SelectItem key={valor} value={valor}>
+                                    {rotulo}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
                 </Field>
             </div>
 
@@ -99,6 +119,38 @@ export default function SlideHeroDialog({
                     onChange={(event) => setData('texto', event.target.value)}
                 />
             </Field>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+                <Field
+                    id="botao_rotulo"
+                    label="Nome do botão"
+                    error={errors.botao_rotulo}
+                >
+                    <Input
+                        id="botao_rotulo"
+                        value={data.botao_rotulo}
+                        onChange={(event) =>
+                            setData('botao_rotulo', event.target.value)
+                        }
+                        placeholder="Reserve"
+                    />
+                </Field>
+
+                <Field
+                    id="botao_url"
+                    label="Link do botão"
+                    error={errors.botao_url}
+                >
+                    <Input
+                        id="botao_url"
+                        value={data.botao_url}
+                        onChange={(event) =>
+                            setData('botao_url', event.target.value)
+                        }
+                        placeholder="https://wa.me/... ou /pacotes"
+                    />
+                </Field>
+            </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
                 <Field id="ordem" label="Ordem" error={errors.ordem}>

@@ -1,7 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon, XIcon } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { cn } from '@/lib/utils';
+import { cn, storageUrl } from '@/lib/utils';
 
 export interface ImagemLightbox {
     src: string;
@@ -83,7 +83,7 @@ export default function ImageLightbox({
             )}
 
             <img
-                src={imagem.src}
+                src={storageUrl(imagem.src)}
                 alt={imagem.alt}
                 onClick={(event) => event.stopPropagation()}
                 className="max-h-[85vh] max-w-full rounded-lg object-contain shadow-2xl"

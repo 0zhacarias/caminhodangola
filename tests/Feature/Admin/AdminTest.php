@@ -20,6 +20,7 @@ use App\Models\SlideHero;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -169,13 +170,13 @@ class AdminTest extends TestCase
 
         $pacote = Pacote::where('slug', 'com-imagens')->firstOrFail();
 
-        $this->assertStringContainsString('/storage/pacotes/', $pacote->imagem);
+        $this->assertStringContainsString('pacotes/', $pacote->imagem);
         $this->assertSame(2, $pacote->galerias()->count());
 
         Storage::disk('public')->assertExists(Str::after($pacote->imagem, '/storage/'));
 
         $pacote->galerias()->each(function (GaleriaPacote $imagem) {
-            $this->assertStringContainsString('/storage/pacotes/galerias/', $imagem->imagem);
+            $this->assertStringContainsString('pacotes/galerias', $imagem->imagem);
 
             Storage::disk('public')->assertExists(Str::after($imagem->imagem, '/storage/'));
         });
@@ -205,7 +206,7 @@ class AdminTest extends TestCase
         $this->assertSame(2, $pacote->galerias()->count());
 
         $pacote->galerias()->each(function (GaleriaPacote $imagem) {
-            $this->assertStringContainsString('/storage/pacotes/galerias/', $imagem->imagem);
+            $this->assertStringContainsString('pacotes/galerias', $imagem->imagem);
 
             Storage::disk('public')->assertExists(Str::after($imagem->imagem, '/storage/'));
         });
@@ -332,7 +333,7 @@ class AdminTest extends TestCase
 
         $pacote = Pacote::where('slug', 'com-og')->firstOrFail();
 
-        $this->assertStringContainsString('/storage/pacotes/', $pacote->imagem_og);
+        $this->assertStringContainsString('pacotes/', $pacote->imagem_og);
 
         Storage::disk('public')->assertExists(Str::after($pacote->imagem_og, '/storage/'));
     }
@@ -381,9 +382,9 @@ class AdminTest extends TestCase
         ])->assertRedirect();
         $slide = SlideHero::firstOrFail();
 
-        $this->assertStringContainsString('/storage/slides-hero/', $slide->imagem);
+        $this->assertStringContainsString('slides-hero/', $slide->imagem);
 
-        Storage::disk('public')->assertExists(Str::after($slide->imagem, '/storage/'));
+        Storage::disk('public')->assertExists($slide->imagem);
 
         $this->post(route('admin.estatisticas.store'), [
             'rotulo' => 'Destinos',
@@ -477,6 +478,53 @@ class AdminTest extends TestCase
         $this->assertDatabaseCount('configuracoes', 0);
         $this->assertDatabaseCount('dias_itinerario', 0);
         $this->assertDatabaseCount('galerias_pacotes', 0);
+    }
+
+    public function test_cache_de_slides_e_invalidada_ao_criar_atualizar_e_eliminar()
+    {
+        $this->admin();
+
+        $slide = SlideHero::create([
+            'pagina' => 'home',
+            'titulo' => 'Antigo',
+            'ordem' => 0,
+            'ativo' => true,
+        ]);
+
+        $this->get(route('api.slides-hero.index', ['pagina' => 'home']))
+            ->assertOk();
+
+        $this->assertNotNull(Cache::get('slides.pagina.home'));
+
+        $this->post(route('admin.slides-hero.store'), [
+            'pagina' => 'sobre',
+            'titulo' => 'Novo',
+            'ordem' => 0,
+            'ativo' => true,
+        ])->assertRedirect();
+
+        $this->assertNull(Cache::get('slides.pagina.sobre'));
+
+        $this->get(route('api.slides-hero.index', ['pagina' => 'home']))
+            ->assertOk();
+
+        $this->put(route('admin.slides-hero.update', $slide), [
+            'pagina' => 'sobre',
+            'titulo' => 'Movido',
+            'ordem' => 1,
+            'ativo' => true,
+        ])->assertRedirect();
+
+        $this->assertNull(Cache::get('slides.pagina.home'));
+        $this->assertNull(Cache::get('slides.pagina.sobre'));
+
+        $this->get(route('api.slides-hero.index', ['pagina' => 'sobre']))
+            ->assertOk();
+
+        $this->delete(route('admin.slides-hero.destroy', $slide))
+            ->assertRedirect();
+
+        $this->assertNull(Cache::get('slides.pagina.sobre'));
     }
 
     public function test_acesso_ao_painel_do_membro_pode_ser_ativado_e_desativado()

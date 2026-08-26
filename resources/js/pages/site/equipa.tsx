@@ -1,4 +1,5 @@
 import { Head } from '@inertiajs/react';
+import { storageUrl } from '@/lib/utils';
 import type { MembroEquipa } from '@/types/site';
 
 interface EquipaProps {
@@ -19,7 +20,7 @@ export default function Equipa({ membros }: EquipaProps) {
                         >
                             {membro.foto && (
                                 <img
-                                    src={membro.foto}
+                                    src={storageUrl(membro.foto)}
                                     alt={membro.nome}
                                     className="mx-auto mb-4 size-24 rounded-full object-cover"
                                 />

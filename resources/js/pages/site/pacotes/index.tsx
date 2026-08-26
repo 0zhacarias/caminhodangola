@@ -1,4 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
+import { storageUrl } from '@/lib/utils';
 import type { CategoriaPacote, Pacote } from '@/types/site';
 
 interface PacotesIndexProps {
@@ -38,7 +39,7 @@ export default function PacotesIndex({
                         >
                             {pacote.imagem && (
                                 <img
-                                    src={pacote.imagem}
+                                    src={storageUrl(pacote.imagem)}
                                     alt={pacote.titulo}
                                     className="mb-4 aspect-video w-full rounded-lg object-cover"
                                 />

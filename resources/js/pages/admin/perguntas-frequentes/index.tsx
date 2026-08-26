@@ -4,7 +4,7 @@ import PerguntaFrequenteDialog from '@/components/admin/dialogs/pergunta-frequen
 import ResourcePage from '@/components/admin/resource-page';
 import { dashboard } from '@/routes/admin';
 import { index } from '@/routes/admin/perguntas-frequentes';
-import type { PerguntaFrequente } from '@/types/admin';
+import type { Option, PerguntaFrequente } from '@/types/admin';
 
 const columns: Column<PerguntaFrequente>[] = [
     { key: 'categoria', label: 'Categoria' },
@@ -18,8 +18,10 @@ const columns: Column<PerguntaFrequente>[] = [
 
 export default function Index({
     perguntas,
+    categorias,
 }: {
     perguntas: PerguntaFrequente[];
+    categorias: Option[];
 }) {
     return (
         <>
@@ -35,7 +37,11 @@ export default function Index({
                 deleteUrl={(item) => `/admin/perguntas-frequentes/${item.id}`}
                 detailTitle={(item) => item.pergunta}
                 renderDialog={({ item, onClose }) => (
-                    <PerguntaFrequenteDialog item={item} onClose={onClose} />
+                    <PerguntaFrequenteDialog
+                        item={item}
+                        onClose={onClose}
+                        categorias={categorias}
+                    />
                 )}
             />
         </>

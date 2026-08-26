@@ -91,12 +91,12 @@ class GaleriasController extends AdminController
 
     private function guardarImagem(UploadedFile $ficheiro, string $pasta): string
     {
-        $caminho = $ficheiro->store($pasta, 'public');
+        $caminho = Storage::disk('public')->putFile($pasta, $ficheiro);
 
         if ($caminho === false) {
             throw new \RuntimeException('Não foi possível guardar a imagem.');
         }
 
-        return Storage::disk('public')->url($caminho);
+        return $caminho;
     }
 }

@@ -16,6 +16,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { storageUrl } from '@/lib/utils';
 import { dashboard } from '@/routes/admin';
 import { index } from '@/routes/admin/pacotes';
 import type { Option, Pacote } from '@/types/admin';
@@ -454,7 +455,7 @@ export default function Form({
                                     {pacote.galerias.map((galeria) => (
                                         <img
                                             key={galeria.id}
-                                            src={galeria.imagem}
+                                            src={storageUrl(galeria.imagem)}
                                             alt=""
                                             className="h-16 w-24 rounded-md border object-cover"
                                         />

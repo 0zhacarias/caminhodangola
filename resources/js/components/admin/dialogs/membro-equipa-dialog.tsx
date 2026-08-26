@@ -22,7 +22,7 @@ export default function MembroEquipaDialog({
     onClose: () => void;
     cargos: Cargo[];
 }) {
-    const { data, setData, post, transform, processing, errors } = useForm<{
+    const { data, setData, post, put, processing, errors } = useForm<{
         nome: string;
         cargo_id: string;
         bio: string;
@@ -51,15 +51,10 @@ export default function MembroEquipaDialog({
     const submit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const options = {
-            preserveScroll: true,
-            forceFormData: true,
-            onSuccess: onClose,
-        };
+        const options = { preserveScroll: true, onSuccess: onClose };
 
         if (item) {
-            transform((formData) => ({ ...formData, _method: 'put' }));
-            post(`/admin/membros-equipa/${item.id}`, options);
+            put(`/admin/membros-equipa/${item.id}`, options);
         } else {
             post('/admin/membros-equipa', options);
         }

@@ -2,6 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\ConfiguracaoService;
+use App\Services\PorqueNosService;
+use App\Services\SobreNosService;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -41,6 +44,15 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'configuracoes' => fn (): array => $request->routeIs('admin.*')
+                ? []
+                : app(ConfiguracaoService::class)->todas(),
+            'porques_nos' => fn (): array => $request->routeIs('admin.*')
+                ? []
+                : app(PorqueNosService::class)->listarAtivos()->all(),
+            'sobres_nos' => fn (): array => $request->routeIs('admin.*')
+                ? []
+                : app(SobreNosService::class)->listarAtivos()->all(),
         ];
     }
 }

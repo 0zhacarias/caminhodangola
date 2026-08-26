@@ -37,6 +37,8 @@ const labels: Record<string, string> = {
     imagem_og: 'Imagem OG',
     alt: 'Texto alternativo',
     texto: 'Texto',
+    botao_rotulo: 'Botão',
+    botao_url: 'Link do botão',
     pagina: 'Página',
     icone: 'Ícone',
     preco_eur: 'Preço (EUR)',
@@ -107,7 +109,12 @@ function humanize(key: string): string {
 }
 
 function ehUrlImagem(value: string): boolean {
-    return /^(https?:\/\/|\/|data:image\/)/i.test(value.trim());
+    const valor = value.trim();
+
+    return (
+        /^(https?:\/\/|data:image\/)/i.test(valor) ||
+        /\.(jpe?g|png|webp|gif)(\?.*)?$/i.test(valor)
+    );
 }
 
 export function nodeToText(node: unknown): string {

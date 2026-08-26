@@ -8,10 +8,12 @@ import {
     LayoutGrid,
     LayoutTemplate,
     Map,
+    HeartHandshake,
     Menu,
     MessageSquareQuote,
     MonitorPlay,
     Package,
+    PanelBottom,
     Settings,
     Tags,
     Users,
@@ -19,6 +21,7 @@ import {
 import { dashboard } from '@/routes';
 import { index as cargosIndex } from '@/routes/admin/cargos';
 import { index as categoriasIndex } from '@/routes/admin/categorias-pacotes';
+import { index as categoriasPerguntasFrequentesIndex } from '@/routes/admin/categorias-perguntas-frequentes';
 import { index as configuracoesIndex } from '@/routes/admin/configuracoes';
 import { index as depoimentosIndex } from '@/routes/admin/depoimentos';
 import { index as diasItinerarioIndex } from '@/routes/admin/dias-itinerario';
@@ -29,9 +32,12 @@ import { index as itensMenuIndex } from '@/routes/admin/itens-menu';
 import { index as membrosEquipaIndex } from '@/routes/admin/membros-equipa';
 import { index as pacotesIndex } from '@/routes/admin/pacotes';
 import { index as perguntasFrequentesIndex } from '@/routes/admin/perguntas-frequentes';
+import { index as porquesNosIndex } from '@/routes/admin/porques-nos';
 import { index as reservasIndex } from '@/routes/admin/reservas';
+import { edit as rodapeEdit } from '@/routes/admin/rodape';
 import { index as seccoesIndex } from '@/routes/admin/seccoes';
 import { index as slidesHeroIndex } from '@/routes/admin/slides-hero';
+import { index as sobresNosIndex } from '@/routes/admin/sobres-nos';
 import type { NavItem } from '@/types';
 
 export const mainNavItems: NavItem[] = [
@@ -107,6 +113,21 @@ export const adminNavGroups: NavGroup[] = [
                 icon: CircleHelp,
             },
             {
+                title: 'Categorias de Perguntas',
+                href: categoriasPerguntasFrequentesIndex(),
+                icon: Tags,
+            },
+            {
+                title: 'Porquê Nós',
+                href: porquesNosIndex(),
+                icon: HeartHandshake,
+            },
+            {
+                title: 'Sobre Nós',
+                href: sobresNosIndex(),
+                icon: Users,
+            },
+            {
                 title: 'Membros da Equipa',
                 href: membrosEquipaIndex(),
                 icon: Users,
@@ -130,6 +151,11 @@ export const adminNavGroups: NavGroup[] = [
                 title: 'Configurações',
                 href: configuracoesIndex(),
                 icon: Settings,
+            },
+            {
+                title: 'Rodapé',
+                href: rodapeEdit(),
+                icon: PanelBottom,
             },
         ],
     },

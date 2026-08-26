@@ -2,6 +2,7 @@ import { Head } from '@inertiajs/react';
 import type { Column } from '@/components/admin/data-table';
 import SlideHeroDialog from '@/components/admin/dialogs/slide-hero-dialog';
 import ResourcePage from '@/components/admin/resource-page';
+import { storageUrl } from '@/lib/utils';
 import { dashboard } from '@/routes/admin';
 import { index } from '@/routes/admin/slides-hero';
 import type { SlideHero } from '@/types/admin';
@@ -10,13 +11,16 @@ const columns: Column<SlideHero>[] = [
     {
         key: 'imagem',
         label: 'Imagem',
-        render: (slide) => (
-            <img
-                src={slide.imagem}
-                alt={slide.titulo}
-                className="h-10 w-16 rounded-md object-cover"
-            />
-        ),
+        render: (slide) =>
+            slide.imagem ? (
+                <img
+                    src={storageUrl(slide.imagem)}
+                    alt={slide.titulo ?? ''}
+                    className="h-10 w-16 rounded-md object-cover"
+                />
+            ) : (
+                '—'
+            ),
     },
     { key: 'titulo', label: 'Título' },
     { key: 'pagina', label: 'Página' },
@@ -28,7 +32,13 @@ const columns: Column<SlideHero>[] = [
     },
 ];
 
-export default function Index({ slides }: { slides: SlideHero[] }) {
+export default function Index({
+    slides,
+    paginas,
+}: {
+    slides: SlideHero[];
+    paginas: Record<string, string>;
+}) {
     return (
         <>
             <Head title="Slides Hero" />
@@ -41,9 +51,13 @@ export default function Index({ slides }: { slides: SlideHero[] }) {
                 columns={columns}
                 getItemId={(item) => item.id}
                 deleteUrl={(item) => `/admin/slides-hero/${item.id}`}
-                detailTitle={(item) => item.titulo}
+                detailTitle={(item) => item.titulo ?? ''}
                 renderDialog={({ item, onClose }) => (
-                    <SlideHeroDialog item={item} onClose={onClose} />
+                    <SlideHeroDialog
+                        item={item}
+                        paginas={paginas}
+                        onClose={onClose}
+                    />
                 )}
             />
         </>

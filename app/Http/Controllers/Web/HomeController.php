@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Services\ConfiguracaoService;
 use App\Services\DepoimentoService;
 use App\Services\EstatisticaService;
 use App\Services\GaleriaService;
@@ -18,7 +17,6 @@ use Inertia\Response;
 class HomeController extends Controller
 {
     public function __construct(
-        private readonly ConfiguracaoService $configuracoes,
         private readonly SlideHeroService $slides,
         private readonly SeccaoService $seccoes,
         private readonly PacoteService $pacotes,
@@ -32,7 +30,6 @@ class HomeController extends Controller
     public function index(): Response
     {
         return Inertia::render('site/home', [
-            'configuracoes' => $this->configuracoes->todas()->pluck('valor', 'chave'),
             'slides' => $this->slides->listarHome(),
             'seccoes' => $this->seccoes->listarAtivas(),
             'pacotes' => $this->pacotes->listarAtivos(),
@@ -47,6 +44,7 @@ class HomeController extends Controller
     public function privateTours(): Response
     {
         return Inertia::render('site/private-tours', [
+            'slides' => $this->slides->listarPorPagina('private-tours'),
             'depoimentos' => $this->depoimentos->listarDestaques(),
         ]);
     }
@@ -54,6 +52,7 @@ class HomeController extends Controller
     public function groupTours(): Response
     {
         return Inertia::render('site/group-tours', [
+            'slides' => $this->slides->listarPorPagina('group-tours'),
             'depoimentos' => $this->depoimentos->listarDestaques(),
         ]);
     }

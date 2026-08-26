@@ -2,7 +2,7 @@ import { Trash2Icon, UploadIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Field } from '@/components/admin/form-field';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { cn, storageUrl } from '@/lib/utils';
 
 const TIPOS_ACEITES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 
@@ -242,5 +242,5 @@ export function useFilePreview(value: string | File | null): string | null {
         return filePreview;
     }
 
-    return value ?? null;
+    return value ? storageUrl(value) : null;
 }

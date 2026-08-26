@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Configuracao;
 use App\Services\ConfiguracaoService;
 use Illuminate\Http\JsonResponse;
 
@@ -12,7 +13,7 @@ class ConfiguracoesController extends Controller
 
     public function index(): JsonResponse
     {
-        return response()->json(['data' => $this->configuracoes->todas()]);
+        return response()->json(['data' => Configuracao::query()->orderBy('chave')->get()]);
     }
 
     public function show(string $chave): JsonResponse

@@ -8,7 +8,7 @@ import ResourcePage from '@/components/admin/resource-page';
 import ImageLightbox from '@/components/image-lightbox';
 import type { ImagemLightbox } from '@/components/image-lightbox';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { cn, storageUrl } from '@/lib/utils';
 import { dashboard } from '@/routes/admin';
 import { index } from '@/routes/admin/galerias';
 import type { Galeria } from '@/types/admin';
@@ -55,7 +55,7 @@ function GaleriaCard({
                     className="block h-full w-full cursor-zoom-in overflow-hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                 >
                     <img
-                        src={galeria.imagem}
+                        src={storageUrl(galeria.imagem)}
                         alt={galeria.alt ?? ''}
                         className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />

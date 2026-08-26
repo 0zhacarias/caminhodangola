@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ImageLightbox from '@/components/image-lightbox';
 import type { ImagemLightbox } from '@/components/image-lightbox';
+import { storageUrl } from '@/lib/utils';
 
 export default function ImageThumbnail({
     imagens,
@@ -25,7 +26,7 @@ export default function ImageThumbnail({
                 aria-label="Abrir imagem em tamanho maior"
                 className="block cursor-zoom-in overflow-hidden rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             >
-                <img src={src} alt={alt} className={className} />
+                <img src={storageUrl(src)} alt={alt} className={className} />
             </button>
 
             {aberto && (

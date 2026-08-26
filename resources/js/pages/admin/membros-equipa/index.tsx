@@ -6,7 +6,7 @@ import type { GridAcoes } from '@/components/admin/resource-page';
 import ResourcePage from '@/components/admin/resource-page';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { cn, storageUrl } from '@/lib/utils';
 import { dashboard } from '@/routes/admin';
 import {
     index,
@@ -37,7 +37,10 @@ function MembroCard({
     return (
         <div className="flex flex-col items-center gap-3 rounded-xl border bg-card p-5 text-center">
             <Avatar className="size-20">
-                <AvatarImage src={membro.foto ?? undefined} alt={membro.nome} />
+                <AvatarImage
+                    src={membro.foto ? storageUrl(membro.foto) : undefined}
+                    alt={membro.nome}
+                />
                 <AvatarFallback className="bg-muted text-xl font-semibold text-muted-foreground">
                     {iniciais(membro.nome)}
                 </AvatarFallback>
@@ -131,7 +134,10 @@ const columns: Column<MembroEquipa>[] = [
         label: 'Foto',
         render: (membro) => (
             <Avatar className="size-10">
-                <AvatarImage src={membro.foto ?? undefined} alt={membro.nome} />
+                <AvatarImage
+                    src={membro.foto ? storageUrl(membro.foto) : undefined}
+                    alt={membro.nome}
+                />
                 <AvatarFallback>{iniciais(membro.nome)}</AvatarFallback>
             </Avatar>
         ),

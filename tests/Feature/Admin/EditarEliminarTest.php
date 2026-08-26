@@ -207,7 +207,7 @@ class EditarEliminarTest extends TestCase
         ]);
 
         $this->assertStringContainsString(
-            '/storage/pacotes/galerias/',
+            'pacotes/galerias/',
             $galeria->refresh()->imagem,
         );
 

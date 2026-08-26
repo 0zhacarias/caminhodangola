@@ -6,6 +6,7 @@ import {
     PacoteGaleriaSection,
 } from '@/components/admin/pacote-detalhes-sections';
 import ResourcePage from '@/components/admin/resource-page';
+import { storageUrl } from '@/lib/utils';
 import { dashboard } from '@/routes/admin';
 import { create, edit, index } from '@/routes/admin/pacotes';
 import type { Pacote } from '@/types/admin';
@@ -17,7 +18,7 @@ const columns: Column<Pacote>[] = [
         render: (pacote) =>
             pacote.imagem ? (
                 <img
-                    src={pacote.imagem}
+                    src={storageUrl(pacote.imagem)}
                     alt={pacote.titulo}
                     className="h-10 w-16 rounded-md object-cover"
                 />
