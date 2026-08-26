@@ -1,21 +1,30 @@
 import { useForm } from '@inertiajs/react';
+import AvatarUpload from '@/components/admin/avatar-upload';
 import CrudDialog from '@/components/admin/dialogs/crud-dialog';
 import { BooleanField, Field } from '@/components/admin/form-field';
-import ImageUpload from '@/components/admin/image-upload';
 import { Input } from '@/components/ui/input';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import type { MembroEquipa } from '@/types/admin';
+import type { Cargo, MembroEquipa } from '@/types/admin';
 
 export default function MembroEquipaDialog({
     item,
     onClose,
+    cargos,
 }: {
     item: MembroEquipa | null;
     onClose: () => void;
+    cargos: Cargo[];
 }) {
-    const { data, setData, post, put, processing, errors } = useForm<{
+    const { data, setData, post, transform, processing, errors } = useForm<{
         nome: string;
-        cargo: string;
+        cargo_id: string;
         bio: string;
         foto: string | File;
         linkedin: string;
@@ -24,9 +33,10 @@ export default function MembroEquipaDialog({
         email: string;
         ordem: number;
         ativo: boolean;
+        permitir_login: boolean;
     }>({
         nome: item?.nome ?? '',
-        cargo: item?.cargo ?? '',
+        cargo_id: item?.cargo_id !== null ? String(item?.cargo_id) : '',
         bio: item?.bio ?? '',
         foto: item?.foto ?? '',
         linkedin: item?.linkedin ?? '',
@@ -35,15 +45,21 @@ export default function MembroEquipaDialog({
         email: item?.email ?? '',
         ordem: item?.ordem ?? 0,
         ativo: item?.ativo ?? true,
+        permitir_login: item?.user?.ativo ?? false,
     });
 
     const submit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const options = { preserveScroll: true, onSuccess: onClose };
+        const options = {
+            preserveScroll: true,
+            forceFormData: true,
+            onSuccess: onClose,
+        };
 
         if (item) {
-            put(`/admin/membros-equipa/${item.id}`, options);
+            transform((formData) => ({ ...formData, _method: 'put' }));
+            post(`/admin/membros-equipa/${item.id}`, options);
         } else {
             post('/admin/membros-equipa', options);
         }
@@ -56,6 +72,13 @@ export default function MembroEquipaDialog({
             onSubmit={submit}
             processing={processing}
         >
+            <AvatarUpload
+                value={data.foto}
+                onChange={(ficheiro) => setData('foto', ficheiro ?? '')}
+                error={errors.foto}
+                nome={data.nome}
+            />
+
             <div className="grid gap-4 sm:grid-cols-2">
                 <Field id="nome" label="Nome" error={errors.nome}>
                     <Input
@@ -68,25 +91,27 @@ export default function MembroEquipaDialog({
                     />
                 </Field>
 
-                <Field id="cargo" label="Cargo" error={errors.cargo}>
-                    <Input
-                        id="cargo"
-                        value={data.cargo}
-                        onChange={(event) =>
-                            setData('cargo', event.target.value)
-                        }
-                        required
-                    />
+                <Field id="cargo_id" label="Cargo" error={errors.cargo_id}>
+                    <Select
+                        value={data.cargo_id}
+                        onValueChange={(value) => setData('cargo_id', value)}
+                    >
+                        <SelectTrigger id="cargo_id" className="w-full">
+                            <SelectValue placeholder="Selecionar cargo" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {cargos.map((cargo) => (
+                                <SelectItem
+                                    key={cargo.id}
+                                    value={String(cargo.id)}
+                                >
+                                    {cargo.nome}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
                 </Field>
             </div>
-
-            <ImageUpload
-                id="foto"
-                label="Foto"
-                value={data.foto}
-                onChange={(ficheiro) => setData('foto', ficheiro ?? '')}
-                error={errors.foto}
-            />
 
             <Field id="ordem" label="Ordem" error={errors.ordem}>
                 <Input
@@ -155,6 +180,7 @@ export default function MembroEquipaDialog({
                         onChange={(event) =>
                             setData('email', event.target.value)
                         }
+                        required={data.permitir_login}
                     />
                 </Field>
             </div>
@@ -163,6 +189,14 @@ export default function MembroEquipaDialog({
                 label="Ativo"
                 checked={data.ativo}
                 onCheckedChange={(checked) => setData('ativo', checked)}
+            />
+
+            <BooleanField
+                label="Permitir acesso ao painel administrativo (e-mail obrigatório)"
+                checked={data.permitir_login}
+                onCheckedChange={(checked) =>
+                    setData('permitir_login', checked)
+                }
             />
         </CrudDialog>
     );

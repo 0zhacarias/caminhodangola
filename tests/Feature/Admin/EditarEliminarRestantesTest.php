@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Models\Cargo;
 use App\Models\Configuracao;
 use App\Models\Estatistica;
 use App\Models\ItemMenu;
@@ -28,16 +29,19 @@ class EditarEliminarRestantesTest extends TestCase
     {
         $this->admin();
 
+        $cargo = Cargo::create(['nome' => 'Guia', 'ativo' => true]);
+
         $membro = MembroEquipa::create([
             'nome' => 'Carlos Santos',
             'cargo' => 'Guia',
+            'cargo_id' => $cargo->id,
             'ordem' => 0,
             'ativo' => true,
         ]);
 
         $this->put(route('admin.membros-equipa.update', $membro), [
             'nome' => 'Carlos dos Santos',
-            'cargo' => 'Guia sénior',
+            'cargo_id' => $cargo->id,
             'telefone' => '+244 900 000 000',
             'ordem' => 1,
             'ativo' => true,
@@ -45,7 +49,7 @@ class EditarEliminarRestantesTest extends TestCase
 
         $this->assertDatabaseHas('membros_equipa', [
             'id' => $membro->id,
-            'cargo' => 'Guia sénior',
+            'cargo' => 'Guia',
         ]);
 
         $this->delete(route('admin.membros-equipa.destroy', $membro))

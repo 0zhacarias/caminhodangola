@@ -11,7 +11,7 @@ export default function AppLogoIcon(
             src="/logotipo-caminhosdangola.svg"
             alt="Logotipo Caminhos de Angola"
 
-            
+    
             className={cn('h-5 w-auto object-contain', className)}
             {...rest}
         />

@@ -2,6 +2,7 @@ import { Head } from '@inertiajs/react';
 import type { Column } from '@/components/admin/data-table';
 import ItemMenuDialog from '@/components/admin/dialogs/item-menu-dialog';
 import ResourcePage from '@/components/admin/resource-page';
+import { dashboard } from '@/routes/admin';
 import { index } from '@/routes/admin/itens-menu';
 import type { ItemMenu, Option } from '@/types/admin';
 
@@ -51,6 +52,10 @@ export default function Index({
 
 Index.layout = {
     breadcrumbs: [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+        },
         {
             title: 'Itens de Menu',
             href: index(),

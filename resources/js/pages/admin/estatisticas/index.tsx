@@ -2,6 +2,7 @@ import { Head } from '@inertiajs/react';
 import type { Column } from '@/components/admin/data-table';
 import EstatisticaDialog from '@/components/admin/dialogs/estatistica-dialog';
 import ResourcePage from '@/components/admin/resource-page';
+import { dashboard } from '@/routes/admin';
 import { index } from '@/routes/admin/estatisticas';
 import type { Estatistica } from '@/types/admin';
 
@@ -44,6 +45,10 @@ export default function Index({
 
 Index.layout = {
     breadcrumbs: [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+        },
         {
             title: 'Estatísticas',
             href: index(),

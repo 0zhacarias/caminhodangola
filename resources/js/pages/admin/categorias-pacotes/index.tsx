@@ -2,6 +2,7 @@ import { Head } from '@inertiajs/react';
 import type { Column } from '@/components/admin/data-table';
 import CategoriaPacoteDialog from '@/components/admin/dialogs/categoria-pacote-dialog';
 import ResourcePage from '@/components/admin/resource-page';
+import { dashboard } from '@/routes/admin';
 import { index } from '@/routes/admin/categorias-pacotes';
 import type { CategoriaPacote } from '@/types/admin';
 
@@ -48,6 +49,10 @@ export default function Index({
 
 Index.layout = {
     breadcrumbs: [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+        },
         {
             title: 'Categorias de Pacotes',
             href: index(),

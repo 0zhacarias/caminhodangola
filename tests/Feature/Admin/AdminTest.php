@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Models\Cargo;
 use App\Models\CategoriaPacote;
 use App\Models\Configuracao;
 use App\Models\Depoimento;
@@ -59,6 +60,7 @@ class AdminTest extends TestCase
             'admin.depoimentos.index',
             'admin.perguntas-frequentes.index',
             'admin.membros-equipa.index',
+            'admin.cargos.index',
             'admin.slides-hero.index',
             'admin.seccoes.index',
             'admin.estatisticas.index',
@@ -402,7 +404,7 @@ class AdminTest extends TestCase
 
         $this->post(route('admin.membros-equipa.store'), [
             'nome' => 'Carlos Santos',
-            'cargo' => 'Guia',
+            'cargo_id' => Cargo::create(['nome' => 'Guia', 'ativo' => true])->id,
             'ordem' => 0,
             'ativo' => true,
         ])->assertRedirect();
@@ -475,5 +477,102 @@ class AdminTest extends TestCase
         $this->assertDatabaseCount('configuracoes', 0);
         $this->assertDatabaseCount('dias_itinerario', 0);
         $this->assertDatabaseCount('galerias_pacotes', 0);
+    }
+
+    public function test_acesso_ao_painel_do_membro_pode_ser_ativado_e_desativado()
+    {
+        $this->admin();
+
+        $cargo = Cargo::create(['nome' => 'Guia', 'ativo' => true]);
+
+        $membro = MembroEquipa::create([
+            'nome' => 'Carlos Santos',
+            'cargo' => 'Guia',
+            'cargo_id' => $cargo->id,
+            'email' => 'carlos@example.com',
+            'ordem' => 0,
+            'ativo' => true,
+        ]);
+
+        $this->post(route('admin.membros-equipa.toggle-acesso', $membro))
+            ->assertRedirect();
+
+        $membro->refresh();
+
+        $this->assertNotNull($membro->user_id);
+        $this->assertTrue($membro->user->ativo);
+
+        $this->post(route('admin.membros-equipa.toggle-acesso', $membro))
+            ->assertRedirect();
+
+        $membro->refresh();
+
+        $this->assertFalse($membro->user->ativo);
+
+        $this->post(route('admin.membros-equipa.toggle-acesso', $membro))
+            ->assertRedirect();
+
+        $membro->refresh();
+
+        $this->assertTrue($membro->user->ativo);
+    }
+
+    public function test_membro_com_permitir_login_cria_utilizador()
+    {
+        $this->admin();
+
+        $cargo = Cargo::create(['nome' => 'Guia', 'ativo' => true]);
+
+        $this->post(route('admin.membros-equipa.store'), [
+            'nome' => 'Carlos Santos',
+            'cargo_id' => $cargo->id,
+            'email' => 'carlos@example.com',
+            'permitir_login' => true,
+            'ordem' => 0,
+            'ativo' => true,
+        ])->assertRedirect();
+
+        $membro = MembroEquipa::firstOrFail();
+
+        $this->assertNotNull($membro->user_id);
+        $this->assertDatabaseHas('users', [
+            'id' => $membro->user_id,
+            'email' => 'carlos@example.com',
+            'ativo' => true,
+        ]);
+    }
+
+    public function test_preferencia_de_visualizacao_dos_membros_e_guardada_na_sessao()
+    {
+        $this->admin();
+
+        $this->post(route('admin.membros-equipa.visao'), ['visao' => 'list'])
+            ->assertRedirect(route('admin.membros-equipa.index'));
+
+        $this->assertSame('list', session('preferencias.visualizacao.membros_equipa'));
+
+        $this->post(route('admin.membros-equipa.visao'), ['visao' => 'grid'])
+            ->assertRedirect(route('admin.membros-equipa.index'));
+
+        $this->assertSame('grid', session('preferencias.visualizacao.membros_equipa'));
+
+        $this->post(route('admin.membros-equipa.visao'), ['visao' => 'outra'])
+            ->assertSessionHasErrors('visao');
+    }
+
+    public function test_utilizador_desativado_nao_consegue_iniciar_sessao()
+    {
+        $utilizador = User::factory()->create([
+            'email' => 'inativo@example.com',
+            'password' => 'password123',
+            'ativo' => false,
+        ]);
+
+        $this->post(route('login'), [
+            'email' => 'inativo@example.com',
+            'password' => 'password123',
+        ])->assertSessionHasErrors('email');
+
+        $this->assertGuest();
     }
 }

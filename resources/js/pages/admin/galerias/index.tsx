@@ -9,6 +9,7 @@ import ImageLightbox from '@/components/image-lightbox';
 import type { ImagemLightbox } from '@/components/image-lightbox';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { dashboard } from '@/routes/admin';
 import { index } from '@/routes/admin/galerias';
 import type { Galeria } from '@/types/admin';
 
@@ -197,6 +198,10 @@ export default function Index({ galerias }: { galerias: Galeria[] }) {
 
 Index.layout = {
     breadcrumbs: [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+        },
         {
             title: 'Galerias',
             href: index(),

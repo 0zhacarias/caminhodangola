@@ -122,6 +122,27 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Login Pipelines
+    |--------------------------------------------------------------------------
+    |
+    | Define os pipelines utilizados durante o processo de autenticação.
+    | A lista segue a ordem do pipeline padrão do Fortify, com a validação
+    | extra de contas desativadas antes da tentativa de autenticação.
+    |
+    */
+
+    'pipelines' => [
+        'login' => [
+            \Laravel\Fortify\Actions\CanonicalizeUsername::class,
+            \App\Actions\Fortify\EnsureUserIsActive::class,
+            \Laravel\Fortify\Contracts\RedirectsIfTwoFactorAuthenticatable::class,
+            \Laravel\Fortify\Actions\AttemptToAuthenticate::class,
+            \Laravel\Fortify\Actions\PrepareAuthenticatedSession::class,
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Register View Routes
     |--------------------------------------------------------------------------
     |

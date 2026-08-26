@@ -2,6 +2,7 @@ import { Head } from '@inertiajs/react';
 import type { Column } from '@/components/admin/data-table';
 import PerguntaFrequenteDialog from '@/components/admin/dialogs/pergunta-frequente-dialog';
 import ResourcePage from '@/components/admin/resource-page';
+import { dashboard } from '@/routes/admin';
 import { index } from '@/routes/admin/perguntas-frequentes';
 import type { PerguntaFrequente } from '@/types/admin';
 
@@ -43,6 +44,10 @@ export default function Index({
 
 Index.layout = {
     breadcrumbs: [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+        },
         {
             title: 'Perguntas Frequentes',
             href: index(),

@@ -2,6 +2,7 @@ import { Head } from '@inertiajs/react';
 import type { Column } from '@/components/admin/data-table';
 import ConfiguracaoDialog from '@/components/admin/dialogs/configuracao-dialog';
 import ResourcePage from '@/components/admin/resource-page';
+import { dashboard } from '@/routes/admin';
 import { index } from '@/routes/admin/configuracoes';
 import type { Configuracao } from '@/types/admin';
 
@@ -43,6 +44,10 @@ export default function Index({
 
 Index.layout = {
     breadcrumbs: [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+        },
         {
             title: 'Configurações',
             href: index(),

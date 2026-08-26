@@ -13,7 +13,7 @@ import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-interface GridAcoes<T> {
+export interface GridAcoes<T> {
     onView?: (item: T) => void;
     onEdit: (item: T) => void;
     onDelete: (item: T) => void;
@@ -41,6 +41,7 @@ interface ResourcePageProps<T> {
     gridItem?: (item: T, acoes: GridAcoes<T>, indice: number) => ReactNode;
     gridClassName?: string;
     defaultView?: 'grid' | 'list';
+    onViewChange?: (view: 'grid' | 'list') => void;
     onViewItem?: (item: T) => void;
 }
 
@@ -63,6 +64,7 @@ export default function ResourcePage<T>({
     gridItem,
     gridClassName,
     defaultView = 'list',
+    onViewChange,
     onViewItem,
 }: ResourcePageProps<T>) {
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -103,18 +105,28 @@ export default function ResourcePage<T>({
                         <div className="flex items-center gap-1 rounded-lg border p-1">
                             <Button
                                 size="sm"
-                                variant={view === 'grid' ? 'secondary' : 'ghost'}
+                                variant={
+                                    view === 'grid' ? 'secondary' : 'ghost'
+                                }
                                 aria-label="Vista em grelha"
-                                onClick={() => setView('grid')}
+                                onClick={() => {
+                                    setView('grid');
+                                    onViewChange?.('grid');
+                                }}
                                 className="px-2.5"
                             >
                                 <LayoutGridIcon />
                             </Button>
                             <Button
                                 size="sm"
-                                variant={view === 'list' ? 'secondary' : 'ghost'}
+                                variant={
+                                    view === 'list' ? 'secondary' : 'ghost'
+                                }
                                 aria-label="Vista em lista"
-                                onClick={() => setView('list')}
+                                onClick={() => {
+                                    setView('list');
+                                    onViewChange?.('list');
+                                }}
                                 className="px-2.5"
                             >
                                 <ListIcon />

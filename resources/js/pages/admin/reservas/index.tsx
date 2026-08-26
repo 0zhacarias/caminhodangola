@@ -3,6 +3,7 @@ import type { Column } from '@/components/admin/data-table';
 import { describeItem } from '@/components/admin/describe-item';
 import ReservaDialog from '@/components/admin/dialogs/reserva-dialog';
 import ResourcePage from '@/components/admin/resource-page';
+import { dashboard } from '@/routes/admin';
 import { index } from '@/routes/admin/reservas';
 import { reservaEstadoLabel } from '@/types/admin';
 import type { Reserva } from '@/types/admin';
@@ -63,6 +64,10 @@ export default function Index({ reservas }: { reservas: Reserva[] }) {
 
 Index.layout = {
     breadcrumbs: [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+        },
         {
             title: 'Reservas',
             href: index(),

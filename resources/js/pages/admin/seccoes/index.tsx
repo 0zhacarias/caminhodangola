@@ -2,6 +2,7 @@ import { Head } from '@inertiajs/react';
 import type { Column } from '@/components/admin/data-table';
 import SeccaoDialog from '@/components/admin/dialogs/seccao-dialog';
 import ResourcePage from '@/components/admin/resource-page';
+import { dashboard } from '@/routes/admin';
 import { index } from '@/routes/admin/seccoes';
 import type { Seccao } from '@/types/admin';
 
@@ -44,6 +45,10 @@ export default function Index({ seccoes }: { seccoes: Seccao[] }) {
 
 Index.layout = {
     breadcrumbs: [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+        },
         {
             title: 'Secções',
             href: index(),

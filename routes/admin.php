@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\CargosController;
 use App\Http\Controllers\Admin\CategoriasPacotesController;
 use App\Http\Controllers\Admin\ConfiguracoesController;
-use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DepoimentosController;
 use App\Http\Controllers\Admin\DiasItinerarioController;
 use App\Http\Controllers\Admin\EstatisticasController;
@@ -30,6 +30,9 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::resource('depoimentos', DepoimentosController::class)->except(['show']);
     Route::resource('perguntas-frequentes', PerguntasFrequentesController::class)->except(['show']);
     Route::resource('membros-equipa', MembrosEquipaController::class)->except(['show']);
+    Route::post('membros-equipa/visao', [MembrosEquipaController::class, 'guardarVisao'])->name('membros-equipa.visao');
+    Route::post('membros-equipa/{membrosEquipa}/toggle-acesso', [MembrosEquipaController::class, 'toggleAcesso'])->name('membros-equipa.toggle-acesso');
+    Route::resource('cargos', CargosController::class)->except(['show']);
     Route::resource('slides-hero', SlidesHeroController::class)->except(['show']);
     Route::resource('seccoes', SeccoesController::class)->except(['show'])->parameters(['seccoes' => 'seccao']);
     Route::resource('estatisticas', EstatisticasController::class)->except(['show']);

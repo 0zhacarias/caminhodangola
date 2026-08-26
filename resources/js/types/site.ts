@@ -134,6 +134,14 @@ export interface MembroEquipa {
     id: number;
     nome: string;
     cargo: string;
+    cargo_id: number | null;
+    user_id: number | null;
+    user?: {
+        id: number;
+        name: string;
+        email: string;
+        ativo: boolean;
+    } | null;
     bio: string | null;
     foto: string | null;
     linkedin: string | null;
@@ -141,6 +149,14 @@ export interface MembroEquipa {
     telefone: string | null;
     email: string | null;
     ordem: number;
+    ativo: boolean;
+    created_at: string | null;
+    updated_at: string | null;
+}
+
+export interface Cargo {
+    id: number;
+    nome: string;
     ativo: boolean;
     created_at: string | null;
     updated_at: string | null;

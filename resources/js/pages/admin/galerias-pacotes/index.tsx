@@ -3,6 +3,7 @@ import type { Column } from '@/components/admin/data-table';
 import GaleriaPacoteDialog from '@/components/admin/dialogs/galeria-pacote-dialog';
 import ImageThumbnail from '@/components/admin/image-thumbnail';
 import ResourcePage from '@/components/admin/resource-page';
+import { dashboard } from '@/routes/admin';
 import { index } from '@/routes/admin/galerias-pacotes';
 import type { GaleriaPacote, Option } from '@/types/admin';
 
@@ -73,6 +74,10 @@ export default function Index({
 
 Index.layout = {
     breadcrumbs: [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+        },
         {
             title: 'Galerias de Pacotes',
             href: index(),

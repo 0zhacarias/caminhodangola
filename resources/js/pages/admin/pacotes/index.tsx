@@ -6,6 +6,7 @@ import {
     PacoteGaleriaSection,
 } from '@/components/admin/pacote-detalhes-sections';
 import ResourcePage from '@/components/admin/resource-page';
+import { dashboard } from '@/routes/admin';
 import { create, edit, index } from '@/routes/admin/pacotes';
 import type { Pacote } from '@/types/admin';
 
@@ -88,6 +89,10 @@ export default function Index({ pacotes }: { pacotes: Pacote[] }) {
 
 Index.layout = {
     breadcrumbs: [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+        },
         {
             title: 'Pacotes',
             href: index(),

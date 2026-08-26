@@ -20,9 +20,9 @@ export function QuickAccess() {
                         key={item.title}
                         href={item.href}
                         prefetch
-                        className="group block rounded-lg border border-slate-200 bg-white p-5 text-center shadow-sm transition hover:-translate-y-1 hover:border-blue-300 hover:shadow-md"
+                        className="group block rounded-lg border border-slate-200 bg-white p-5 text-center shadow-sm transition hover:-translate-y-1 hover:border-yellow-300 hover:shadow-md"
                     >
-                        <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg text-blue-500">
+                        <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg text-yellow-600">
                             {Icon && <Icon className="h-6 w-6" />}
                         </div>
 

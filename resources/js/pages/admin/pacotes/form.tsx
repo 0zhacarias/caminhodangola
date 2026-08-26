@@ -16,6 +16,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { dashboard } from '@/routes/admin';
 import { index } from '@/routes/admin/pacotes';
 import type { Option, Pacote } from '@/types/admin';
 
@@ -705,11 +706,19 @@ export default function Form({
     );
 }
 
-Form.layout = {
+Form.layout = ({ pacote }: { pacote: Pacote | null }) => ({
     breadcrumbs: [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+        },
         {
             title: 'Pacotes',
             href: index(),
         },
+        {
+            title: pacote ? 'Editar pacote' : 'Novo pacote',
+            href: index(),
+        },
     ],
-};
+});

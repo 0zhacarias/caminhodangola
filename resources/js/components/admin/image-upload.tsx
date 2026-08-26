@@ -214,7 +214,7 @@ function ImageThumb({
     );
 }
 
-function useFilePreview(value: string | File | null): string | null {
+export function useFilePreview(value: string | File | null): string | null {
     const [filePreview, setFilePreview] = useState<string | null>(null);
 
     useEffect(() => {

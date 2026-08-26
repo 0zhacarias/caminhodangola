@@ -1,4 +1,5 @@
 import {
+    BadgeCheck,
     CalendarCheck,
     ChartColumn,
     CircleHelp,
@@ -6,7 +7,6 @@ import {
     Images,
     LayoutGrid,
     LayoutTemplate,
-    LogOut,
     Map,
     Menu,
     MessageSquareQuote,
@@ -16,7 +16,8 @@ import {
     Tags,
     Users,
 } from 'lucide-react';
-import { dashboard, logout } from '@/routes';
+import { dashboard } from '@/routes';
+import { index as cargosIndex } from '@/routes/admin/cargos';
 import { index as categoriasIndex } from '@/routes/admin/categorias-pacotes';
 import { index as configuracoesIndex } from '@/routes/admin/configuracoes';
 import { index as depoimentosIndex } from '@/routes/admin/depoimentos';
@@ -38,7 +39,7 @@ export const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
-    }
+    },
 ];
 
 export interface NavGroup {
@@ -109,6 +110,11 @@ export const adminNavGroups: NavGroup[] = [
                 title: 'Membros da Equipa',
                 href: membrosEquipaIndex(),
                 icon: Users,
+            },
+            {
+                title: 'Cargos',
+                href: cargosIndex(),
+                icon: BadgeCheck,
             },
         ],
     },

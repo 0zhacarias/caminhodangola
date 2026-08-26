@@ -3,6 +3,7 @@ import type { Column } from '@/components/admin/data-table';
 import { describeItem } from '@/components/admin/describe-item';
 import DepoimentoDialog from '@/components/admin/dialogs/depoimento-dialog';
 import ResourcePage from '@/components/admin/resource-page';
+import { dashboard } from '@/routes/admin';
 import { index } from '@/routes/admin/depoimentos';
 import type { Depoimento } from '@/types/admin';
 
@@ -53,6 +54,10 @@ export default function Index({ depoimentos }: { depoimentos: Depoimento[] }) {
 
 Index.layout = {
     breadcrumbs: [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+        },
         {
             title: 'Depoimentos',
             href: index(),

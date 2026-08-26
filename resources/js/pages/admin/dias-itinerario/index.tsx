@@ -2,6 +2,7 @@ import { Head } from '@inertiajs/react';
 import type { Column } from '@/components/admin/data-table';
 import DiaItinerarioDialog from '@/components/admin/dialogs/dia-itinerario-dialog';
 import ResourcePage from '@/components/admin/resource-page';
+import { dashboard } from '@/routes/admin';
 import { index } from '@/routes/admin/dias-itinerario';
 import type { DiaItinerario, Option } from '@/types/admin';
 
@@ -50,6 +51,10 @@ export default function Index({
 
 Index.layout = {
     breadcrumbs: [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+        },
         {
             title: 'Dias de Itinerário',
             href: index(),

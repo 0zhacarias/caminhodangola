@@ -4,12 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
  * @property string $nome
  * @property string $cargo
+ * @property int|null $cargo_id
+ * @property int|null $user_id
  * @property string|null $bio
  * @property string|null $foto
  * @property string|null $linkedin
@@ -20,8 +23,10 @@ use Illuminate\Support\Carbon;
  * @property bool $ativo
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property Cargo|null $cargoModelo
+ * @property User|null $user
  */
-#[Fillable(['nome', 'cargo', 'bio', 'foto', 'linkedin', 'instagram', 'telefone', 'email', 'ordem', 'ativo'])]
+#[Fillable(['nome', 'cargo', 'cargo_id', 'user_id', 'bio', 'foto', 'linkedin', 'instagram', 'telefone', 'email', 'ordem', 'ativo'])]
 class MembroEquipa extends Model
 {
     protected $table = 'membros_equipa';
@@ -31,5 +36,15 @@ class MembroEquipa extends Model
         return [
             'ativo' => 'boolean',
         ];
+    }
+
+    public function cargoModelo(): BelongsTo
+    {
+        return $this->belongsTo(Cargo::class, 'cargo_id');
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -2,6 +2,7 @@ import { Head } from '@inertiajs/react';
 import type { Column } from '@/components/admin/data-table';
 import SlideHeroDialog from '@/components/admin/dialogs/slide-hero-dialog';
 import ResourcePage from '@/components/admin/resource-page';
+import { dashboard } from '@/routes/admin';
 import { index } from '@/routes/admin/slides-hero';
 import type { SlideHero } from '@/types/admin';
 
@@ -51,6 +52,10 @@ export default function Index({ slides }: { slides: SlideHero[] }) {
 
 Index.layout = {
     breadcrumbs: [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+        },
         {
             title: 'Slides Hero',
             href: index(),
