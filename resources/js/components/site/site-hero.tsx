@@ -1,12 +1,15 @@
 import { AnimatePresence, motion, useAnimation } from 'framer-motion';
 import type { PanInfo } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import DepoimentoCard from '@/components/site/depoimento-card';
 import { Header } from '@/components/site/header';
 import { storageUrl } from '@/lib/utils';
-import type { SlideHero } from '@/types/site';
+import type { Depoimento, SlideHero } from '@/types/site';
 
 interface SiteHeroProps {
     slides: SlideHero[];
+    depoimentos?: Depoimento[];
+    centralizado?: boolean;
     cta?: {
         label: string;
         href: string;
@@ -19,7 +22,12 @@ const WHATSAPP_RESERVE = `https://wa.me/+244923469271?text=${encodeURIComponent(
     'Hello! I would like more information about your tours.',
 )}`;
 
-export default function SiteHero({ slides, cta }: SiteHeroProps) {
+export default function SiteHero({
+    slides,
+    depoimentos = [],
+    centralizado = false,
+    cta,
+}: SiteHeroProps) {
     const heroSlides = slides.map((slide) => ({
         image: slide.imagem ? storageUrl(slide.imagem) : '',
         title: slide.titulo ?? '',
@@ -32,7 +40,14 @@ export default function SiteHero({ slides, cta }: SiteHeroProps) {
     const [index, setIndex] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
 
-    const slideAtual = heroSlides[index];
+    // No modo depoimentos a transição é definida pelos depoimentos,
+    // e não pelos slides: cada depoimento é uma transição do carrossel.
+    const modoDepoimentos = depoimentos.length > 0;
+    const total = modoDepoimentos ? depoimentos.length : heroSlides.length;
+    const indiceSlide = modoDepoimentos ? 0 : index;
+
+    const slideAtual = heroSlides[indiceSlide];
+    const depoimentoAtual = modoDepoimentos ? depoimentos[index] : undefined;
     const botaoRotulo = slideAtual?.botaoRotulo || cta?.label || 'Reserve';
     const botaoUrl = slideAtual?.botaoUrl || cta?.href || WHATSAPP_RESERVE;
     const botaoExterno = /^https?:\/\//i.test(botaoUrl);
@@ -58,15 +73,15 @@ export default function SiteHero({ slides, cta }: SiteHeroProps) {
             } else {
                 elapsedRef.current = 0;
                 startTimeRef.current = null;
-                setIndex((prev) => (prev + 1) % heroSlides.length);
+                setIndex((prev) => (prev + 1) % total);
             }
         };
 
         rafRef.current = requestAnimationFrame(update);
-    }, [progressControls, heroSlides.length]);
+    }, [progressControls, total]);
 
     useEffect(() => {
-        if (heroSlides.length === 0) {
+        if (total === 0) {
             return;
         }
 
@@ -81,7 +96,7 @@ export default function SiteHero({ slides, cta }: SiteHeroProps) {
                 cancelAnimationFrame(rafRef.current);
             }
         };
-    }, [index, heroSlides.length, progressControls, animateProgress]);
+    }, [index, total, progressControls, animateProgress]);
 
     useEffect(() => {
         if (isPaused) {
@@ -104,12 +119,14 @@ export default function SiteHero({ slides, cta }: SiteHeroProps) {
     };
 
     const handleDragEnd = (_event: unknown, info: PanInfo) => {
+        if (total === 0) {
+            return;
+        }
+
         if (info.offset.x < -100) {
-            setIndex((prev) => (prev + 1) % heroSlides.length);
+            setIndex((prev) => (prev + 1) % total);
         } else if (info.offset.x > 100) {
-            setIndex(
-                (prev) => (prev - 1 + heroSlides.length) % heroSlides.length,
-            );
+            setIndex((prev) => (prev - 1 + total) % total);
         }
     };
 
@@ -151,9 +168,11 @@ export default function SiteHero({ slides, cta }: SiteHeroProps) {
                 <div className="flex w-full flex-1 flex-col items-center justify-between py-8 md:gap-32 md:py-16">
                     <div className="w-full overflow-hidden">
                         <AnimatePresence mode="wait">
-                            {heroSlides.length > 0 && slideAtual && (
+                            {total > 0 && slideAtual && (
                                 <motion.div
-                                    key={index}
+                                    key={
+                                        modoDepoimentos ? 'depoimentos' : index
+                                    }
                                     drag="x"
                                     dragConstraints={{ left: 0, right: 0 }}
                                     onDragEnd={handleDragEnd}
@@ -161,9 +180,17 @@ export default function SiteHero({ slides, cta }: SiteHeroProps) {
                                     animate={{ x: 0, opacity: 1 }}
                                     exit={{ x: -300, opacity: 0 }}
                                     transition={{ duration: 0.8 }}
-                                    className="my-8 flex flex-1 cursor-grab items-center justify-start gap-8 p-8 max-md:flex-wrap md:px-16"
+                                    className={`my-8 flex flex-1 cursor-grab items-center gap-8 p-8 max-md:flex-wrap md:px-16 ${
+                                        centralizado
+                                            ? 'justify-center'
+                                            : 'justify-start'
+                                    }`}
                                 >
-                                    <div className="flex flex-col gap-4 md:w-2/5">
+                                    <div
+                                        className={`flex flex-col gap-4 md:w-2/5 ${
+                                            centralizado ? 'text-center' : ''
+                                        }`}
+                                    >
                                         <div>
                                             <h5
                                                 className="font-serif text-2xl text-slate-50"
@@ -184,7 +211,11 @@ export default function SiteHero({ slides, cta }: SiteHeroProps) {
                                                 {slideAtual.subtitle}
                                             </h4>
                                             <p
-                                                className="my-4 text-justify text-white"
+                                                className={`my-4 text-white ${
+                                                    centralizado
+                                                        ? ''
+                                                        : 'text-justify'
+                                                }`}
                                                 style={{
                                                     textShadow:
                                                         '2px 2px 16px rgba(0, 0, 0, 0.8)',
@@ -212,14 +243,48 @@ export default function SiteHero({ slides, cta }: SiteHeroProps) {
                                             </a>
                                         </div>
                                     </div>
+
+                                    {modoDepoimentos && depoimentoAtual && (
+                                        <div className="flex flex-col items-center gap-4 max-md:w-full md:w-2/5">
+                                            <div className="w-full overflow-hidden">
+                                                <AnimatePresence mode="wait">
+                                                    <motion.div
+                                                        key={index}
+                                                        initial={{
+                                                            x: 300,
+                                                            opacity: 0,
+                                                        }}
+                                                        animate={{
+                                                            x: 0,
+                                                            opacity: 1,
+                                                        }}
+                                                        exit={{
+                                                            x: -300,
+                                                            opacity: 0,
+                                                        }}
+                                                        transition={{
+                                                            duration: 0.8,
+                                                        }}
+                                                    >
+                                                        <DepoimentoCard
+                                                            depoimento={
+                                                                depoimentoAtual
+                                                            }
+                                                            variant="light"
+                                                        />
+                                                    </motion.div>
+                                                </AnimatePresence>
+                                            </div>
+                                        </div>
+                                    )}
                                 </motion.div>
                             )}
                         </AnimatePresence>
                     </div>
 
-                    {heroSlides.length > 0 && (
+                    {total > 0 && (
                         <div className="-bottom-8 flex w-full justify-center gap-3">
-                            {heroSlides.map((_, i) => (
+                            {Array.from({ length: total }).map((_, i) => (
                                 <button
                                     key={i}
                                     onClick={() => goToSlide(i)}

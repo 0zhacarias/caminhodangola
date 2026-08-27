@@ -19,6 +19,8 @@ import {
     Sparkles,
     Star,
     Target,
+    TimerReset,
+    UserRoundSearch,
     Users,
     Wallet,
 } from 'lucide-react';
@@ -53,6 +55,12 @@ export const DYNAMIC_ICONS: DynamicIconOption[] = [
     { value: 'target', label: 'Alvo', Icon: Target },
     { value: 'eye', label: 'Olho', Icon: Eye },
     { value: 'flag', label: 'Bandeira', Icon: Flag },
+    {
+        value: 'user-round-search',
+        label: 'Pesquisa de pessoa',
+        Icon: UserRoundSearch,
+    },
+    { value: 'timer-reset', label: 'Temporizador', Icon: TimerReset },
 ];
 
 export function DynamicIcon({

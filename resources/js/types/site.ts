@@ -70,6 +70,22 @@ export interface SobreNos {
     updated_at: string | null;
 }
 
+export type TourPrivadoTipo =
+    'cabecalho' | 'destaque' | 'cta_whatsapp' | 'cta_email';
+
+export interface TourPrivado {
+    id: number;
+    tipo: TourPrivadoTipo;
+    titulo: string;
+    descricao: string | null;
+    icone: string | null;
+    link: string | null;
+    ordem: number;
+    ativo: boolean;
+    created_at: string | null;
+    updated_at: string | null;
+}
+
 export interface DiaItinerario {
     id: number;
     pacote_id: number;
@@ -209,6 +225,18 @@ export interface SlideHero {
     texto: string | null;
     botao_rotulo: string | null;
     botao_url: string | null;
+    ordem: number;
+    ativo: boolean;
+    mostrar_depoimentos: boolean;
+    created_at: string | null;
+    updated_at: string | null;
+}
+
+export interface VideoDepoimento {
+    id: number;
+    titulo: string | null;
+    descricao: string | null;
+    video: string;
     ordem: number;
     ativo: boolean;
     created_at: string | null;

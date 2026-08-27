@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Services\ConfiguracaoService;
 use App\Services\PorqueNosService;
 use App\Services\SobreNosService;
+use App\Services\TourPrivadoService;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -53,6 +54,9 @@ class HandleInertiaRequests extends Middleware
             'sobres_nos' => fn (): array => $request->routeIs('admin.*')
                 ? []
                 : app(SobreNosService::class)->listarAtivos()->all(),
+            'tours_privados' => fn (): array => $request->routeIs('admin.*')
+                ? []
+                : app(TourPrivadoService::class)->listarAtivos()->all(),
         ];
     }
 }

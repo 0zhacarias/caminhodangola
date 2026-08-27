@@ -3,16 +3,20 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Depoimento;
+use App\Services\VideoDepoimentoService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Response;
 
 class DepoimentosController extends AdminController
 {
+    public function __construct(private readonly VideoDepoimentoService $videos) {}
+
     public function index(): Response
     {
         return $this->render('admin/depoimentos/index', [
             'depoimentos' => Depoimento::orderBy('ordem')->orderByDesc('id')->get(),
+            'videos' => $this->videos->listar(),
         ]);
     }
 

@@ -28,11 +28,13 @@ export function Field({
 
 export function BooleanField({
     label,
+    description,
     checked,
     onCheckedChange,
     className,
 }: {
     label: string;
+    description?: string;
     checked: boolean;
     onCheckedChange: (checked: boolean) => void;
     className?: string;
@@ -48,7 +50,14 @@ export function BooleanField({
                 checked={checked}
                 onCheckedChange={(value) => onCheckedChange(value === true)}
             />
-            <Label className="cursor-pointer font-normal">{label}</Label>
+            <div className="grid gap-0.5">
+                <Label className="cursor-pointer font-normal">{label}</Label>
+                {description && (
+                    <p className="text-xs text-muted-foreground">
+                        {description}
+                    </p>
+                )}
+            </div>
         </div>
     );
 }

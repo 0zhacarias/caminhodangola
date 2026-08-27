@@ -79,6 +79,7 @@ class SlidesHeroController extends AdminController
             'botao_url' => ['nullable', 'string', 'max:2048'],
             'ordem' => ['integer', 'min:0'],
             'ativo' => ['boolean'],
+            'mostrar_depoimentos' => ['boolean'],
         ]);
     }
 

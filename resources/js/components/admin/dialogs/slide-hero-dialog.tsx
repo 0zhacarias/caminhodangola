@@ -32,6 +32,7 @@ export default function SlideHeroDialog({
         botao_url: string;
         ordem: number;
         ativo: boolean;
+        mostrar_depoimentos: boolean;
     }>({
         pagina: item?.pagina ?? 'home',
         imagem: item?.imagem ?? '',
@@ -42,6 +43,7 @@ export default function SlideHeroDialog({
         botao_url: item?.botao_url ?? '',
         ordem: item?.ordem ?? 0,
         ativo: item?.ativo ?? true,
+        mostrar_depoimentos: item?.mostrar_depoimentos ?? false,
     });
 
     const submit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -77,7 +79,13 @@ export default function SlideHeroDialog({
                 <Field id="pagina" label="Página" error={errors.pagina}>
                     <Select
                         value={data.pagina}
-                        onValueChange={(value) => setData('pagina', value)}
+                        onValueChange={(value) => {
+                            setData('pagina', value);
+
+                            if (value !== 'avaliacoes') {
+                                setData('mostrar_depoimentos', false);
+                            }
+                        }}
                         required
                     >
                         <SelectTrigger id="pagina" className="w-full">
@@ -172,6 +180,17 @@ export default function SlideHeroDialog({
                     className="mt-6"
                 />
             </div>
+
+            {data.pagina === 'avaliacoes' && (
+                <BooleanField
+                    label="Mostrar depoimentos no slide"
+                    description="Quando ativo, o carrossel é conduzido pelos depoimentos (uma transição por depoimento) em vez dos slides. Quando inativo, os slides rodam normalmente e os depoimentos aparecem em baixo."
+                    checked={data.mostrar_depoimentos}
+                    onCheckedChange={(checked) =>
+                        setData('mostrar_depoimentos', checked)
+                    }
+                />
+            )}
         </CrudDialog>
     );
 }
