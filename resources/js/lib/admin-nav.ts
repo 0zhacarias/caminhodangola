@@ -14,6 +14,7 @@ import {
     MonitorPlay,
     Package,
     PanelBottom,
+    Plane,
     Settings,
     Tags,
     Users,
@@ -38,6 +39,7 @@ import { edit as rodapeEdit } from '@/routes/admin/rodape';
 import { index as seccoesIndex } from '@/routes/admin/seccoes';
 import { index as slidesHeroIndex } from '@/routes/admin/slides-hero';
 import { index as sobresNosIndex } from '@/routes/admin/sobres-nos';
+import { index as toursPrivadosIndex } from '@/routes/admin/tours-privados';
 import type { NavItem } from '@/types';
 
 export const mainNavItems: NavItem[] = [
@@ -126,6 +128,11 @@ export const adminNavGroups: NavGroup[] = [
                 title: 'Sobre Nós',
                 href: sobresNosIndex(),
                 icon: Users,
+            },
+            {
+                title: 'Tours Privados',
+                href: toursPrivadosIndex(),
+                icon: Plane,
             },
             {
                 title: 'Membros da Equipa',

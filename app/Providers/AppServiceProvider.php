@@ -16,6 +16,7 @@ use App\Models\PerguntaFrequente;
 use App\Models\Reserva;
 use App\Models\Seccao;
 use App\Models\SlideHero;
+use App\Models\VideoDepoimento;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Facades\Date;
@@ -63,6 +64,7 @@ class AppServiceProvider extends ServiceProvider
         class_exists(Reserva::class);
         class_exists(Seccao::class);
         class_exists(SlideHero::class);
+        class_exists(VideoDepoimento::class);
     }
 
     /**

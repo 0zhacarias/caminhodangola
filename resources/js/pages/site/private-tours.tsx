@@ -21,6 +21,7 @@ export default function PrivateTours({
 
             <SiteHero
                 slides={slides}
+                centralizado
                 cta={{
                     label: 'Customize Your Trip',
                     href: `https://wa.me/+244923469271?text=${encodeURIComponent(
