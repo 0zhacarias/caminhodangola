@@ -55,6 +55,17 @@ export interface PorqueNos {
     updated_at: string | null;
 }
 
+export interface PorqueAngola {
+    id: number;
+    titulo: string;
+    descricao: string;
+    imagem: string | null;
+    ordem: number;
+    ativo: boolean;
+    created_at: string | null;
+    updated_at: string | null;
+}
+
 export type SobreNosTipo =
     'cabecalho' | 'quem_somos' | 'unico' | 'citacao' | 'destaque';
 
@@ -130,6 +141,7 @@ export interface Pacote {
     descricao: string | null;
     duracao: string | null;
     imagem: string | null;
+    imagem_slide: string | null;
     preco_eur: string | null;
     rotulo_preco: string | null;
     preco_pacote_fotos_eur: string | null;
@@ -144,7 +156,7 @@ export interface Pacote {
     meta_descricao: string | null;
     imagem_og: string | null;
     categoria?: CategoriaPacote | null;
-    condicaoPagamento?: CondicaoPagamento | null;
+    condicao_pagamento?: CondicaoPagamento | null;
     dias_itinerario?: DiaItinerario[];
     galerias?: GaleriaPacote[];
     created_at: string | null;

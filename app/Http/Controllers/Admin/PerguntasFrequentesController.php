@@ -14,7 +14,8 @@ class PerguntasFrequentesController extends AdminController
     {
         return $this->render('admin/perguntas-frequentes/index', [
             'perguntas' => PerguntaFrequente::orderBy('categoria')->orderBy('ordem')->orderByDesc('id')->get(),
-            'categorias' => $this->categoriasComoOpcoes(),
+            'categorias' => CategoriaPerguntaFrequente::orderBy('ordem')->orderBy('nome')->get(),
+            'categoriasOpcoes' => $this->categoriasComoOpcoes(),
         ]);
     }
 

@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Cargo;
 use App\Models\CategoriaPacote;
+use App\Models\CategoriaPerguntaFrequente;
+use App\Models\CondicaoPagamento;
 use App\Models\Configuracao;
 use App\Models\Depoimento;
 use App\Models\DiaItinerario;
@@ -13,9 +16,13 @@ use App\Models\ItemMenu;
 use App\Models\MembroEquipa;
 use App\Models\Pacote;
 use App\Models\PerguntaFrequente;
+use App\Models\PorqueAngola;
+use App\Models\PorqueNos;
 use App\Models\Reserva;
 use App\Models\Seccao;
 use App\Models\SlideHero;
+use App\Models\SobreNos;
+use App\Models\TourPrivado;
 use App\Models\VideoDepoimento;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
@@ -50,7 +57,10 @@ class AppServiceProvider extends ServiceProvider
     protected function preloadCachedModels(): void
     {
         class_exists(EloquentCollection::class);
+        class_exists(Cargo::class);
         class_exists(CategoriaPacote::class);
+        class_exists(CategoriaPerguntaFrequente::class);
+        class_exists(CondicaoPagamento::class);
         class_exists(Configuracao::class);
         class_exists(Depoimento::class);
         class_exists(DiaItinerario::class);
@@ -61,9 +71,13 @@ class AppServiceProvider extends ServiceProvider
         class_exists(MembroEquipa::class);
         class_exists(Pacote::class);
         class_exists(PerguntaFrequente::class);
+        class_exists(PorqueAngola::class);
+        class_exists(PorqueNos::class);
         class_exists(Reserva::class);
         class_exists(Seccao::class);
         class_exists(SlideHero::class);
+        class_exists(SobreNos::class);
+        class_exists(TourPrivado::class);
         class_exists(VideoDepoimento::class);
     }
 

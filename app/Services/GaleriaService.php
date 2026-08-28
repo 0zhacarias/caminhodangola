@@ -39,7 +39,7 @@ final class GaleriaService
     {
         $galeria = Galeria::create($dados);
 
-        Cache::forget(['galerias.ativas', 'galerias.previa.15']);
+        Cache::deleteMultiple(['galerias.ativas', 'galerias.previa.15']);
 
         return $galeria;
     }
@@ -49,16 +49,17 @@ final class GaleriaService
      */
     public function atualizar(Galeria $galeria, array $dados): Galeria
     {
+
         $galeria->update($dados);
 
-        Cache::forget(['galerias.ativas', 'galerias.previa.15']);
+        Cache::deleteMultiple(['galerias.ativas', 'galerias.previa.15']);
 
         return $galeria;
     }
 
     public function remover(Galeria $galeria): void
     {
-        Cache::forget(['galerias.ativas', 'galerias.previa.15']);
+        Cache::deleteMultiple(['galerias.ativas', 'galerias.previa.15']);
 
         $galeria->delete();
     }

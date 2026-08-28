@@ -58,14 +58,14 @@ final class PacoteService
     {
         $pacote->update($dados);
 
-        Cache::forget(['pacotes.ativos', 'pacote.'.$pacote->slug]);
+        Cache::deleteMultiple(['pacotes.ativos', 'pacote.'.$pacote->slug]);
 
         return $pacote;
     }
 
     public function remover(Pacote $pacote): void
     {
-        Cache::forget(['pacotes.ativos', 'pacote.'.$pacote->slug]);
+        Cache::deleteMultiple(['pacotes.ativos', 'pacote.'.$pacote->slug]);
 
         $pacote->delete();
     }

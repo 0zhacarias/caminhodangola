@@ -46,14 +46,14 @@ final class SeccaoService
     {
         $seccao->update($dados);
 
-        Cache::forget(['seccoes.ativas', 'seccao.'.$seccao->slug]);
+        Cache::deleteMultiple(['seccoes.ativas', 'seccao.'.$seccao->slug]);
 
         return $seccao;
     }
 
     public function remover(Seccao $seccao): void
     {
-        Cache::forget(['seccoes.ativas', 'seccao.'.$seccao->slug]);
+        Cache::deleteMultiple(['seccoes.ativas', 'seccao.'.$seccao->slug]);
 
         $seccao->delete();
     }

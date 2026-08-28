@@ -11,6 +11,7 @@ export interface ItineraryItem {
 export interface ItineraryProps {
   title: string;
   subtitle?: string;
+  description?: string | null;
   priceEur: number;
   photoPackageEur?: number;
   itinerary: ItineraryItem[];
@@ -19,20 +20,31 @@ export interface ItineraryProps {
   excluded: string[];
   whatToBring: string[];
   importantRemarks: string[];
+  precoBasePorPessoa?: string | null;
+  gastoPessoalEstimado?: string | null;
+  depositoPercentagem?: number | null;
+  saldoDiasAntesPartida?: number | null;
+  metodosPagamento?: string[];
   contactNumber?: string; // e.g. "+244923469271"
 }
 
 export default function Itinerary({
   title,
   subtitle,
+  description,
   priceEur,
-  //photoPackageEur = 0,
+  photoPackageEur,
   itinerary,
   gallery,
   included,
   excluded,
   whatToBring,
   importantRemarks,
+  precoBasePorPessoa,
+  gastoPessoalEstimado,
+  depositoPercentagem,
+  saldoDiasAntesPartida,
+  metodosPagamento = [],
   contactNumber = "+244923469271",
 }: ItineraryProps) {
   const [activeTab, setActiveTab] = useState<
@@ -186,7 +198,14 @@ export default function Itinerary({
                   <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                     <div className="min-w-0">
                       <h2 className="text-xl font-semibold">Overview</h2>
-                      <p className="mt-2 text-sm text-gray-700">{subtitle}</p>
+                      {description && (
+                        <p className="mt-2 text-sm text-gray-700 whitespace-pre-line">
+                          {description}
+                        </p>
+                      )}
+                      {!description && subtitle && (
+                        <p className="mt-2 text-sm text-gray-700">{subtitle}</p>
+                      )}
 
                       <ul className="mt-3 text-sm text-gray-700 list-disc list-inside space-y-1">
                         <li>4×4 transport, English-speaking guide</li>
@@ -231,76 +250,92 @@ export default function Itinerary({
 
               {activeTab === "itinerary" && (
                 <div className="bg-white rounded-lg p-4 shadow-sm">
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-semibold">Itinerary</h3>
-                    <div className="text-xs text-gray-500">
-                      Day {activeIndex + 1} / {itinerary.length}
-                    </div>
-                  </div>
-
-                  <div className="rounded-lg overflow-hidden">
-                    <div className="relative">
-                      <img
-                        src={active.imageUrl}
-                        alt={active.title}
-                        onClick={() => openImage(active.imageUrl)}
-                        className="w-full h-56 object-cover cursor-pointer"
-                      />
-
-                      <div className="absolute left-3 top-1/2 transform -translate-y-1/2 z-20">
-                        <button
-                          onClick={goPrev}
-                          className="p-2 rounded-full bg-white/80"
-                        >
-                          ◀
-                        </button>
-                      </div>
-                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2 z-20">
-                        <button
-                          onClick={goNext}
-                          className="p-2 rounded-full bg-white/80"
-                        >
-                          ▶
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="p-4">
-                      <div className="text-xs text-gray-500">
-                        {active.dayLabel}
-                      </div>
-                      <h4 className="font-semibold mt-1">{active.title}</h4>
-                      <p className="mt-2 text-sm text-gray-700">
-                        {active.description}
-                      </p>
-
-                      <div className="mt-4">
-                        <div
-                          ref={listRef}
-                          className="flex gap-2 overflow-x-auto py-2"
-                        >
-                          {itinerary.map((d, i) => (
-                            <button
-                              key={d.dayLabel}
-                              onClick={() => setActiveIndex(i)}
-                              className={`flex-shrink-0 w-36 p-2 rounded-md text-left text-sm ${
-                                i === activeIndex
-                                  ? "bg-yellow-50 border border-yellow-200"
-                                  : "bg-gray-50 hover:bg-gray-100"
-                              }`}
-                            >
-                              <div className="text-xs text-gray-500">
-                                {d.dayLabel}
-                              </div>
-                              <div className="font-medium truncate">
-                                {d.title}
-                              </div>
-                            </button>
-                          ))}
+                  {itinerary.length === 0 ? (
+                    <p className="text-sm text-gray-500">
+                      No itinerary available for this package.
+                    </p>
+                  ) : (
+                    <>
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="font-semibold">Itinerary</h3>
+                        <div className="text-xs text-gray-500">
+                          Day {activeIndex + 1} / {itinerary.length}
                         </div>
                       </div>
-                    </div>
-                  </div>
+
+                      <div className="rounded-lg overflow-hidden">
+                        <div className="relative">
+                          {active.imageUrl ? (
+                            <img
+                              src={active.imageUrl}
+                              alt={active.title}
+                              onClick={() => openImage(active.imageUrl)}
+                              className="w-full h-56 object-cover cursor-pointer"
+                            />
+                          ) : (
+                            <div className="flex h-32 w-full items-center justify-center bg-slate-100 text-sm text-gray-400">
+                              No image
+                            </div>
+                          )}
+
+                          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 z-20">
+                            <button
+                              onClick={goPrev}
+                              disabled={activeIndex === 0}
+                              className="p-2 rounded-full bg-white/80 disabled:opacity-30"
+                            >
+                              ◀
+                            </button>
+                          </div>
+                          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 z-20">
+                            <button
+                              onClick={goNext}
+                              disabled={activeIndex === itinerary.length - 1}
+                              className="p-2 rounded-full bg-white/80 disabled:opacity-30"
+                            >
+                              ▶
+                            </button>
+                          </div>
+                        </div>
+
+                        <div className="p-4">
+                          <div className="text-xs text-gray-500">
+                            {active.dayLabel}
+                          </div>
+                          <h4 className="font-semibold mt-1">{active.title}</h4>
+                          <p className="mt-2 text-sm text-gray-700 whitespace-pre-line">
+                            {active.description}
+                          </p>
+
+                          <div className="mt-4">
+                            <div
+                              ref={listRef}
+                              className="flex gap-2 overflow-x-auto py-2"
+                            >
+                              {itinerary.map((d, i) => (
+                                <button
+                                  key={d.dayLabel}
+                                  onClick={() => setActiveIndex(i)}
+                                  className={`flex-shrink-0 w-36 p-2 rounded-md text-left text-sm ${
+                                    i === activeIndex
+                                      ? "bg-yellow-50 border border-yellow-200"
+                                      : "bg-gray-50 hover:bg-gray-100"
+                                  }`}
+                                >
+                                  <div className="text-xs text-gray-500">
+                                    {d.dayLabel}
+                                  </div>
+                                  <div className="font-medium truncate">
+                                    {d.title}
+                                  </div>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
 
@@ -343,12 +378,17 @@ export default function Itinerary({
               {activeTab === "map" && (
                 <div className="bg-white rounded-lg p-4 shadow-sm">
                   <h3 className="font-semibold mb-3">Map</h3>
-                  <div className="w-full h-72 bg-gray-100 rounded-md flex items-center justify-center text-sm text-gray-500">
-                    Map placeholder — embed OpenStreetMap / Google Maps here
+                  <div className="w-full overflow-hidden rounded-md">
+                    <iframe
+                      title="Mapa de Angola"
+                      src="https://www.openstreetmap.org/export/embed.html?bbox=10.5%2C-18.5%2C25.0%2C-4.5&layer=mapnik"
+                      className="h-72 w-full border-0"
+                      loading="lazy"
+                    />
                   </div>
                   <div className="mt-3 text-xs text-gray-600">
-                    Tip: replace the placeholder with an embedded map iframe
-                    (centered on southern Angola) or a Leaflet/Mapbox component.
+                    Replace this embed with a custom map (Google Maps / Leaflet)
+                    if needed.
                   </div>
                 </div>
               )}
@@ -376,27 +416,71 @@ export default function Itinerary({
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
                       <CardSection title="Pricing">
-                        <div className="text-sm">
+                        <div className="text-sm space-y-2">
                           <div>
                             Base price:{" "}
                             <span className="font-semibold">€{priceEur}</span> /
                             person
                           </div>
-                          <div className="mt-2 text-xs text-gray-600">
-                            Estimated personal spending: €500
-                          </div>
+                          {photoPackageEur != null && photoPackageEur > 0 && (
+                            <div>
+                              Photo package:{" "}
+                              <span className="font-semibold">
+                                €{photoPackageEur}
+                              </span>
+                            </div>
+                          )}
+                          {gastoPessoalEstimado && (
+                            <div className="text-xs text-gray-600">
+                              Estimated personal spending: €
+                              {gastoPessoalEstimado}
+                            </div>
+                          )}
                         </div>
                       </CardSection>
 
                       <CardSection title="Booking & payment">
-                        <ol className="list-decimal list-inside text-sm space-y-1">
-                          <li>Deposit: 30% to confirm.</li>
-                          <li>Balance: due 30 days before departure.</li>
-                          <li>
-                            Payment methods: bank transfer, card (check
-                            availability).
-                          </li>
-                        </ol>
+                        <div className="text-sm space-y-2">
+                          {depositoPercentagem != null &&
+                            depositoPercentagem > 0 && (
+                              <div>
+                                Deposit:{" "}
+                                <span className="font-semibold">
+                                  {depositoPercentagem}%
+                                </span>{" "}
+                                to confirm.
+                              </div>
+                            )}
+                          {saldoDiasAntesPartida != null &&
+                            saldoDiasAntesPartida > 0 && (
+                              <div>
+                                Balance due:{" "}
+                                <span className="font-semibold">
+                                  {saldoDiasAntesPartida} days
+                                </span>{" "}
+                                before departure.
+                              </div>
+                            )}
+                          {metodosPagamento.length > 0 && (
+                            <div>
+                              <div className="mb-1 font-medium">
+                                Payment methods:
+                              </div>
+                              <ul className="list-disc list-inside space-y-1">
+                                {metodosPagamento.map((m) => (
+                                  <li key={m}>{m}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                          {depositoPercentagem == null &&
+                            saldoDiasAntesPartida == null &&
+                            metodosPagamento.length === 0 && (
+                              <p className="text-xs text-gray-600">
+                                Payment conditions on request.
+                              </p>
+                            )}
+                        </div>
                       </CardSection>
                     </div>
 

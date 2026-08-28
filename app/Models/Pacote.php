@@ -19,6 +19,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $descricao
  * @property string|null $duracao
  * @property string|null $imagem
+ * @property string|null $imagem_slide
  * @property string|null $preco_eur
  * @property string|null $rotulo_preco
  * @property string|null $preco_pacote_fotos_eur
@@ -48,6 +49,7 @@ use Illuminate\Support\Carbon;
     'descricao',
     'duracao',
     'imagem',
+    'imagem_slide',
     'preco_eur',
     'rotulo_preco',
     'preco_pacote_fotos_eur',

@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use App\Services\ConfiguracaoService;
+use App\Services\EstatisticaService;
+use App\Services\PorqueAngolaService;
 use App\Services\PorqueNosService;
 use App\Services\SobreNosService;
 use App\Services\TourPrivadoService;
@@ -51,12 +53,18 @@ class HandleInertiaRequests extends Middleware
             'porques_nos' => fn (): array => $request->routeIs('admin.*')
                 ? []
                 : app(PorqueNosService::class)->listarAtivos()->all(),
+            'porques_angola' => fn (): array => $request->routeIs('admin.*')
+                ? []
+                : app(PorqueAngolaService::class)->listarAtivos()->all(),
             'sobres_nos' => fn (): array => $request->routeIs('admin.*')
                 ? []
                 : app(SobreNosService::class)->listarAtivos()->all(),
             'tours_privados' => fn (): array => $request->routeIs('admin.*')
                 ? []
                 : app(TourPrivadoService::class)->listarAtivos()->all(),
+            'estatisticas' => fn (): array => $request->routeIs('admin.*')
+                ? []
+                : app(EstatisticaService::class)->listarAtivas()->all(),
         ];
     }
 }

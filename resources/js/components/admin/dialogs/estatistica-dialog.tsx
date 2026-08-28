@@ -2,7 +2,20 @@ import { useForm } from '@inertiajs/react';
 import CrudDialog from '@/components/admin/dialogs/crud-dialog';
 import { BooleanField, Field } from '@/components/admin/form-field';
 import { Input } from '@/components/ui/input';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import type { Estatistica } from '@/types/admin';
+
+const OPCOES_ICONES = [
+    { value: 'user-group', label: 'Visitantes / utilizadores' },
+    { value: 'maps-square-02', label: 'Lugares a visitar' },
+    { value: 'time-quarter', label: 'Anos de serviço' },
+];
 
 export default function EstatisticaDialog({
     item,
@@ -66,14 +79,27 @@ export default function EstatisticaDialog({
 
             <div className="grid gap-4 sm:grid-cols-2">
                 <Field id="icone" label="Ícone" error={errors.icone}>
-                    <Input
-                        id="icone"
-                        value={data.icone}
-                        onChange={(event) =>
-                            setData('icone', event.target.value)
+                    <Select
+                        value={data.icone === '' ? 'none' : data.icone}
+                        onValueChange={(value) =>
+                            setData('icone', value === 'none' ? '' : value)
                         }
-                        placeholder="lucide:map"
-                    />
+                    >
+                        <SelectTrigger id="icone" className="w-full">
+                            <SelectValue placeholder="Sem ícone" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="none">Sem ícone</SelectItem>
+                            {OPCOES_ICONES.map((opcao) => (
+                                <SelectItem
+                                    key={opcao.value}
+                                    value={opcao.value}
+                                >
+                                    {opcao.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
                 </Field>
 
                 <Field id="ordem" label="Ordem" error={errors.ordem}>

@@ -6,6 +6,7 @@ use App\Models\Galeria;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Response;
 
@@ -42,6 +43,7 @@ class GaleriasController extends AdminController
         $mensagem = count($ficheiros) === 1
             ? 'Imagem da galeria criada com sucesso.'
             : count($ficheiros).' imagens da galeria criadas com sucesso.';
+        Cache::deleteMultiple(['galerias.ativas', 'galerias.previa.15']);
 
         return $this->backWithSuccess($mensagem);
     }
@@ -55,6 +57,7 @@ class GaleriasController extends AdminController
         }
 
         $galeria->update($data);
+        Cache::deleteMultiple(['galerias.ativas', 'galerias.previa.15']);
 
         return $this->backWithSuccess('Imagem da galeria atualizada com sucesso.');
     }

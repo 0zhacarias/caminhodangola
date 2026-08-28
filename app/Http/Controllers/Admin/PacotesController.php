@@ -8,6 +8,7 @@ use App\Models\Pacote;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -19,7 +20,15 @@ class PacotesController extends AdminController
     {
         return $this->render('admin/pacotes/index', [
             'pacotes' => Pacote::with(['categoria:id,nome', 'galerias', 'diasItinerario:id,pacote_id,rotulo_dia,titulo,descricao,imagem,ordem'])->orderBy('ordem')->orderByDesc('id')->get(),
-            'categorias' => $this->categoriasComoOpcoes(),
+            'categorias' => CategoriaPacote::withCount('pacotes')->orderBy('ordem')->orderByDesc('id')->get(),
+            'galerias' => GaleriaPacote::with('pacote:id,titulo')->orderBy('pacote_id')->orderBy('ordem')->get(),
+            'pacotesOpcoes' => Pacote::orderBy('titulo')->get(['id', 'titulo'])
+                ->map(static fn (Pacote $pacote): array => [
+                    'value' => $pacote->id,
+                    'label' => $pacote->titulo,
+                ])
+                ->values()
+                ->all(),
         ]);
     }
 
@@ -40,6 +49,8 @@ class PacotesController extends AdminController
         $this->guardarCondicoesPagamento($pacote, $data);
 
         $this->guardarGalerias($pacote, $data['galerias'] ?? [], 0);
+
+        Cache::deleteMultiple(['pacotes.ativos', 'pacote.'.$pacote->slug]);
 
         return $this->redirectToIndex('Pacote criado com sucesso.');
     }
@@ -64,11 +75,15 @@ class PacotesController extends AdminController
 
         $this->guardarGalerias($pacote, $data['galerias'] ?? [], $pacote->galerias()->count());
 
+        Cache::deleteMultiple(['pacotes.ativos', 'pacote.'.$pacote->slug]);
+
         return $this->redirectToIndex('Pacote atualizado com sucesso.');
     }
 
     public function destroy(Pacote $pacote): RedirectResponse
     {
+        Cache::deleteMultiple(['pacotes.ativos', 'pacote.'.$pacote->slug]);
+
         $pacote->delete();
 
         return $this->backWithSuccess('Pacote eliminado com sucesso.');
@@ -81,7 +96,7 @@ class PacotesController extends AdminController
     {
         $dados = $request->all();
 
-        foreach (['imagem', 'imagem_og'] as $campo) {
+        foreach (['imagem', 'imagem_slide', 'imagem_og'] as $campo) {
             if (! array_key_exists($campo, $dados)) {
                 continue;
             }
@@ -109,6 +124,7 @@ class PacotesController extends AdminController
             'descricao' => ['nullable', 'string'],
             'duracao' => ['nullable', 'string', 'max:255'],
             'imagem' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp,gif', 'max:5120'],
+            'imagem_slide' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp,gif', 'max:5120'],
             'galerias' => ['nullable', 'array', 'max:20'],
             'galerias.*' => ['image', 'mimes:jpeg,jpg,png,webp,gif', 'max:5120'],
             'preco_eur' => ['nullable', 'numeric', 'min:0'],
@@ -128,10 +144,11 @@ class PacotesController extends AdminController
             'gasto_pessoal_estimado' => ['nullable', 'numeric', 'min:0'],
             'deposito_percentagem' => ['nullable', 'integer', 'between:0,100'],
             'saldo_dias_antes_partida' => ['nullable', 'integer', 'min:0'],
-            'metodos_pagamento' => ['nullable', 'string'],
+            'metodos_pagamento' => ['nullable', 'array'],
+            'metodos_pagamento.*' => ['string', 'max:255'],
         ]);
 
-        foreach (['incluidos', 'excluidos', 'o_que_levar', 'observacoes_importantes', 'metodos_pagamento'] as $campo) {
+        foreach (['incluidos', 'excluidos', 'o_que_levar', 'observacoes_importantes'] as $campo) {
             $texto = trim((string) ($data[$campo] ?? ''));
 
             if ($texto === '') {
@@ -145,6 +162,13 @@ class PacotesController extends AdminController
             $data[$campo] = array_values(array_filter(array_map('trim', $linhas)));
         }
 
+        $metodos = array_values(array_filter(array_map(
+            'trim',
+            (array) ($data['metodos_pagamento'] ?? []),
+        )));
+
+        $data['metodos_pagamento'] = $metodos === [] ? null : $metodos;
+
         return $data;
     }
 
@@ -154,7 +178,7 @@ class PacotesController extends AdminController
      */
     private function processarImagens(array $data): array
     {
-        foreach (['imagem', 'imagem_og'] as $campo) {
+        foreach (['imagem', 'imagem_slide', 'imagem_og'] as $campo) {
             if (isset($data[$campo]) && $data[$campo] instanceof UploadedFile) {
                 $data[$campo] = $this->guardarImagem($data[$campo], 'pacotes');
             }

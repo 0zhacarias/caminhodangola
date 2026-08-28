@@ -29,6 +29,8 @@ class HomeController extends Controller
 
     public function index(): Response
     {
+
+    //dd( $this->galerias->previa());
         return Inertia::render('site/home', [
             'slides' => $this->slides->listarHome(),
             'seccoes' => $this->seccoes->listarAtivas(),

@@ -22,40 +22,50 @@ export default function SlideHeroDialog({
     paginas: Record<string, string>;
     onClose: () => void;
 }) {
-    const { data, setData, post, put, processing, errors } = useForm<{
-        pagina: string;
-        imagem: string | File;
-        titulo: string;
-        subtitulo: string;
-        texto: string;
-        botao_rotulo: string;
-        botao_url: string;
-        ordem: number;
-        ativo: boolean;
-        mostrar_depoimentos: boolean;
-    }>({
-        pagina: item?.pagina ?? 'home',
-        imagem: item?.imagem ?? '',
-        titulo: item?.titulo ?? '',
-        subtitulo: item?.subtitulo ?? '',
-        texto: item?.texto ?? '',
-        botao_rotulo: item?.botao_rotulo ?? '',
-        botao_url: item?.botao_url ?? '',
-        ordem: item?.ordem ?? 0,
-        ativo: item?.ativo ?? true,
-        mostrar_depoimentos: item?.mostrar_depoimentos ?? false,
-    });
+    const { data, setData, post, put, processing, errors, reset, clearErrors } =
+        useForm<{
+            pagina: string;
+            imagem: string | File;
+            titulo: string;
+            subtitulo: string;
+            texto: string;
+            botao_rotulo: string;
+            botao_url: string;
+            ordem: number;
+            ativo: boolean;
+            mostrar_depoimentos: boolean;
+        }>({
+            pagina: item?.pagina ?? 'home',
+            imagem: item?.imagem ?? '',
+            titulo: item?.titulo ?? '',
+            subtitulo: item?.subtitulo ?? '',
+            texto: item?.texto ?? '',
+            botao_rotulo: item?.botao_rotulo ?? '',
+            botao_url: item?.botao_url ?? '',
+            ordem: item?.ordem ?? 0,
+            ativo: item?.ativo ?? true,
+            mostrar_depoimentos: item?.mostrar_depoimentos ?? false,
+        });
 
     const submit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const options = { preserveScroll: true, onSuccess: onClose };
-
         if (item) {
-            put(`/admin/slides-hero/${item.id}`, options);
-        } else {
-            post('/admin/slides-hero', options);
+            put(`/admin/slides-hero/${item.id}`, {
+                preserveScroll: true,
+                onSuccess: onClose,
+            });
+
+            return;
         }
+
+        post('/admin/slides-hero', {
+            preserveScroll: true,
+            onSuccess: () => {
+                reset();
+                clearErrors();
+            },
+        });
     };
 
     return (

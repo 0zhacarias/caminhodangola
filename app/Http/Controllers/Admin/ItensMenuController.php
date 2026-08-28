@@ -13,7 +13,13 @@ class ItensMenuController extends AdminController
     {
         return $this->render('admin/itens-menu/index', [
             'itens' => ItemMenu::with('pai:id,rotulo')->orderBy('ordem')->orderByDesc('id')->get(),
-            'pais' => ItemMenu::whereNull('pai_id')->orderBy('ordem')->get(['id', 'rotulo']),
+            'pais' => ItemMenu::whereNull('pai_id')->orderBy('ordem')->get(['id', 'rotulo'])
+                ->map(static fn (ItemMenu $item): array => [
+                    'value' => $item->id,
+                    'label' => $item->rotulo,
+                ])
+                ->values()
+                ->all(),
         ]);
     }
 

@@ -46,14 +46,14 @@ final class CategoriaPacoteService
     {
         $categoria->update($dados);
 
-        Cache::forget(['categorias.ativas', 'categoria.'.$categoria->slug]);
+        Cache::deleteMultiple(['categorias.ativas', 'categoria.'.$categoria->slug]);
 
         return $categoria;
     }
 
     public function remover(CategoriaPacote $categoria): void
     {
-        Cache::forget(['categorias.ativas', 'categoria.'.$categoria->slug]);
+        Cache::deleteMultiple(['categorias.ativas', 'categoria.'.$categoria->slug]);
 
         $categoria->delete();
     }

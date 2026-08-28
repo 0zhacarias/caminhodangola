@@ -7,6 +7,7 @@ import ImageUpload, {
 } from '@/components/admin/image-upload';
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import {
     Select,
@@ -21,6 +22,14 @@ import { dashboard } from '@/routes/admin';
 import { index } from '@/routes/admin/pacotes';
 import type { Option, Pacote } from '@/types/admin';
 
+const METODOS_PAGAMENTO = [
+    'Transferência bancária',
+    'Multicaixa Express',
+    'Cartão de crédito',
+    'PayPal',
+    'Dinheiro',
+];
+
 interface PacoteFormData {
     categoria_pacote_id: string | number;
     slug: string;
@@ -29,6 +38,7 @@ interface PacoteFormData {
     descricao: string;
     duracao: string;
     imagem: string | File;
+    imagem_slide: string | File;
     preco_eur: string | number;
     rotulo_preco: string;
     preco_pacote_fotos_eur: string | number;
@@ -47,7 +57,7 @@ interface PacoteFormData {
     gasto_pessoal_estimado: string | number;
     deposito_percentagem: string | number;
     saldo_dias_antes_partida: string | number;
-    metodos_pagamento: string;
+    metodos_pagamento: string[];
 }
 
 function Section({
@@ -91,6 +101,7 @@ export default function Form({
             descricao: pacote?.descricao ?? '',
             duracao: pacote?.duracao ?? '',
             imagem: pacote?.imagem ?? '',
+            imagem_slide: pacote?.imagem_slide ?? '',
             preco_eur: pacote?.preco_eur ?? '',
             rotulo_preco: pacote?.rotulo_preco ?? '',
             preco_pacote_fotos_eur: pacote?.preco_pacote_fotos_eur ?? '',
@@ -107,15 +118,15 @@ export default function Form({
             imagem_og: pacote?.imagem_og ?? '',
             galerias: [],
             preco_base_por_pessoa:
-                pacote?.condicaoPagamento?.preco_base_por_pessoa ?? '',
+                pacote?.condicao_pagamento?.preco_base_por_pessoa ?? '',
             gasto_pessoal_estimado:
-                pacote?.condicaoPagamento?.gasto_pessoal_estimado ?? '',
+                pacote?.condicao_pagamento?.gasto_pessoal_estimado ?? '',
             deposito_percentagem:
-                pacote?.condicaoPagamento?.deposito_percentagem ?? '',
+                pacote?.condicao_pagamento?.deposito_percentagem ?? '',
             saldo_dias_antes_partida:
-                pacote?.condicaoPagamento?.saldo_dias_antes_partida ?? '',
+                pacote?.condicao_pagamento?.saldo_dias_antes_partida ?? '',
             metodos_pagamento:
-                pacote?.condicaoPagamento?.metodos_pagamento?.join('\n') ?? '',
+                pacote?.condicao_pagamento?.metodos_pagamento ?? [],
         });
 
     const submit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -435,6 +446,18 @@ export default function Form({
                                 error={errors.imagem}
                             />
 
+                            <ImageUpload
+                                id="imagem_slide"
+                                label="Imagem do slide"
+                                value={data.imagem_slide}
+                                onChange={(ficheiro) =>
+                                    setData('imagem_slide', ficheiro ?? '')
+                                }
+                                error={errors.imagem_slide}
+                            />
+                        </div>
+
+                        <div className="max-w-md">
                             <ImageUploadMultiple
                                 id="galerias"
                                 label="Imagens do carrossel e detalhes"
@@ -619,22 +642,44 @@ export default function Form({
 
                             <Field
                                 id="metodos_pagamento"
-                                label="Métodos de pagamento (um por linha)"
+                                label="Métodos de pagamento"
                                 error={errors.metodos_pagamento}
                             >
-                                <Textarea
-                                    id="metodos_pagamento"
-                                    value={data.metodos_pagamento}
-                                    onChange={(event) =>
-                                        setData(
-                                            'metodos_pagamento',
-                                            event.target.value,
-                                        )
-                                    }
-                                    placeholder={
-                                        'Transferência bancária\nMulticaixa Express\nCartão de crédito'
-                                    }
-                                />
+                                <div className="grid gap-2">
+                                    {METODOS_PAGAMENTO.map((metodo) => {
+                                        const selecionado =
+                                            data.metodos_pagamento.includes(
+                                                metodo,
+                                            );
+
+                                        return (
+                                            <label
+                                                key={metodo}
+                                                className="flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2 text-sm has-[:checked]:border-primary has-[:checked]:bg-muted/30"
+                                            >
+                                                <Checkbox
+                                                    checked={selecionado}
+                                                    onCheckedChange={(checked) =>
+                                                        setData(
+                                                            'metodos_pagamento',
+                                                            checked
+                                                                ? [
+                                                                      ...data.metodos_pagamento,
+                                                                      metodo,
+                                                                  ]
+                                                                : data.metodos_pagamento.filter(
+                                                                      (item) =>
+                                                                          item !==
+                                                                          metodo,
+                                                                  ),
+                                                        )
+                                                    }
+                                                />
+                                                {metodo}
+                                            </label>
+                                        );
+                                    })}
+                                </div>
                             </Field>
                         </div>
                     </Section>
