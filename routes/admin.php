@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CategoriasPerguntasFrequentesController;
 use App\Http\Controllers\Admin\ConfiguracoesController;
 use App\Http\Controllers\Admin\DepoimentosController;
 use App\Http\Controllers\Admin\DiasItinerarioController;
+use App\Http\Controllers\Admin\EquipaController;
 use App\Http\Controllers\Admin\EstatisticasController;
 use App\Http\Controllers\Admin\GaleriasController;
 use App\Http\Controllers\Admin\GaleriasPacotesController;
@@ -13,11 +14,13 @@ use App\Http\Controllers\Admin\ItensMenuController;
 use App\Http\Controllers\Admin\MembrosEquipaController;
 use App\Http\Controllers\Admin\PacotesController;
 use App\Http\Controllers\Admin\PerguntasFrequentesController;
+use App\Http\Controllers\Admin\PorquesAngolaController;
 use App\Http\Controllers\Admin\PorquesNosController;
 use App\Http\Controllers\Admin\ReservasController;
 use App\Http\Controllers\Admin\RodapeController;
 use App\Http\Controllers\Admin\SeccoesController;
 use App\Http\Controllers\Admin\SlidesHeroController;
+use App\Http\Controllers\Admin\SobreController;
 use App\Http\Controllers\Admin\SobresNosController;
 use App\Http\Controllers\Admin\ToursPrivadosController;
 use App\Http\Controllers\Admin\VideosDepoimentosController;
@@ -28,6 +31,9 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     Route::get('', fn () => redirect()->route('admin.dashboard'))->name('home');
 
+    Route::get('sobre', [SobreController::class, 'index'])->name('sobre.index');
+    Route::get('equipa', [EquipaController::class, 'index'])->name('equipa.index');
+
     Route::resource('categorias-pacotes', CategoriasPacotesController::class)->except(['show']);
     Route::resource('pacotes', PacotesController::class)->except(['show']);
     Route::resource('dias-itinerario', DiasItinerarioController::class)->except(['show']);
@@ -37,6 +43,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::resource('perguntas-frequentes', PerguntasFrequentesController::class)->except(['show']);
     Route::resource('categorias-perguntas-frequentes', CategoriasPerguntasFrequentesController::class)->except(['show']);
     Route::resource('porques-nos', PorquesNosController::class)->except(['show']);
+    Route::resource('porques-angola', PorquesAngolaController::class)->except(['show']);
     Route::resource('sobres-nos', SobresNosController::class)->except(['show']);
     Route::resource('tours-privados', ToursPrivadosController::class)->except(['show']);
     Route::resource('membros-equipa', MembrosEquipaController::class)->except(['show']);

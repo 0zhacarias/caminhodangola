@@ -16,7 +16,13 @@ class DiasItinerarioController extends AdminController
     {
         return $this->render('admin/dias-itinerario/index', [
             'dias' => DiaItinerario::with('pacote:id,titulo')->orderBy('pacote_id')->orderBy('ordem')->get(),
-            'pacotes' => Pacote::orderBy('titulo')->get(['id', 'titulo']),
+            'pacotes' => Pacote::orderBy('titulo')->get(['id', 'titulo'])
+                ->map(static fn (Pacote $pacote): array => [
+                    'value' => $pacote->id,
+                    'label' => $pacote->titulo,
+                ])
+                ->values()
+                ->all(),
         ]);
     }
 

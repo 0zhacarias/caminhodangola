@@ -267,7 +267,7 @@ class AdminTest extends TestCase
             'gasto_pessoal_estimado' => '300.00',
             'deposito_percentagem' => 30,
             'saldo_dias_antes_partida' => 45,
-            'metodos_pagamento' => "Transferência bancária\nMulticaixa Express",
+            'metodos_pagamento' => ['Transferência bancária', 'Multicaixa Express'],
         ])->assertRedirect();
 
         $pacote = Pacote::where('slug', 'com-condicoes')->firstOrFail();
@@ -311,7 +311,7 @@ class AdminTest extends TestCase
             'gasto_pessoal_estimado' => '',
             'deposito_percentagem' => '',
             'saldo_dias_antes_partida' => '',
-            'metodos_pagamento' => '',
+            'metodos_pagamento' => [],
         ])->assertRedirect();
 
         $this->assertDatabaseCount('condicoes_pagamento', 0);

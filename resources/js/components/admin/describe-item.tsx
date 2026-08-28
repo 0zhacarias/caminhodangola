@@ -34,6 +34,7 @@ const labels: Record<string, string> = {
     conteudo: 'Conteúdo',
     duracao: 'Duração',
     imagem: 'Imagem',
+    imagem_slide: 'Imagem do slide',
     imagem_og: 'Imagem OG',
     alt: 'Texto alternativo',
     texto: 'Texto',
@@ -53,6 +54,7 @@ const labels: Record<string, string> = {
     meta_descricao: 'Meta descrição',
     pacotes_count: 'Nº de pacotes',
     categoria: 'Categoria',
+    condicao_pagamento: 'Condições de pagamento',
     pergunta: 'Pergunta',
     resposta: 'Resposta',
     localizacao: 'Localização',
@@ -77,7 +79,7 @@ const labels: Record<string, string> = {
 
 const skipKeys = new Set(['pacotes', 'filhos', 'dias_itinerario', 'galerias']);
 
-const imageKeys = new Set(['imagem', 'foto', 'imagem_og']);
+const imageKeys = new Set(['imagem', 'foto', 'imagem_og', 'imagem_slide']);
 
 const dateKeys = new Set(['created_at', 'updated_at', 'data_pretendida']);
 
@@ -237,6 +239,40 @@ function formatValue(
                 record.titulo ?? record.nome ?? record.rotulo ?? null;
 
             return nested === null ? '—' : String(nested);
+        }
+
+        if (key === 'condicao_pagamento') {
+            const condicao = record as {
+                preco_base_por_pessoa?: string | null;
+                gasto_pessoal_estimado?: string | null;
+                deposito_percentagem?: number | null;
+                saldo_dias_antes_partida?: number | null;
+                metodos_pagamento?: string[] | null;
+            };
+
+            const linhas: string[] = [];
+
+            if (condicao.preco_base_por_pessoa) {
+                linhas.push(`Preço base por pessoa: €${condicao.preco_base_por_pessoa}`);
+            }
+
+            if (condicao.gasto_pessoal_estimado) {
+                linhas.push(`Gasto pessoal estimado: €${condicao.gasto_pessoal_estimado}`);
+            }
+
+            if (condicao.deposito_percentagem != null) {
+                linhas.push(`Depósito: ${condicao.deposito_percentagem}%`);
+            }
+
+            if (condicao.saldo_dias_antes_partida != null) {
+                linhas.push(`Saldo: ${condicao.saldo_dias_antes_partida} dias antes da partida`);
+            }
+
+            if (condicao.metodos_pagamento && condicao.metodos_pagamento.length > 0) {
+                linhas.push(`Métodos: ${condicao.metodos_pagamento.join(', ')}`);
+            }
+
+            return linhas.length === 0 ? '—' : linhas.join(' · ');
         }
 
         const json = JSON.stringify(value);

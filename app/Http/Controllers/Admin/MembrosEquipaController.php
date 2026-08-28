@@ -36,7 +36,7 @@ class MembrosEquipaController extends AdminController
 
         session(['preferencias.visualizacao.membros_equipa' => $visao]);
 
-        return redirect()->route('admin.membros-equipa.index');
+        return redirect()->route('admin.equipa.index');
     }
 
     public function store(Request $request): RedirectResponse

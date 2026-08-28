@@ -7,6 +7,7 @@ use App\Models\Pacote;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Response;
 
@@ -16,7 +17,13 @@ class GaleriasPacotesController extends AdminController
     {
         return $this->render('admin/galerias-pacotes/index', [
             'galerias' => GaleriaPacote::with('pacote:id,titulo')->orderBy('pacote_id')->orderBy('ordem')->get(),
-            'pacotes' => Pacote::orderBy('titulo')->get(['id', 'titulo']),
+            'pacotes' => Pacote::orderBy('titulo')->get(['id', 'titulo'])
+                ->map(static fn (Pacote $pacote): array => [
+                    'value' => $pacote->id,
+                    'label' => $pacote->titulo,
+                ])
+                ->values()
+                ->all(),
         ]);
     }
 
@@ -35,6 +42,8 @@ class GaleriasPacotesController extends AdminController
                 ]);
             }
 
+            $this->limparCachePacote((int) $data['pacote_id']);
+
             return $this->backWithSuccess('Imagens adicionadas à galeria com sucesso.');
         }
 
@@ -45,6 +54,8 @@ class GaleriasPacotesController extends AdminController
         $data['imagem'] = $this->guardarImagem($data['imagem'], 'pacotes/galerias');
 
         GaleriaPacote::create($data);
+
+        $this->limparCachePacote((int) $data['pacote_id']);
 
         return $this->backWithSuccess('Imagem do pacote criada com sucesso.');
     }
@@ -59,12 +70,18 @@ class GaleriasPacotesController extends AdminController
 
         $galeriasPacote->update($data);
 
+        $this->limparCachePacote($galeriasPacote->pacote_id);
+
         return $this->backWithSuccess('Imagem do pacote atualizada com sucesso.');
     }
 
     public function destroy(GaleriaPacote $galeriasPacote): RedirectResponse
     {
+        $pacoteId = $galeriasPacote->pacote_id;
+
         $galeriasPacote->delete();
+
+        $this->limparCachePacote($pacoteId);
 
         return $this->backWithSuccess('Imagem do pacote eliminada com sucesso.');
     }
@@ -89,6 +106,17 @@ class GaleriasPacotesController extends AdminController
             'galerias.*' => ['image', 'mimes:jpeg,jpg,png,webp,gif', 'max:5120'],
             'ordem' => ['integer', 'min:0'],
         ]);
+    }
+
+    private function limparCachePacote(int $pacoteId): void
+    {
+        $slug = Pacote::whereKey($pacoteId)->value('slug');
+
+        if ($slug === null) {
+            return;
+        }
+
+        Cache::deleteMultiple(['pacotes.ativos', 'pacote.'.$slug]);
     }
 
     private function guardarImagem(UploadedFile $ficheiro, string $pasta): string

@@ -4,15 +4,20 @@ namespace App\Services;
 
 use App\Models\Estatistica;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Support\Facades\Cache;
 
 final class EstatisticaService
 {
+    private const TTL = 3600;
+
     /**
      * @return EloquentCollection<int, Estatistica>
      */
     public function listarAtivas(): EloquentCollection
     {
-        return Estatistica::query()->where('ativo', true)->orderBy('ordem')->get();
+        return Cache::remember('estatisticas.ativas', self::TTL, function (): EloquentCollection {
+            return Estatistica::query()->where('ativo', true)->orderBy('ordem')->get();
+        });
     }
 
     /**

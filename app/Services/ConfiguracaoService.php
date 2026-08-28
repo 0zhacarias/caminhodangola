@@ -35,7 +35,7 @@ final class ConfiguracaoService
     {
         $configuracao = Configuracao::create($dados);
 
-        Cache::forget(['configuracoes', 'configuracao.'.$configuracao->chave]);
+        Cache::deleteMultiple(['configuracoes', 'configuracao.'.$configuracao->chave]);
 
         return $configuracao;
     }
@@ -47,7 +47,7 @@ final class ConfiguracaoService
     {
         $configuracao->update($dados);
 
-        Cache::forget(['configuracoes', 'configuracao.'.$configuracao->chave]);
+        Cache::deleteMultiple(['configuracoes', 'configuracao.'.$configuracao->chave]);
 
         return $configuracao;
     }
@@ -70,7 +70,7 @@ final class ConfiguracaoService
 
     public function remover(Configuracao $configuracao): void
     {
-        Cache::forget(['configuracoes', 'configuracao.'.$configuracao->chave]);
+        Cache::deleteMultiple(['configuracoes', 'configuracao.'.$configuracao->chave]);
 
         $configuracao->delete();
     }

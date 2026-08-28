@@ -6,10 +6,19 @@ import {
     PacoteGaleriaSection,
 } from '@/components/admin/pacote-detalhes-sections';
 import ResourcePage from '@/components/admin/resource-page';
+import Heading from '@/components/heading';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { storageUrl } from '@/lib/utils';
+import CategoriasPacotesIndex from '@/pages/admin/categorias-pacotes';
+import GaleriasPacotesIndex from '@/pages/admin/galerias-pacotes';
 import { dashboard } from '@/routes/admin';
 import { create, edit, index } from '@/routes/admin/pacotes';
-import type { Pacote } from '@/types/admin';
+import type {
+    CategoriaPacote,
+    GaleriaPacote,
+    Option,
+    Pacote,
+} from '@/types/admin';
 
 const columns: Column<Pacote>[] = [
     {
@@ -45,45 +54,89 @@ const columns: Column<Pacote>[] = [
     },
 ];
 
-export default function Index({ pacotes }: { pacotes: Pacote[] }) {
+export default function Index({
+    pacotes,
+    categorias,
+    galerias,
+    pacotesOpcoes,
+}: {
+    pacotes: Pacote[];
+    categorias: CategoriaPacote[];
+    galerias: GaleriaPacote[];
+    pacotesOpcoes: Option[];
+}) {
     return (
         <>
             <Head title="Pacotes" />
 
-            <ResourcePage
-                title="Pacotes"
-                description="Gerir os pacotes turísticos do site."
-                createLabel="Novo pacote"
-                createHref={create().url}
-                editHref={(item) => edit(item.slug).url}
-                data={pacotes}
-                columns={columns}
-                getItemId={(item) => item.id}
-                deleteUrl={(item) => `/admin/pacotes/${item.slug}`}
-                detailTitle={(item) => item.titulo}
-                detailDialogClassName="sm:max-w-5xl"
-                detailFields={(item) => [
-                    ...describeItem(item, {
-                        format: {
-                            avaliacao: (avaliacao) =>
-                                `${String(avaliacao)} estrela(s)`,
-                            preco_eur: (preco) => `${String(preco)} €`,
-                            preco_pacote_fotos_eur: (preco) =>
-                                `${String(preco)} €`,
-                        },
-                    }),
-                    {
-                        label: 'Dias do itinerário',
-                        fullWidth: true,
-                        value: <PacoteDiasSection pacote={item} />,
-                    },
-                    {
-                        label: 'Galeria do pacote',
-                        fullWidth: true,
-                        value: <PacoteGaleriaSection pacote={item} />,
-                    },
-                ]}
-            />
+            <div className="space-y-6">
+                <Heading
+                    variant="small"
+                    title="Pacotes"
+                    description="Gerir os pacotes turísticos, as suas categorias e as galerias."
+                />
+
+                <Tabs defaultValue="pacotes" className="-mt-2">
+                    <TabsList>
+                        <TabsTrigger value="pacotes">Pacotes</TabsTrigger>
+                        <TabsTrigger value="categorias">Categorias</TabsTrigger>
+                        <TabsTrigger value="galerias">
+                            Galerias de Pacotes
+                        </TabsTrigger>
+                    </TabsList>
+
+                    <TabsContent value="pacotes">
+                        <ResourcePage
+                            title="Pacotes"
+                            description="Gerir os pacotes turísticos do site."
+                            createLabel="Novo pacote"
+                            createHref={create().url}
+                            editHref={(item) => edit(item.slug).url}
+                            data={pacotes}
+                            columns={columns}
+                            getItemId={(item) => item.id}
+                            deleteUrl={(item) => `/admin/pacotes/${item.slug}`}
+                            detailTitle={(item) => item.titulo}
+                            detailDialogClassName="sm:max-w-5xl"
+                            detailFields={(item) => [
+                                ...describeItem(item, {
+                                    format: {
+                                        avaliacao: (avaliacao) =>
+                                            `${String(avaliacao)} estrela(s)`,
+                                        preco_eur: (preco) =>
+                                            `${String(preco)} €`,
+                                        preco_pacote_fotos_eur: (preco) =>
+                                            `${String(preco)} €`,
+                                    },
+                                }),
+                                {
+                                    label: 'Dias do itinerário',
+                                    fullWidth: true,
+                                    value: <PacoteDiasSection pacote={item} />,
+                                },
+                                {
+                                    label: 'Galeria do pacote',
+                                    fullWidth: true,
+                                    value: (
+                                        <PacoteGaleriaSection pacote={item} />
+                                    ),
+                                },
+                            ]}
+                        />
+                    </TabsContent>
+
+                    <TabsContent value="categorias">
+                        <CategoriasPacotesIndex categorias={categorias} />
+                    </TabsContent>
+
+                    <TabsContent value="galerias">
+                        <GaleriasPacotesIndex
+                            galerias={galerias}
+                            pacotes={pacotesOpcoes}
+                        />
+                    </TabsContent>
+                </Tabs>
+            </div>
         </>
     );
 }

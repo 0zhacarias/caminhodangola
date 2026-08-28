@@ -4,4 +4,5 @@ Before planning or editing, find the row whose globs match the file's path and r
 
 | Applies to | Rule file |
 | --- | --- |
+| config/cache.php | .ai/rules/config.md |
 | resources/js/components/admin/dialogs/** | .ai/rules/dialogs.md |

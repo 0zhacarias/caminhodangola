@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Estatistica;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Response;
 
 class EstatisticasController extends AdminController
@@ -20,6 +21,8 @@ class EstatisticasController extends AdminController
     {
         Estatistica::create($this->validated($request));
 
+        Cache::forget('estatisticas.ativas');
+
         return $this->backWithSuccess('Estatística criada com sucesso.');
     }
 
@@ -27,12 +30,16 @@ class EstatisticasController extends AdminController
     {
         $estatistica->update($this->validated($request));
 
+        Cache::forget('estatisticas.ativas');
+
         return $this->backWithSuccess('Estatística atualizada com sucesso.');
     }
 
     public function destroy(Estatistica $estatistica): RedirectResponse
     {
         $estatistica->delete();
+
+        Cache::forget('estatisticas.ativas');
 
         return $this->backWithSuccess('Estatística eliminada com sucesso.');
     }

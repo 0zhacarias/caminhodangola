@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\Cargo;
 use App\Models\CategoriaPacote;
+use App\Models\CategoriaPerguntaFrequente;
+use App\Models\CondicaoPagamento;
 use App\Models\Configuracao;
 use App\Models\Depoimento;
 use App\Models\DiaItinerario;
@@ -11,8 +14,14 @@ use App\Models\ItemMenu;
 use App\Models\MembroEquipa;
 use App\Models\Pacote;
 use App\Models\PerguntaFrequente;
+use App\Models\PorqueAngola;
+use App\Models\PorqueNos;
+use App\Models\Reserva;
 use App\Models\Seccao;
 use App\Models\SlideHero;
+use App\Models\SobreNos;
+use App\Models\TourPrivado;
+use App\Models\VideoDepoimento;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
@@ -151,19 +160,28 @@ return [
         Collection::class,
         Carbon::class,
         CarbonImmutable::class,
-        Configuracao::class,
-        ItemMenu::class,
-        Pacote::class,
-        DiaItinerario::class,
-        GaleriaPacote::class,
-        Galeria::class,
-        Depoimento::class,
-        PerguntaFrequente::class,
-        MembroEquipa::class,
-        SlideHero::class,
-        Seccao::class,
-        Estatistica::class,
+        Cargo::class,
         CategoriaPacote::class,
+        CategoriaPerguntaFrequente::class,
+        CondicaoPagamento::class,
+        Configuracao::class,
+        Depoimento::class,
+        DiaItinerario::class,
+        Estatistica::class,
+        Galeria::class,
+        GaleriaPacote::class,
+        ItemMenu::class,
+        MembroEquipa::class,
+        Pacote::class,
+        PerguntaFrequente::class,
+        PorqueAngola::class,
+        PorqueNos::class,
+        Reserva::class,
+        Seccao::class,
+        SlideHero::class,
+        SobreNos::class,
+        TourPrivado::class,
+        VideoDepoimento::class,
     ],
 
 ];
