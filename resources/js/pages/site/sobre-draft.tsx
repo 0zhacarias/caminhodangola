@@ -1,11 +1,11 @@
-import { useEffect, useState, useRef } from 'react';
 import { useAnimation } from 'framer-motion';
-import { Header } from '@/components/site/header';
+import { useEffect, useState, useRef } from 'react';
 import Praias from '@/assets/places/praias.jpg';
-import { Footer } from '@/components/site/footer';
-import { WhyChooseUs } from '@/components/site/whyUs';
 import { AboutUs } from '@/components/site/aboutUs';
+import { Footer } from '@/components/site/footer';
+import { Header } from '@/components/site/header';
 import TeamSection from '@/components/site/team';
+import { WhyChooseUs } from '@/components/site/whyUs';
 
 const slides = [
     {
@@ -41,6 +41,7 @@ export default function AboutUsScreen() {
             if (startTimeRef.current === null) {
                 startTimeRef.current = time;
             }
+
             const elapsed = elapsedRef.current + (time - startTimeRef.current);
             const progress = Math.min(elapsed / DURATION, 1);
 
@@ -69,7 +70,9 @@ export default function AboutUsScreen() {
         animateProgress();
 
         return () => {
-            if (rafRef.current) cancelAnimationFrame(rafRef.current);
+            if (rafRef.current) {
+cancelAnimationFrame(rafRef.current);
+}
         };
     }, [index, progressControls]);
 
@@ -77,7 +80,10 @@ export default function AboutUsScreen() {
     useEffect(() => {
         if (isPaused) {
             // pausa: cancela o RAF e acumula elapsed
-            if (rafRef.current) cancelAnimationFrame(rafRef.current);
+            if (rafRef.current) {
+cancelAnimationFrame(rafRef.current);
+}
+
             if (startTimeRef.current !== null) {
                 elapsedRef.current += performance.now() - startTimeRef.current;
                 startTimeRef.current = null;

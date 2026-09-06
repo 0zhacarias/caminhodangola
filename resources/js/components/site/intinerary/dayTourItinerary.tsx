@@ -1,14 +1,5 @@
 // pages/AngolaAdventurePage.tsx
-import Itinerary, { type ItineraryItem } from "./intinirary";
 import Pic1 from "../../assets/theBestOfAngola/1.jpg";
-import Pic2 from "../../assets/theBestOfAngola/2.jpg";
-import Pic3 from "../../assets/theBestOfAngola/3.jpg";
-import Pic4 from "../../assets/theBestOfAngola/4.jpg";
-import Pic5 from "../../assets/theBestOfAngola/5.jpg";
-import Pic6 from "../../assets/theBestOfAngola/6.jpg";
-import Pic7 from "../../assets/theBestOfAngola/7.jpg";
-import Pic8 from "../../assets/theBestOfAngola/8.jpg";
-import Pic9 from "../../assets/theBestOfAngola/9.jpg";
 import Pic10 from "../../assets/theBestOfAngola/10.jpg";
 import Pic11 from "../../assets/theBestOfAngola/11.jpg";
 import Pic12 from "../../assets/theBestOfAngola/12.jpg";
@@ -19,6 +10,7 @@ import Pic16 from "../../assets/theBestOfAngola/16.jpg";
 import Pic17 from "../../assets/theBestOfAngola/17.jpg";
 import Pic18 from "../../assets/theBestOfAngola/18.jpg";
 import Pic19 from "../../assets/theBestOfAngola/19.jpg";
+import Pic2 from "../../assets/theBestOfAngola/2.jpg";
 import Pic20 from "../../assets/theBestOfAngola/20.jpg";
 import Pic21 from "../../assets/theBestOfAngola/21.jpg";
 import Pic22 from "../../assets/theBestOfAngola/22.jpg";
@@ -29,6 +21,7 @@ import Pic26 from "../../assets/theBestOfAngola/26.jpg";
 import Pic27 from "../../assets/theBestOfAngola/27.jpg";
 import Pic28 from "../../assets/theBestOfAngola/28.jpg";
 import Pic29 from "../../assets/theBestOfAngola/29.jpg";
+import Pic3 from "../../assets/theBestOfAngola/3.jpg";
 import Pic30 from "../../assets/theBestOfAngola/30.jpg";
 import Pic31 from "../../assets/theBestOfAngola/31.jpg";
 import Pic32 from "../../assets/theBestOfAngola/32.jpg";
@@ -39,12 +32,20 @@ import Pic36 from "../../assets/theBestOfAngola/36.jpg";
 import Pic37 from "../../assets/theBestOfAngola/37.jpg";
 import Pic38 from "../../assets/theBestOfAngola/38.jpg";
 import Pic39 from "../../assets/theBestOfAngola/39.jpg";
+import Pic4 from "../../assets/theBestOfAngola/4.jpg";
 import Pic40 from "../../assets/theBestOfAngola/40.jpg";
 import Pic41 from "../../assets/theBestOfAngola/41.jpg";
 import Pic42 from "../../assets/theBestOfAngola/42.jpg";
 import Pic43 from "../../assets/theBestOfAngola/43.jpg";
 import Pic44 from "../../assets/theBestOfAngola/44.jpg";
 import Pic45 from "../../assets/theBestOfAngola/45.jpg";
+import Pic5 from "../../assets/theBestOfAngola/5.jpg";
+import Pic6 from "../../assets/theBestOfAngola/6.jpg";
+import Pic7 from "../../assets/theBestOfAngola/7.jpg";
+import Pic8 from "../../assets/theBestOfAngola/8.jpg";
+import Pic9 from "../../assets/theBestOfAngola/9.jpg";
+import Itinerary from "./intinirary";
+import type {ItineraryItem} from "./intinirary";
 
 const itinerary: ItineraryItem[] = [
   {
@@ -236,7 +237,7 @@ export default function AngolaAdventurePage() {
       excluded={excluded}
       whatToBring={whatToBring}
       importantRemarks={importantRemarks}
-      contactNumber="+244923469271"
+      
     />
   );
 }

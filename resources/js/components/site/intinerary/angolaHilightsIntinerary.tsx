@@ -1,16 +1,7 @@
 // pages/AngolaHighlightsPage.tsx
-import Itinerary, { type ItineraryItem } from "./intinirary";
 
 // Images
 import Pic1 from "../../assets/angolaHighlights/1.jpg";
-import Pic2 from "../../assets/angolaHighlights/2.jpg";
-import Pic3 from "../../assets/angolaHighlights/3.jpg";
-import Pic4 from "../../assets/angolaHighlights/4.jpg";
-import Pic5 from "../../assets/angolaHighlights/5.jpg";
-import Pic6 from "../../assets/angolaHighlights/6.jpg";
-import Pic7 from "../../assets/angolaHighlights/7.jpg";
-import Pic8 from "../../assets/angolaHighlights/8.jpg";
-import Pic9 from "../../assets/angolaHighlights/9.jpg";
 import Pic10 from "../../assets/angolaHighlights/10.jpg";
 import Pic11 from "../../assets/angolaHighlights/11.jpg";
 import Pic12 from "../../assets/angolaHighlights/12.jpg";
@@ -21,6 +12,7 @@ import Pic16 from "../../assets/angolaHighlights/16.jpg";
 import Pic17 from "../../assets/angolaHighlights/17.jpg";
 import Pic18 from "../../assets/angolaHighlights/18.jpg";
 import Pic19 from "../../assets/angolaHighlights/19.jpg";
+import Pic2 from "../../assets/angolaHighlights/2.jpg";
 import Pic20 from "../../assets/angolaHighlights/20.jpg";
 import Pic21 from "../../assets/angolaHighlights/21.jpg";
 import Pic22 from "../../assets/angolaHighlights/22.jpg";
@@ -28,6 +20,15 @@ import Pic23 from "../../assets/angolaHighlights/23.jpg";
 import Pic24 from "../../assets/angolaHighlights/24.jpg";
 import Pic25 from "../../assets/angolaHighlights/25.jpg";
 import Pic26 from "../../assets/angolaHighlights/26.jpg";
+import Pic3 from "../../assets/angolaHighlights/3.jpg";
+import Pic4 from "../../assets/angolaHighlights/4.jpg";
+import Pic5 from "../../assets/angolaHighlights/5.jpg";
+import Pic6 from "../../assets/angolaHighlights/6.jpg";
+import Pic7 from "../../assets/angolaHighlights/7.jpg";
+import Pic8 from "../../assets/angolaHighlights/8.jpg";
+import Pic9 from "../../assets/angolaHighlights/9.jpg";
+import Itinerary from "./intinirary";
+import type {ItineraryItem} from "./intinirary";
 
 const itinerary: ItineraryItem[] = [
   {
@@ -159,7 +160,7 @@ export default function AngolaHighlightsPage() {
       excluded={excluded}
       whatToBring={whatToBring}
       importantRemarks={importantRemarks}
-      contactNumber="+244923469271"
+      
     />
   );
 }

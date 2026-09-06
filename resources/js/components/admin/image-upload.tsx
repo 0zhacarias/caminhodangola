@@ -198,7 +198,7 @@ function ImageThumb({
     return (
         <div className="group relative overflow-hidden rounded-lg border">
             <img
-                src={previewUrl ?? ''}
+                src={previewUrl ?? undefined}
                 alt={ficheiro.name}
                 className="h-20 w-full object-cover"
             />

@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
 import { ChevronDown } from "lucide-react";
+import { useState, useMemo } from "react";
 import type { PerguntaFrequente } from "@/types/site";
 
 interface FAQSectionProps {
@@ -15,12 +15,15 @@ export default function FAQSection({ faqs }: FAQSectionProps) {
     const groups: { category: string; items: PerguntaFrequente[] }[] = [];
     faqs.forEach((faq) => {
       let group = groups.find((g) => g.category === faq.categoria);
+
       if (!group) {
         group = { category: faq.categoria, items: [] };
         groups.push(group);
       }
+
       group.items.push(faq);
     });
+
     return groups;
   }, [faqs]);
 

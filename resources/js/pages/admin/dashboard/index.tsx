@@ -1,4 +1,5 @@
 import { Head } from '@inertiajs/react';
+import { useState } from 'react';
 import { AccountSummaryCard } from '@/components/admin/dashboard/account-summary-card';
 import { ActivityCard } from '@/components/admin/dashboard/activity-card';
 import { ChatButton } from '@/components/admin/dashboard/chat-button';
@@ -14,15 +15,17 @@ import { TicketsCard } from '@/components/admin/dashboard/tickets-card';
 import { dashboard } from '@/routes/admin';
 
 export default function AdminDashboard() {
+    const [query, setQuery] = useState('');
+
     return (
         <>
             <Head title="Dashboard" />
 
-            <div className="min-h-full rounded-lg bg-slate-100 text-slate-700">
-                <HeroSearch />
+            <div className="min-h-full rounded-lg bg-slate-100 text-slate-700 dark:bg-slate-950 dark:text-slate-100">
+                <HeroSearch query={query} onQueryChange={setQuery} />
 
-<section className="px-4 -mt-6 pb-10 lg:px-7">
-                    <QuickAccess />
+                <section className="px-4 -mt-15 pb-10 lg:px-7">
+                    <QuickAccess query={query} />
                     </section>
                 <section className="-mt-12 px-4 pb-10 lg:px-7 hidden">
 

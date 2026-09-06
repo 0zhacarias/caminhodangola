@@ -22,6 +22,8 @@ use App\Http\Controllers\Admin\SeccoesController;
 use App\Http\Controllers\Admin\SlidesHeroController;
 use App\Http\Controllers\Admin\SobreController;
 use App\Http\Controllers\Admin\SobresNosController;
+use App\Http\Controllers\Admin\ToursController;
+use App\Http\Controllers\Admin\ToursGruposController;
 use App\Http\Controllers\Admin\ToursPrivadosController;
 use App\Http\Controllers\Admin\VideosDepoimentosController;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +35,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     Route::get('sobre', [SobreController::class, 'index'])->name('sobre.index');
     Route::get('equipa', [EquipaController::class, 'index'])->name('equipa.index');
+    Route::get('tours', [ToursController::class, 'index'])->name('tours.index');
 
     Route::resource('categorias-pacotes', CategoriasPacotesController::class)->except(['show']);
     Route::resource('pacotes', PacotesController::class)->except(['show']);
@@ -46,9 +49,12 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::resource('porques-angola', PorquesAngolaController::class)->except(['show']);
     Route::resource('sobres-nos', SobresNosController::class)->except(['show']);
     Route::resource('tours-privados', ToursPrivadosController::class)->except(['show']);
+    Route::resource('tours-grupos', ToursGruposController::class)->except(['show']);
     Route::resource('membros-equipa', MembrosEquipaController::class)->except(['show']);
     Route::post('membros-equipa/visao', [MembrosEquipaController::class, 'guardarVisao'])->name('membros-equipa.visao');
-    Route::post('membros-equipa/{membrosEquipa}/toggle-acesso', [MembrosEquipaController::class, 'toggleAcesso'])->name('membros-equipa.toggle-acesso');
+    Route::post('membros-equipa/{membrosEquipa}/toggle-acesso', [MembrosEquipaController::class, 'toggleAcesso'])
+        ->middleware('throttle:admin-access-invitations')
+        ->name('membros-equipa.toggle-acesso');
     Route::resource('cargos', CargosController::class)->except(['show']);
     Route::resource('slides-hero', SlidesHeroController::class)->except(['show']);
     Route::resource('videos-depoimentos', VideosDepoimentosController::class)->except(['show']);

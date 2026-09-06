@@ -1,13 +1,4 @@
-import Itinerary, { type ItineraryItem } from "./intinirary";
 import Pic1 from "../../assets/meetTheLastTribes/1.jpg";
-import Pic2 from "../../assets/meetTheLastTribes/2.jpg";
-import Pic3 from "../../assets/meetTheLastTribes/3.jpg";
-import Pic4 from "../../assets/meetTheLastTribes/4.jpg";
-import Pic5 from "../../assets/meetTheLastTribes/5.jpg";
-import Pic6 from "../../assets/meetTheLastTribes/6.jpg";
-import Pic7 from "../../assets/meetTheLastTribes/7.jpg";
-import Pic8 from "../../assets/meetTheLastTribes/8.jpg";
-import Pic9 from "../../assets/meetTheLastTribes/9.jpg";
 import Pic10 from "../../assets/meetTheLastTribes/10.jpg";
 import Pic11 from "../../assets/meetTheLastTribes/11.jpg";
 import Pic12 from "../../assets/meetTheLastTribes/12.jpg";
@@ -18,6 +9,7 @@ import Pic16 from "../../assets/meetTheLastTribes/16.jpg";
 import Pic17 from "../../assets/meetTheLastTribes/17.jpg";
 import Pic18 from "../../assets/meetTheLastTribes/18.jpg";
 import Pic19 from "../../assets/meetTheLastTribes/19.jpg";
+import Pic2 from "../../assets/meetTheLastTribes/2.jpg";
 import Pic20 from "../../assets/meetTheLastTribes/20.jpg";
 import Pic21 from "../../assets/meetTheLastTribes/21.jpg";
 import Pic22 from "../../assets/meetTheLastTribes/22.jpg";
@@ -28,6 +20,7 @@ import Pic26 from "../../assets/meetTheLastTribes/26.jpg";
 import Pic27 from "../../assets/meetTheLastTribes/27.jpg";
 import Pic28 from "../../assets/meetTheLastTribes/28.jpg";
 import Pic29 from "../../assets/meetTheLastTribes/29.jpg";
+import Pic3 from "../../assets/meetTheLastTribes/3.jpg";
 import Pic30 from "../../assets/meetTheLastTribes/30.jpg";
 import Pic31 from "../../assets/meetTheLastTribes/31.jpg";
 import Pic32 from "../../assets/meetTheLastTribes/32.jpg";
@@ -38,6 +31,7 @@ import Pic36 from "../../assets/meetTheLastTribes/36.jpg";
 import Pic37 from "../../assets/meetTheLastTribes/37.jpg";
 import Pic38 from "../../assets/meetTheLastTribes/38.jpg";
 import Pic39 from "../../assets/meetTheLastTribes/39.jpg";
+import Pic4 from "../../assets/meetTheLastTribes/4.jpg";
 import Pic40 from "../../assets/meetTheLastTribes/40.jpg";
 import Pic41 from "../../assets/meetTheLastTribes/41.jpg";
 import Pic42 from "../../assets/meetTheLastTribes/42.jpg";
@@ -48,7 +42,14 @@ import Pic46 from "../../assets/meetTheLastTribes/46.jpg";
 import Pic47 from "../../assets/meetTheLastTribes/47.jpg";
 import Pic48 from "../../assets/meetTheLastTribes/48.jpg";
 import Pic49 from "../../assets/meetTheLastTribes/49.jpg";
+import Pic5 from "../../assets/meetTheLastTribes/5.jpg";
 import Pic50 from "../../assets/meetTheLastTribes/50.jpg";
+import Pic6 from "../../assets/meetTheLastTribes/6.jpg";
+import Pic7 from "../../assets/meetTheLastTribes/7.jpg";
+import Pic8 from "../../assets/meetTheLastTribes/8.jpg";
+import Pic9 from "../../assets/meetTheLastTribes/9.jpg";
+import Itinerary from "./intinirary";
+import type {ItineraryItem} from "./intinirary";
 
 const itinerary: ItineraryItem[] = [
   {
@@ -197,7 +198,7 @@ export default function MeetTheLastTribesPage() {
       excluded={excluded}
       whatToBring={whatToBring}
       importantRemarks={importantRemarks}
-      contactNumber="+244923469271"
+      
     />
   );
 }

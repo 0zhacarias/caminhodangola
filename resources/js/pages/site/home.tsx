@@ -1,6 +1,7 @@
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import { useEffect, useState, useRef } from 'react';
 import { storageUrl } from '@/lib/utils';
+import { useWhatsapp } from '@/lib/whatsapp';
 import type {
     SlideHero,
     Pacote,
@@ -44,6 +45,8 @@ export default function Home({
     configuracoes,
     faqs,
 }: HomeProps) {
+    const whatsapp = useWhatsapp();
+
     // Format slides from DB to match original structure
     const slides = dbSlides.map((slide) => ({
         image: slide.imagem ? storageUrl(slide.imagem) : '',
@@ -152,7 +155,7 @@ export default function Home({
         <div className="flex flex-col gap-6">
             <div className="">
                 <div
-                    className="relative z-0 flex flex-col overflow-hidden bg-slate-950"
+                    className="relative flex flex-col overflow-hidden bg-slate-950"
                     onMouseDown={() => setIsPaused(true)}
                     onMouseUp={() => setIsPaused(false)}
                     onMouseLeave={() => setIsPaused(false)}
@@ -208,7 +211,7 @@ export default function Home({
                                             <div className="flex flex-col gap-4 md:w-2/5">
                                                 <div>
                                                     <h5
-                                                        className="font-serif text-2xl text-slate-50"
+                                                        className="text-lg font-semibold text-yellow-500"
                                                         style={{
                                                             textShadow:
                                                                 '2px 2px 16px rgba(0, 0, 0, 0.8)',
@@ -217,7 +220,7 @@ export default function Home({
                                                         {slides[index].title}
                                                     </h5>
                                                     <h4
-                                                        className="font-serif text-5xl text-slate-50"
+                                                        className="text-4xl font-bold text-white"
                                                         style={{
                                                             textShadow:
                                                                 '2px 2px 16px rgba(0, 0, 0, 0.8)',
@@ -226,7 +229,7 @@ export default function Home({
                                                         {slides[index].subtitle}
                                                     </h4>
                                                     <p
-                                                        className="my-4 text-justify text-white"
+                                                        className="my-4 text-justify text-slate-300"
                                                         style={{
                                                             textShadow:
                                                                 '2px 2px 16px rgba(0, 0, 0, 0.8)',
@@ -240,9 +243,7 @@ export default function Home({
                                                         href={
                                                             slides[index]
                                                                 .botaoUrl ||
-                                                            `https://wa.me/+244923469271?text=${encodeURIComponent(
-                                                                'Hello! I would like more information about your tours.',
-                                                            )}`
+                                                            whatsapp.link()
                                                         }
                                                         target={
                                                             slides[index]

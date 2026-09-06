@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -73,7 +74,10 @@ class MembrosEquipaController extends AdminController
     {
         $membrosEquipa->loadMissing('user');
 
-        $membrosEquipa->user?->update(['ativo' => false]);
+        $membrosEquipa->user?->update([
+            'ativo' => false,
+            'convite_pendente' => false,
+        ]);
 
         $membrosEquipa->delete();
 
@@ -95,18 +99,26 @@ class MembrosEquipaController extends AdminController
                 return $this->backWithError('Já existe um utilizador com este e-mail. Não foi possível criar o acesso.');
             }
 
-            return $this->backWithSuccess('Acesso ao painel criado. O membro deve usar "Esqueceu a senha" para definir a palavra-passe.');
+            $this->enviarConvite($utilizador);
+
+            return $this->backWithSuccess('Acesso ao painel criado. Foi enviado um e-mail para definir a palavra-passe.');
         }
 
-        $membrosEquipa->user->update(['ativo' => ! $membrosEquipa->user->ativo]);
+        if ($membrosEquipa->user->ativo) {
+            $membrosEquipa->user->update([
+                'ativo' => false,
+                'convite_pendente' => false,
+            ]);
+
+            $mensagem = 'Acesso ao painel desativado.';
+        } else {
+            $this->enviarConvite($membrosEquipa->user);
+            $mensagem = 'Foi enviado um novo e-mail para definir a palavra-passe.';
+        }
 
         $membrosEquipa->load('user');
 
-        return $this->backWithSuccess(
-            $membrosEquipa->user->ativo
-                ? 'Acesso ao painel reativado.'
-                : 'Acesso ao painel desativado.'
-        );
+        return $this->backWithSuccess($mensagem);
     }
 
     /**
@@ -118,7 +130,10 @@ class MembrosEquipaController extends AdminController
             $membro->loadMissing('user');
 
             if ($membro->user !== null && $membro->user->ativo) {
-                $membro->user->update(['ativo' => false]);
+                $membro->user->update([
+                    'ativo' => false,
+                    'convite_pendente' => false,
+                ]);
             }
 
             return;
@@ -134,13 +149,20 @@ class MembrosEquipaController extends AdminController
             $membro->user->update([
                 'name' => $membro->nome,
                 'email' => $membro->email,
-                'ativo' => true,
             ]);
+
+            if (! $membro->user->ativo) {
+                $this->enviarConvite($membro->user);
+            }
 
             return;
         }
 
-        $this->criarUtilizador($membro, $membro->email);
+        $utilizador = $this->criarUtilizador($membro, $membro->email);
+
+        if ($utilizador !== null) {
+            $this->enviarConvite($utilizador);
+        }
     }
 
     private function criarUtilizador(MembroEquipa $membro, string $email): ?User
@@ -153,12 +175,22 @@ class MembrosEquipaController extends AdminController
             'name' => $membro->nome,
             'email' => $email,
             'password' => Str::password(16),
-            'email_verified_at' => now(),
+            'convite_pendente' => true,
         ]);
 
         $membro->update(['user_id' => $utilizador->id]);
 
         return $utilizador;
+    }
+
+    private function enviarConvite(User $utilizador): void
+    {
+        $utilizador->update([
+            'ativo' => false,
+            'convite_pendente' => true,
+        ]);
+
+        Password::broker()->sendResetLink(['email' => $utilizador->email]);
     }
 
     /**

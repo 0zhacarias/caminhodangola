@@ -1,6 +1,8 @@
 import { usePage } from '@inertiajs/react';
 import { Mail, MessageSquare } from 'lucide-react';
 import { DynamicIcon } from '@/lib/dynamic-icons';
+import { useEmail } from '@/lib/email';
+import { useWhatsapp } from '@/lib/whatsapp';
 import type { TourPrivado } from '@/types/site';
 
 interface DestaquePadrao {
@@ -43,19 +45,22 @@ const CTA_WHATSAPP_PADRAO: CtaPadrao = {
     rotulo: 'Customize Your Trip on WhatsApp',
     mensagem:
         "Hi! I'm interested in a private tour with Caminhos D'Angola. Can you help me customize my trip?",
-    link: '+244923469271',
+    link: '',
 };
 const CTA_EMAIL_PADRAO: CtaPadrao = {
     rotulo: 'Customize Your Trip on Email',
     mensagem:
         "Hi! I'm interested in a private tour with Caminhos D'Angola. Can you help me customize my trip?",
-    link: 'info@caminhosdangola.com',
+    link: '',
 };
 
 export function PrivateTourSection() {
     const itens =
         usePage<{ tours_privados?: TourPrivado[] }>().props.tours_privados ??
         [];
+
+    const whatsapp = useWhatsapp();
+    const emailContato = useEmail();
 
     const cabecalho = itens.find((item) => item.tipo === 'cabecalho');
     const destaques = itens.filter((item) => item.tipo === 'destaque');
@@ -85,13 +90,15 @@ export function PrivateTourSection() {
         ? {
               rotulo: ctaEmail.titulo,
               mensagem: ctaEmail.descricao ?? '',
-              link: ctaEmail.link ?? CTA_EMAIL_PADRAO.link,
+              link: ctaEmail.link ?? emailContato.email,
           }
-        : CTA_EMAIL_PADRAO;
+        : { ...CTA_EMAIL_PADRAO, link: emailContato.email };
 
+    const numeroWhatsapp = ctaWhatsappVisivel.link || whatsapp.numero;
     const whatsappUrl = ctaWhatsappVisivel.link.startsWith('http')
         ? ctaWhatsappVisivel.link
-        : `https://wa.me/${ctaWhatsappVisivel.link}`;
+        : whatsapp.link(ctaWhatsappVisivel.mensagem, numeroWhatsapp);
+
     const emailUrl = ctaEmailVisivel.link.startsWith('mailto:')
         ? ctaEmailVisivel.link
         : `mailto:${ctaEmailVisivel.link}`;

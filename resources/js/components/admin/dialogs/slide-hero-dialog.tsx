@@ -29,6 +29,7 @@ export default function SlideHeroDialog({
             titulo: string;
             subtitulo: string;
             texto: string;
+            subtexto: string;
             botao_rotulo: string;
             botao_url: string;
             ordem: number;
@@ -40,6 +41,7 @@ export default function SlideHeroDialog({
             titulo: item?.titulo ?? '',
             subtitulo: item?.subtitulo ?? '',
             texto: item?.texto ?? '',
+            subtexto: item?.subtexto ?? '',
             botao_rotulo: item?.botao_rotulo ?? '',
             botao_url: item?.botao_url ?? '',
             ordem: item?.ordem ?? 0,
@@ -135,6 +137,16 @@ export default function SlideHeroDialog({
                     id="texto"
                     value={data.texto}
                     onChange={(event) => setData('texto', event.target.value)}
+                />
+            </Field>
+
+            <Field id="subtexto" label="Subtexto" error={errors.subtexto}>
+                <Textarea
+                    id="subtexto"
+                    value={data.subtexto}
+                    onChange={(event) =>
+                        setData('subtexto', event.target.value)
+                    }
                 />
             </Field>
 

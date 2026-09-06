@@ -97,6 +97,22 @@ export interface TourPrivado {
     updated_at: string | null;
 }
 
+export type TourGrupoTipo =
+    'cabecalho' | 'destaque' | 'cta_whatsapp' | 'cta_email';
+
+export interface TourGrupo {
+    id: number;
+    tipo: TourGrupoTipo;
+    titulo: string;
+    descricao: string | null;
+    icone: string | null;
+    link: string | null;
+    ordem: number;
+    ativo: boolean;
+    created_at: string | null;
+    updated_at: string | null;
+}
+
 export interface DiaItinerario {
     id: number;
     pacote_id: number;
@@ -188,6 +204,7 @@ export interface Depoimento {
 export interface PerguntaFrequente {
     id: number;
     categoria: string;
+    categoria_id: number;
     pergunta: string;
     resposta: string;
     ordem: number;
@@ -235,6 +252,7 @@ export interface SlideHero {
     titulo: string | null;
     subtitulo: string | null;
     texto: string | null;
+    subtexto: string | null;
     botao_rotulo: string | null;
     botao_url: string | null;
     ordem: number;
@@ -249,6 +267,7 @@ export interface VideoDepoimento {
     titulo: string | null;
     descricao: string | null;
     video: string;
+    bandeira: string | null;
     ordem: number;
     ativo: boolean;
     created_at: string | null;

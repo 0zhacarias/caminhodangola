@@ -27,6 +27,10 @@ class VideosDepoimentosController extends AdminController
 
         $data['video'] = $this->guardarVideo($data['video']);
 
+        if (isset($data['bandeira'])) {
+            $data['bandeira'] = $this->guardarBandeira($data['bandeira']);
+        }
+
         $this->videos->criar($data);
 
         return $this->backWithSuccess('Vídeo criado com sucesso.');
@@ -38,6 +42,10 @@ class VideosDepoimentosController extends AdminController
 
         if (isset($data['video'])) {
             $data['video'] = $this->guardarVideo($data['video']);
+        }
+
+        if (isset($data['bandeira'])) {
+            $data['bandeira'] = $this->guardarBandeira($data['bandeira']);
         }
 
         $this->videos->atualizar($videosDepoimento, $data);
@@ -63,6 +71,14 @@ class VideosDepoimentosController extends AdminController
             unset($dados['video']);
         }
 
+        if (array_key_exists('bandeira', $dados) && ! $dados['bandeira'] instanceof UploadedFile) {
+            if ($dados['bandeira'] === '' || $dados['bandeira'] === null) {
+                $dados['bandeira'] = null;
+            } else {
+                unset($dados['bandeira']);
+            }
+        }
+
         $request->replace($dados);
 
         return $request->validate([
@@ -74,6 +90,7 @@ class VideosDepoimentosController extends AdminController
                 'mimetypes:video/mp4,video/quicktime,video/webm,video/x-msvideo',
                 'max:102400',
             ],
+            'bandeira' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp,gif', 'max:5120'],
             'ordem' => ['integer', 'min:0'],
             'ativo' => ['boolean'],
         ]);
@@ -85,6 +102,17 @@ class VideosDepoimentosController extends AdminController
 
         if ($caminho === false) {
             throw new \RuntimeException('Não foi possível guardar o vídeo.');
+        }
+
+        return $caminho;
+    }
+
+    private function guardarBandeira(UploadedFile $ficheiro): string
+    {
+        $caminho = Storage::disk('public')->putFile('videos-depoimentos', $ficheiro);
+
+        if ($caminho === false) {
+            throw new \RuntimeException('Não foi possível guardar a bandeira.');
         }
 
         return $caminho;

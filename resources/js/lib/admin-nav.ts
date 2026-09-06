@@ -31,7 +31,7 @@ import { edit as rodapeEdit } from '@/routes/admin/rodape';
 import { index as seccoesIndex } from '@/routes/admin/seccoes';
 import { index as slidesHeroIndex } from '@/routes/admin/slides-hero';
 import { index as sobreIndex } from '@/routes/admin/sobre';
-import { index as toursPrivadosIndex } from '@/routes/admin/tours-privados';
+import { index as toursIndex } from '@/routes/admin/tours';
 import type { NavItem } from '@/types';
 
 export const mainNavItems: NavItem[] = [
@@ -67,20 +67,20 @@ export const adminNavGroups: NavGroup[] = [
         label: 'Conteúdo',
         items: [
             {
-                title: 'Slides Hero',
+                title: 'Slides',
                 href: slidesHeroIndex(),
                 icon: MonitorPlay,
             },
-            {
+         /*    {
                 title: 'Secções',
                 href: seccoesIndex(),
                 icon: LayoutTemplate,
-            },
-            {
+            }, */
+           /*  {
                 title: 'Estatísticas',
                 href: estatisticasIndex(),
                 icon: ChartColumn,
-            },
+            }, */
             {
                 title: 'Galerias',
                 href: galeriasIndex(),
@@ -102,8 +102,8 @@ export const adminNavGroups: NavGroup[] = [
                 icon: HeartHandshake,
             },
             {
-                title: 'Tours Privados',
-                href: toursPrivadosIndex(),
+                title: 'Tours',
+                href: toursIndex(),
                 icon: Plane,
             },
             {
@@ -116,11 +116,11 @@ export const adminNavGroups: NavGroup[] = [
     {
         label: 'Sistema',
         items: [
-            {
+           /*  {
                 title: 'Itens de Menu',
                 href: itensMenuIndex(),
                 icon: Menu,
-            },
+            }, */
             {
                 title: 'Configurações',
                 href: configuracoesIndex(),
@@ -133,7 +133,7 @@ export const adminNavGroups: NavGroup[] = [
             },
         ],
     },
-    {
+   /*  {
         label: 'Reservas',
         items: [
             {
@@ -142,5 +142,5 @@ export const adminNavGroups: NavGroup[] = [
                 icon: CalendarCheck,
             },
         ],
-    },
+    }, */
 ];

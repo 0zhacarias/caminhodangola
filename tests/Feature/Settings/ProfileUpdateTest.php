@@ -61,6 +61,40 @@ class ProfileUpdateTest extends TestCase
         $this->assertNotNull($user->refresh()->email_verified_at);
     }
 
+    public function test_user_locale_can_be_updated(): void
+    {
+        $user = User::factory()->create(['locale' => 'pt']);
+
+        $response = $this
+            ->actingAs($user)
+            ->patch(route('locale.update'), ['locale' => 'en']);
+
+        $response->assertRedirect();
+        $this->assertSame('en', $user->refresh()->locale);
+        $this->assertSame('en', app()->getLocale());
+    }
+
+    public function test_user_locale_only_accepts_supported_languages(): void
+    {
+        $user = User::factory()->create();
+
+        $this
+            ->actingAs($user)
+            ->patch(route('locale.update'), ['locale' => 'fr'])
+            ->assertSessionHasErrors('locale');
+    }
+
+    public function test_guest_locale_can_be_updated_without_authentication(): void
+    {
+        $this
+            ->patch(route('locale.update'), ['locale' => 'en'])
+            ->assertRedirect();
+
+        $this->assertGuest();
+        $this->assertSame('en', session('locale'));
+        $this->assertSame('en', app()->getLocale());
+    }
+
     public function test_user_can_delete_their_account()
     {
         $user = User::factory()->create();

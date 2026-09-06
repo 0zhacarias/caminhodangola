@@ -12,10 +12,14 @@ export function toUrl(url: NonNullable<InertiaLinkProps['href']>): string {
 }
 
 export function storageUrl(value: string): string {
-    if (!value) return value;
+    if (!value) {
+return value;
+}
+
     if (value.startsWith('http')) {
         return value.replace(/^https?:\/\/[^/]+\/storage\//i, '/storage/');
     }
+
     return value.startsWith('/storage/') ? value : `/storage/${value}`;
 }
 

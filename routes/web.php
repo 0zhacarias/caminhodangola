@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Settings\LocaleController;
 use App\Http\Controllers\Web\DepoimentosController;
 use App\Http\Controllers\Web\GaleriasController;
 use App\Http\Controllers\Web\HomeController;
@@ -24,6 +25,7 @@ Route::get('equipa', [MembrosEquipaController::class, 'index'])->name('equipa');
 Route::get('sobre', [SobreController::class, 'index'])->name('sobre');
 Route::get('reservar', [ReservasController::class, 'create'])->name('reservar');
 Route::post('reservas', [ReservasController::class, 'store'])->name('reservas.store');
+Route::patch('locale', [LocaleController::class, 'update'])->name('locale.update');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');

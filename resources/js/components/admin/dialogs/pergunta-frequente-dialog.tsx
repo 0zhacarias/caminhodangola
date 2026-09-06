@@ -1,4 +1,4 @@
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 import { ExternalLink } from 'lucide-react';
 import AutocompleteSelect from '@/components/admin/autocomplete-select';
 import CrudDialog from '@/components/admin/dialogs/crud-dialog';
@@ -7,7 +7,11 @@ import InputError from '@/components/input-error';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import type { Option, PerguntaFrequente } from '@/types/admin';
+import type {
+    CategoriaPerguntaFrequente,
+    Option,
+    PerguntaFrequente,
+} from '@/types/admin';
 
 export default function PerguntaFrequenteDialog({
     item,
@@ -18,8 +22,12 @@ export default function PerguntaFrequenteDialog({
     onClose: () => void;
     categorias: Option[];
 }) {
+    const page = usePage<{
+        categorias?: CategoriaPerguntaFrequente[];
+    }>();
+
     const { data, setData, post, put, processing, errors } = useForm({
-        categoria: item?.categoria ?? '',
+        categoria_id: item ? String(item.categoria_id) : '',
         pergunta: item?.pergunta ?? '',
         resposta: item?.resposta ?? '',
         ordem: item?.ordem ?? 0,
@@ -45,7 +53,15 @@ export default function PerguntaFrequenteDialog({
         categoriaForm.post('/admin/categorias-perguntas-frequentes', {
             preserveState: true,
             preserveScroll: true,
-            onSuccess: () => setData('categoria', nome),
+            onSuccess: () => {
+                const criada = page.props.categorias?.find(
+                    (categoria) => categoria.nome === nome,
+                );
+
+                if (criada) {
+                    setData('categoria_id', String(criada.id));
+                }
+            },
         });
     };
 
@@ -73,9 +89,9 @@ export default function PerguntaFrequenteDialog({
                         </a>
                     </div>
                     <AutocompleteSelect
-                        id="categoria"
-                        value={data.categoria}
-                        onChange={(value) => setData('categoria', value)}
+                        id="categoria_id"
+                        value={data.categoria_id}
+                        onChange={(value) => setData('categoria_id', value)}
                         options={categorias}
                         placeholder="(categoria 🔑, 🏠)"
                         onCreate={criarCategoria}
@@ -84,7 +100,9 @@ export default function PerguntaFrequenteDialog({
                     />
                     <InputError
                         className="mt-0"
-                        message={errors.categoria ?? categoriaForm.errors.nome}
+                        message={
+                            errors.categoria_id ?? categoriaForm.errors.nome
+                        }
                     />
                 </div>
 

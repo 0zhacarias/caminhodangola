@@ -13,7 +13,11 @@ class PerguntasFrequentesController extends AdminController
     public function index(): Response
     {
         return $this->render('admin/perguntas-frequentes/index', [
-            'perguntas' => PerguntaFrequente::orderBy('categoria')->orderBy('ordem')->orderByDesc('id')->get(),
+            'perguntas' => PerguntaFrequente::with('categoriaModelo:id,nome,ordem')
+                ->orderBy('categoria_id')
+                ->orderBy('ordem')
+                ->orderByDesc('id')
+                ->get(),
             'categorias' => CategoriaPerguntaFrequente::orderBy('ordem')->orderBy('nome')->get(),
             'categoriasOpcoes' => $this->categoriasComoOpcoes(),
         ]);
@@ -41,13 +45,13 @@ class PerguntasFrequentesController extends AdminController
     }
 
     /**
-     * @return array<int, array{value: string, label: string}>
+     * @return array<int, array{value: int, label: string}>
      */
     private function categoriasComoOpcoes(): array
     {
         return CategoriaPerguntaFrequente::orderBy('ordem')->orderBy('nome')->get()
             ->map(static fn (CategoriaPerguntaFrequente $categoria): array => [
-                'value' => $categoria->nome,
+                'value' => $categoria->id,
                 'label' => $categoria->nome,
             ])
             ->values()
@@ -60,7 +64,7 @@ class PerguntasFrequentesController extends AdminController
     private function validated(Request $request): array
     {
         return $request->validate([
-            'categoria' => ['required', 'string', 'max:255'],
+            'categoria_id' => ['required', 'integer', 'exists:categorias_perguntas_frequentes,id'],
             'pergunta' => ['required', 'string', 'max:255'],
             'resposta' => ['required', 'string'],
             'ordem' => ['integer', 'min:0'],

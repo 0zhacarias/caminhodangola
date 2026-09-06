@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Picture1 from "../../assets/pic1.jpg";
+import Picture10 from "../../assets/pic10.jpg";
+import Picture11 from "../../assets/pic11.jpg";
 import Picture2 from "../../assets/pic2.jpg";
 import Picture3 from "../../assets/pic3.jpg";
 import Picture4 from "../../assets/pic4.jpg";
@@ -8,8 +10,6 @@ import Picture6 from "../../assets/pic6.jpg";
 import Picture7 from "../../assets/pic7.jpg";
 import Picture8 from "../../assets/pic8.jpg";
 import Picture9 from "../../assets/pic9.jpg";
-import Picture10 from "../../assets/pic10.jpg";
-import Picture11 from "../../assets/pic11.jpg";
 
 export function PicturesGridAnimated() {
   const [paused, setPaused] = useState(false);
@@ -28,6 +28,7 @@ export function PicturesGridAnimated() {
 
     handleResize(); // inicial
     window.addEventListener("resize", handleResize);
+
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 

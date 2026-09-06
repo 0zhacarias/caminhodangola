@@ -75,6 +75,7 @@ class SlidesHeroController extends AdminController
             'titulo' => ['nullable', 'string', 'max:255'],
             'subtitulo' => ['nullable', 'string', 'max:255'],
             'texto' => ['nullable', 'string'],
+            'subtexto' => ['nullable', 'string'],
             'botao_rotulo' => ['nullable', 'string', 'max:255'],
             'botao_url' => ['nullable', 'string', 'max:2048'],
             'ordem' => ['integer', 'min:0'],

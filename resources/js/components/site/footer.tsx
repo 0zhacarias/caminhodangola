@@ -5,6 +5,7 @@ import {
     TwitterIcon,
     YoutubeIcon,
 } from 'lucide-react';
+import { EMAIL_PADRAO } from '@/lib/email';
 import logoIdeal from '../../assets/logotipo-caminhosdangola.svg';
 
 interface FooterProps {
@@ -74,7 +75,7 @@ export function Footer({ configuracoes = {} }: FooterProps) {
                     {valores['email_contato'] ? (
                         <p>{valores['email_contato']}</p>
                     ) : (
-                        <p>geral@caminhosdangola.com</p>
+                        <p>{EMAIL_PADRAO}</p>
                     )}
                     {valores['telefone_principal'] ? (
                         <p>{valores['telefone_principal']}</p>

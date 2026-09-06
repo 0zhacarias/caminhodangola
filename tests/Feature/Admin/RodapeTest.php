@@ -100,7 +100,8 @@ class RodapeTest extends TestCase
             'instagram' => 'nao-e-url',
         ])->assertSessionHasErrors(['email_contato', 'instagram']);
 
-        $this->assertDatabaseCount('configuracoes', 0);
+        // Mantém apenas as configurações padrão (whatsapp_numero, whatsapp_mensagem e email_contato).
+        $this->assertDatabaseCount('configuracoes', 3);
     }
 
     public function test_configuracoes_sao_partilhadas_nas_paginas_do_site()
@@ -127,7 +128,8 @@ class RodapeTest extends TestCase
 
         $this->getJson('/api/configuracoes')
             ->assertOk()
-            ->assertJsonPath('data.0.chave', 'slogan')
-            ->assertJsonPath('data.0.valor', 'Slogan api');
+            ->assertJsonPath('data.0.chave', 'email_contato')
+            ->assertJsonPath('data.0.valor', 'info@caminhosdangola.com')
+            ->assertJsonFragment(['chave' => 'slogan', 'valor' => 'Slogan api']);
     }
 }

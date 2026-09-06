@@ -11,6 +11,20 @@ import type { VideoDepoimento } from '@/types/admin';
 const columns: Column<VideoDepoimento>[] = [
     { key: 'titulo', label: 'Título' },
     { key: 'descricao', label: 'Descrição' },
+    {
+        key: 'bandeira',
+        label: 'Bandeira',
+        render: (video) =>
+            video.bandeira ? (
+                <img
+                    src={storageUrl(video.bandeira)}
+                    alt={`Bandeira de ${video.titulo ?? ''}`}
+                    className="h-8 w-12 rounded border object-cover"
+                />
+            ) : (
+                '—'
+            ),
+    },
     { key: 'ordem', label: 'Ordem' },
     {
         key: 'ativo',

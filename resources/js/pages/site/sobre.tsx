@@ -4,6 +4,7 @@ import { Footer } from '@/components/site/footer';
 import SiteHero from '@/components/site/site-hero';
 import TeamSection from '@/components/site/team';
 import { WhyChooseUs } from '@/components/site/whyUs';
+import { useWhatsapp } from '@/lib/whatsapp';
 import type { MembroEquipa, SlideHero } from '@/types/site';
 
 interface SobreProps {
@@ -12,6 +13,8 @@ interface SobreProps {
 }
 
 export default function Sobre({ slides, membros }: SobreProps) {
+    const whatsapp = useWhatsapp();
+
     return (
         <div className="flex min-h-screen flex-col bg-white">
             <Head title="Sobre Nós" />
@@ -20,9 +23,9 @@ export default function Sobre({ slides, membros }: SobreProps) {
                 slides={slides}
                 cta={{
                     label: 'Contact Us',
-                    href: `https://wa.me/+244923469271?text=${encodeURIComponent(
+                    href: whatsapp.link(
                         "Hello! I would like to learn more about Caminhos D'Angola.",
-                    )}`,
+                    ),
                 }}
             />
 
