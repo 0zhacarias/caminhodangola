@@ -1,7 +1,12 @@
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { Menu01Icon, Cancel01Icon } from 'hugeicons-react';
+import { Languages } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { localeLabels, supportedLocales } from '@/i18n';
+import type { Locale } from '@/i18n';
 import { useWhatsapp } from '@/lib/whatsapp';
+import { update as updateLocale } from '@/routes/locale';
 import Logo from '../../assets/logotipo-caminhosdangola.svg';
 
 interface MenuItem {
@@ -17,15 +22,25 @@ export function Header() {
     const [altura, setAltura] = useState(0);
     const headerRef = useRef<HTMLElement | null>(null);
     const whatsapp = useWhatsapp();
+    const { t, i18n } = useTranslation();
 
     const menu: MenuItem[] = [
-        { label: 'Home', path: '/', subItems: [] },
-        { label: 'Reviews', path: '/avaliacoes', subItems: [] },
-        { label: 'Private Tours', path: '/private-tours', subItems: [] },
-        { label: 'Group Tours', path: '/group-tours', subItems: [] },
-        { label: 'About Us', path: '/sobre', subItems: [] },
-        { label: 'Gallery', path: '/galeria', subItems: [] },
+        { label: t('home'), path: '/', subItems: [] },
+        { label: t('reviews'), path: '/avaliacoes', subItems: [] },
+        { label: t('privateTours'), path: '/private-tours', subItems: [] },
+        { label: t('groupTours'), path: '/group-tours', subItems: [] },
+        { label: t('aboutUs'), path: '/sobre', subItems: [] },
+        { label: t('gallery'), path: '/galeria', subItems: [] },
     ];
+
+    const alterarIdioma = (locale: Locale) => {
+        if (locale === i18n.language) {
+            return;
+        }
+
+        void i18n.changeLanguage(locale);
+        router.patch(updateLocale().url, { locale }, { preserveScroll: true });
+    };
 
     // Close mobile menu with Escape
     useEffect(() => {
@@ -132,6 +147,18 @@ export function Header() {
 
                 {/* Buttons / Controls on the right */}
                 <div className="flex items-center gap-4">
+                    <div className="hidden items-center gap-1 xl:flex">
+                        {supportedLocales.map((locale) => (
+                            <button
+                                key={locale}
+                                type="button"
+                                onClick={() => alterarIdioma(locale)}
+                                className={`rounded px-2 py-1 text-xs font-medium ${i18n.language === locale ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-200'}`}
+                            >
+                                {localeLabels[locale]}
+                            </button>
+                        ))}
+                    </div>
                     {/* Reserve - desktop only */}
                     <a
                         href={whatsapp.link()}
@@ -139,7 +166,7 @@ export function Header() {
                         rel="noopener noreferrer"
                         className="hidden rounded-full bg-yellow-500 p-2 px-6 xl:inline-block"
                     >
-                        Reserve
+                        {t('reserve')}
                     </a>
 
                     {/* Login - desktop only */}
@@ -147,7 +174,7 @@ export function Header() {
                         href="/login"
                         className="hidden rounded-full border border-slate-300 p-2 px-6 text-slate-950 hover:bg-slate-200 xl:inline-block"
                     >
-                        Login
+                        {t('login')}
                     </Link>
 
                     {/* Hamburger (mobile) */}
@@ -186,6 +213,18 @@ export function Header() {
                         </div>
 
                         <nav className="flex flex-col gap-4">
+                            <div className="flex items-center gap-2 text-slate-100">
+                                {supportedLocales.map((locale) => (
+                                    <button
+                                        key={locale}
+                                        type="button"
+                                        onClick={() => alterarIdioma(locale)}
+                                        className={`rounded px-2 py-1 text-xs ${i18n.language === locale ? 'bg-white text-slate-950' : 'bg-slate-800'}`}
+                                    >
+                                        {localeLabels[locale]}
+                                    </button>
+                                ))}
+                            </div>
                             {menu.map((item) => (
                                 <Link
                                     key={item.label}
@@ -205,7 +244,7 @@ export function Header() {
                                 className="mt-4 inline-block rounded-full bg-yellow-500 p-2 px-6 text-center text-slate-950"
                                 onClick={() => setMobileOpen(false)}
                             >
-                                Reserve
+                                {t('reserve')}
                             </a>
 
                             {/* Login dentro do menu mobile */}
@@ -214,7 +253,7 @@ export function Header() {
                                 className="inline-block rounded-full border border-slate-500 p-2 px-6 text-center text-slate-100 hover:bg-slate-800"
                                 onClick={() => setMobileOpen(false)}
                             >
-                                Login
+                                {t('login')}
                             </Link>
                         </nav>
                     </div>
