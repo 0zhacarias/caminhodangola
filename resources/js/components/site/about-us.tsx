@@ -78,7 +78,7 @@ export function AboutUs() {
                                         <h3 className="text-2xl font-semibold">
                                             {bloco.titulo}
                                         </h3>
-                                        <p className="leading-relaxed whitespace-pre-line text-gray-700">
+                                        <p className="leading-relaxed whitespace-pre-line text-gray-700 text-justify">
                                             {bloco.descricao}
                                         </p>
                                     </div>
@@ -91,7 +91,7 @@ export function AboutUs() {
                                         <h4 className="text-xl font-semibold">
                                             {bloco.titulo}
                                         </h4>
-                                        <p className="leading-relaxed text-gray-700">
+                                        <p className="leading-relaxed text-gray-700 text-justify">
                                             {bloco.descricao}
                                         </p>
                                     </div>
@@ -101,7 +101,7 @@ export function AboutUs() {
                             return (
                                 <p
                                     key={bloco.id}
-                                    className="mt-4 leading-relaxed text-gray-700 italic"
+                                    className="mt-4 leading-relaxed text-gray-700 italic text-justify"
                                 >
                                     {bloco.descricao}
                                 </p>
@@ -166,7 +166,7 @@ export function AboutUs() {
                                 <h4 className="text-lg font-semibold">
                                     {destaque.titulo}
                                 </h4>
-                                <p className="text-gray-700">
+                                <p className="text-gray-700 text-justify">
                                     {destaque.descricao}
                                 </p>
                             </div>

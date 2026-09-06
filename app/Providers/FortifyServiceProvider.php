@@ -96,5 +96,13 @@ class FortifyServiceProvider extends ServiceProvider
                 ($request->input('credential.id') ?: $request->session()->getId()).'|'.$request->ip(),
             );
         });
+
+        RateLimiter::for('admin-access-invitations', function (Request $request) {
+            $membro = $request->route('membros_equipa');
+
+            return Limit::perMinute(3)->by(
+                $request->user()->getAuthIdentifier().'|'.($membro?->getKey() ?? 'unknown').'|'.$request->ip(),
+            );
+        });
     }
 }

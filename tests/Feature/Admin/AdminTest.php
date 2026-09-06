@@ -4,6 +4,7 @@ namespace Tests\Feature\Admin;
 
 use App\Models\Cargo;
 use App\Models\CategoriaPacote;
+use App\Models\CategoriaPerguntaFrequente;
 use App\Models\Configuracao;
 use App\Models\Depoimento;
 use App\Models\DiaItinerario;
@@ -18,9 +19,11 @@ use App\Models\Reserva;
 use App\Models\Seccao;
 use App\Models\SlideHero;
 use App\Models\User;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -394,8 +397,14 @@ class AdminTest extends TestCase
         ])->assertRedirect();
         $estatistica = Estatistica::firstOrFail();
 
+        $categoria = CategoriaPerguntaFrequente::create([
+            'nome' => 'Reservas',
+            'ordem' => 0,
+            'ativo' => true,
+        ]);
+
         $this->post(route('admin.perguntas-frequentes.store'), [
-            'categoria' => 'Reservas',
+            'categoria_id' => $categoria->id,
             'pergunta' => 'Como reservo?',
             'resposta' => 'Através do formulário.',
             'ordem' => 0,
@@ -432,7 +441,7 @@ class AdminTest extends TestCase
             'chave' => 'telefone',
             'valor' => '+244 900 000 000',
         ])->assertRedirect();
-        $configuracao = Configuracao::firstOrFail();
+        $configuracao = Configuracao::where('chave', 'telefone')->firstOrFail();
 
         $pacote = Pacote::create([
             'slug' => 'p1',
@@ -475,7 +484,8 @@ class AdminTest extends TestCase
         $this->assertDatabaseCount('membros_equipa', 0);
         $this->assertDatabaseCount('seccoes', 0);
         $this->assertDatabaseCount('itens_menu', 0);
-        $this->assertDatabaseCount('configuracoes', 0);
+        $this->assertDatabaseMissing('configuracoes', ['chave' => 'telefone']);
+        $this->assertDatabaseCount('configuracoes', 3);
         $this->assertDatabaseCount('dias_itinerario', 0);
         $this->assertDatabaseCount('galerias_pacotes', 0);
     }
@@ -529,6 +539,7 @@ class AdminTest extends TestCase
 
     public function test_acesso_ao_painel_do_membro_pode_ser_ativado_e_desativado()
     {
+        Notification::fake();
         $this->admin();
 
         $cargo = Cargo::create(['nome' => 'Guia', 'ativo' => true]);
@@ -548,7 +559,9 @@ class AdminTest extends TestCase
         $membro->refresh();
 
         $this->assertNotNull($membro->user_id);
-        $this->assertTrue($membro->user->ativo);
+        $this->assertFalse($membro->user->ativo);
+        $this->assertTrue($membro->user->convite_pendente);
+        Notification::assertSentTo($membro->user, ResetPassword::class);
 
         $this->post(route('admin.membros-equipa.toggle-acesso', $membro))
             ->assertRedirect();
@@ -557,16 +570,22 @@ class AdminTest extends TestCase
 
         $this->assertFalse($membro->user->ativo);
 
+        Notification::assertSentToTimes($membro->user, ResetPassword::class, 1);
+
+        $membro->user->update([
+            'ativo' => true,
+            'convite_pendente' => false,
+        ]);
+
         $this->post(route('admin.membros-equipa.toggle-acesso', $membro))
             ->assertRedirect();
 
-        $membro->refresh();
-
-        $this->assertTrue($membro->user->ativo);
+        $this->assertFalse($membro->user->refresh()->ativo);
     }
 
     public function test_membro_com_permitir_login_cria_utilizador()
     {
+        Notification::fake();
         $this->admin();
 
         $cargo = Cargo::create(['nome' => 'Guia', 'ativo' => true]);
@@ -586,8 +605,11 @@ class AdminTest extends TestCase
         $this->assertDatabaseHas('users', [
             'id' => $membro->user_id,
             'email' => 'carlos@example.com',
-            'ativo' => true,
+            'ativo' => false,
+            'convite_pendente' => true,
         ]);
+
+        Notification::assertSentTo($membro->user, ResetPassword::class);
     }
 
     public function test_preferencia_de_visualizacao_dos_membros_e_guardada_na_sessao()

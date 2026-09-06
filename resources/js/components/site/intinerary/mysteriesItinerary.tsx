@@ -1,6 +1,6 @@
-import Itinerary, { type ItineraryItem } from "./intinirary";
 
 import Pic1 from "../../assets/MysteriesOfThePhantom/1.jpg";
+import Pic10 from "../../assets/MysteriesOfThePhantom/10.jpg";
 import Pic2 from "../../assets/MysteriesOfThePhantom/2.jpg";
 import Pic3 from "../../assets/MysteriesOfThePhantom/3.jpg";
 import Pic4 from "../../assets/MysteriesOfThePhantom/4.jpg";
@@ -9,7 +9,8 @@ import Pic6 from "../../assets/MysteriesOfThePhantom/6.jpg";
 import Pic7 from "../../assets/MysteriesOfThePhantom/7.jpg";
 import Pic8 from "../../assets/MysteriesOfThePhantom/8.jpg";
 import Pic9 from "../../assets/MysteriesOfThePhantom/9.jpg";
-import Pic10 from "../../assets/MysteriesOfThePhantom/10.jpg";
+import Itinerary from "./intinirary";
+import type {ItineraryItem} from "./intinirary";
 
 const itinerary: ItineraryItem[] = [
   {
@@ -90,7 +91,7 @@ export default function MasteriesOfPhantomBayPage() {
       excluded={excluded}
       whatToBring={whatToBring}
       importantRemarks={importantRemarks}
-      contactNumber="+244923469271"
+      
     />
   );
 }

@@ -3,6 +3,7 @@
 namespace Tests\Feature\Admin;
 
 use App\Models\CategoriaPacote;
+use App\Models\CategoriaPerguntaFrequente;
 use App\Models\Depoimento;
 use App\Models\DiaItinerario;
 use App\Models\Galeria;
@@ -283,8 +284,20 @@ class EditarEliminarTest extends TestCase
     {
         $this->admin();
 
+        $categoria = CategoriaPerguntaFrequente::create([
+            'nome' => 'Reservas',
+            'ordem' => 0,
+            'ativo' => true,
+        ]);
+
+        $outraCategoria = CategoriaPerguntaFrequente::create([
+            'nome' => 'Pagamentos',
+            'ordem' => 1,
+            'ativo' => true,
+        ]);
+
         $pergunta = PerguntaFrequente::create([
-            'categoria' => 'Reservas',
+            'categoria_id' => $categoria->id,
             'pergunta' => 'Como reservo?',
             'resposta' => 'Através do formulário.',
             'ordem' => 0,
@@ -292,7 +305,7 @@ class EditarEliminarTest extends TestCase
         ]);
 
         $this->put(route('admin.perguntas-frequentes.update', $pergunta), [
-            'categoria' => 'Pagamentos',
+            'categoria_id' => $outraCategoria->id,
             'pergunta' => 'Como pago?',
             'resposta' => 'Por transferência.',
             'ordem' => 1,

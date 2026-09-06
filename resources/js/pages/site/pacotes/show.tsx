@@ -1,9 +1,10 @@
 import { Head, Link } from '@inertiajs/react';
 import { storageUrl } from '@/lib/utils';
+import { useWhatsapp } from '@/lib/whatsapp';
 import type { Pacote, PerguntaFrequente } from '@/types/site';
 import FAQSection from '../../../components/site/faq';
-import { Header } from '../../../components/site/header';
 import { Footer } from '../../../components/site/footer';
+import { Header } from '../../../components/site/header';
 import Itinerary from '../../../components/site/intinerary/intinirary';
 import Qualities from '../../../components/site/qualities';
 
@@ -13,6 +14,7 @@ interface PacoteShowProps {
 }
 
 export default function PacoteShow({ pacote, faqs }: PacoteShowProps) {
+    const whatsapp = useWhatsapp();
     const imagemHero = pacote.imagem_slide ?? pacote.imagem;
 
     const imagemOg = pacote.imagem_og
@@ -77,7 +79,9 @@ export default function PacoteShow({ pacote, faqs }: PacoteShowProps) {
 
                                         <div className="mt-4 flex flex-wrap items-center gap-4">
                                             <a
-                                                href={`https://wa.me/+244923469271?text=${encodeURIComponent(`Hello! I would like more information about ${pacote.titulo}.`)}`}
+                                                href={whatsapp.link(
+                                                    `Hello! I would like more information about ${pacote.titulo}.`,
+                                                )}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="p-3 px-8 rounded-full bg-yellow-500 font-semibold text-slate-950 shadow-lg hover:bg-yellow-400 transition"
@@ -138,7 +142,6 @@ export default function PacoteShow({ pacote, faqs }: PacoteShowProps) {
                 depositoPercentagem={condicao?.deposito_percentagem ?? null}
                 saldoDiasAntesPartida={condicao?.saldo_dias_antes_partida ?? null}
                 metodosPagamento={condicao?.metodos_pagamento ?? []}
-                contactNumber="+244923469271"
             />
 
             <Qualities />

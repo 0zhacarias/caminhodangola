@@ -1,6 +1,7 @@
 import { useForm } from '@inertiajs/react';
 import CrudDialog from '@/components/admin/dialogs/crud-dialog';
 import { BooleanField, Field } from '@/components/admin/form-field';
+import ImageUpload from '@/components/admin/image-upload';
 import VideoUpload from '@/components/admin/video-upload';
 import { Input } from '@/components/ui/input';
 import type { VideoDepoimento } from '@/types/admin';
@@ -16,12 +17,14 @@ export default function VideoDepoimentoDialog({
         titulo: string;
         descricao: string;
         video: string | File;
+        bandeira: string | File;
         ordem: number;
         ativo: boolean;
     }>({
         titulo: item?.titulo ?? '',
         descricao: item?.descricao ?? '',
         video: item?.video ?? '',
+        bandeira: item?.bandeira ?? '',
         ordem: item?.ordem ?? 0,
         ativo: item?.ativo ?? true,
     });
@@ -79,6 +82,14 @@ export default function VideoDepoimentoDialog({
                 value={data.video}
                 onChange={(ficheiro) => setData('video', ficheiro ?? '')}
                 error={errors.video}
+            />
+
+            <ImageUpload
+                id="bandeira"
+                label="Bandeira do país"
+                value={data.bandeira}
+                onChange={(ficheiro) => setData('bandeira', ficheiro ?? '')}
+                error={errors.bandeira}
             />
 
             <div className="grid gap-4 sm:grid-cols-2">

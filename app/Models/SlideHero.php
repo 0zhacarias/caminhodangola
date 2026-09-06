@@ -13,6 +13,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $titulo
  * @property string|null $subtitulo
  * @property string|null $texto
+ * @property string|null $subtexto
  * @property string|null $botao_rotulo
  * @property string|null $botao_url
  * @property int $ordem
@@ -21,7 +22,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['pagina', 'imagem', 'titulo', 'subtitulo', 'texto', 'botao_rotulo', 'botao_url', 'ordem', 'ativo', 'mostrar_depoimentos'])]
+#[Fillable(['pagina', 'imagem', 'titulo', 'subtitulo', 'texto', 'subtexto', 'botao_rotulo', 'botao_url', 'ordem', 'ativo', 'mostrar_depoimentos'])]
 class SlideHero extends Model
 {
     public const PAGINAS = [

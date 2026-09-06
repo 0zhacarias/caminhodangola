@@ -1,8 +1,9 @@
-import Itinerary, { type ItineraryItem } from "./intinirary";
 import Pic1 from "../../assets/quickStop/1.jpg";
 import Pic2 from "../../assets/quickStop/2.jpg";
 import Pic3 from "../../assets/quickStop/3.jpg";
 import Pic4 from "../../assets/quickStop/4.jpg";
+import Itinerary from "./intinirary";
+import type {ItineraryItem} from "./intinirary";
 
 const itinerary: ItineraryItem[] = [
   {
@@ -93,7 +94,7 @@ export default function LuandaKalandulaPage() {
       excluded={excluded}
       whatToBring={whatToBring}
       importantRemarks={importantRemarks}
-      contactNumber="+244923469271"
+      
     />
   );
 }

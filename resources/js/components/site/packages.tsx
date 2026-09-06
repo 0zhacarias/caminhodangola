@@ -18,7 +18,7 @@ export default function Packages({ pacotes }: PackagesProps) {
               className="relative h-96 border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition hover:scale-[1.02]"
             >
               <img
-                src={pkg.imagem ? storageUrl(pkg.imagem) : ''}
+                src={pkg.imagem ? storageUrl(pkg.imagem) : undefined}
                 alt={pkg.titulo}
                 className="object-cover h-full w-full absolute z-0"
               />

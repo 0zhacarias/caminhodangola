@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useWhatsapp } from "@/lib/whatsapp";
 import NorteESul from "../../assets/places/norteesul.jpg";
 
 interface ItineraryItem {
@@ -86,6 +87,7 @@ function CardSection({ title, children }: { title: string; children: React.React
 }
 
 export default function SolidarityItineraryCards() {
+  const whatsapp = useWhatsapp();
   const [activeTab, setActiveTab] = useState<
     "overview" | "itinerary" | "essential" | "map" | "gallery" | "data"
   >("overview");
@@ -95,9 +97,16 @@ export default function SolidarityItineraryCards() {
 
   useEffect(() => {
     const container = listRef.current;
-    if (!container) return;
+
+    if (!container) {
+return;
+}
+
     const item = container.children[activeIndex] as HTMLElement | undefined;
-    if (item) item.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+
+    if (item) {
+item.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+}
   }, [activeIndex]);
 
   const goPrev = () => setActiveIndex((i) => Math.max(0, i - 1));
@@ -160,7 +169,7 @@ export default function SolidarityItineraryCards() {
                     <div className="font-semibold">{PRICE_LABEL}</div>
                   </div>
                   <div>
-                    <a href={`https://wa.me/+244923469271?text=${encodeURIComponent("Hello! I would like more information about the Solidarity Route.")}`} target="_blank" rel="noreferrer" className="px-3 py-2 rounded bg-yellow-500 text-white text-sm">Contact</a>
+                    <a href={whatsapp.link("Hello! I would like more information about the Solidarity Route.")} target="_blank" rel="noreferrer" className="px-3 py-2 rounded bg-yellow-500 text-white text-sm">Contact</a>
                   </div>
                 </div>
               </div>
@@ -197,7 +206,7 @@ export default function SolidarityItineraryCards() {
                       </ul>
 
                       <div className="mt-4 flex gap-3">
-                        <a href={`https://wa.me/+244923469271?text=${encodeURIComponent("Hello! I would like to book the Solidarity Route.")}`} target="_blank" rel="noreferrer" className="px-4 py-2 rounded bg-yellow-500 text-white">Book now</a>
+                        <a href={whatsapp.link("Hello! I would like to book the Solidarity Route.")} target="_blank" rel="noreferrer" className="px-4 py-2 rounded bg-yellow-500 text-white">Book now</a>
                         <button onClick={() => setActiveTab("itinerary")} className="px-4 py-2 rounded border">See itinerary</button>
                       </div>
                     </div>
@@ -296,7 +305,7 @@ export default function SolidarityItineraryCards() {
             <div className="hidden md:flex items-center justify-between gap-4">
               <div className="flex gap-2">{gallery.slice(0,3).map((g,i)=>(<img key={i} src={g} alt={`preview-${i}`} className="w-28 h-20 object-cover rounded-md"/>))}</div>
               <div className="flex gap-3">
-                <a href={`https://wa.me/+244923469271?text=${encodeURIComponent("Hello! I would like make a new book.")}`} target="_blank" rel="noreferrer" className="px-4 py-2 rounded bg-yellow-500 text-white">Book now</a>
+                <a href={whatsapp.link("Hello! I would like make a new book.")} target="_blank" rel="noreferrer" className="px-4 py-2 rounded bg-yellow-500 text-white">Book now</a>
                 <button onClick={()=>setActiveTab("itinerary")} className="px-4 py-2 rounded border">See full itinerary</button>
               </div>
             </div>

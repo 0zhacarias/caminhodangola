@@ -11,12 +11,13 @@ use Illuminate\Support\Carbon;
  * @property string|null $titulo
  * @property string|null $descricao
  * @property string $video
+ * @property string|null $bandeira
  * @property int $ordem
  * @property bool $ativo
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['titulo', 'descricao', 'video', 'ordem', 'ativo'])]
+#[Fillable(['titulo', 'descricao', 'video', 'bandeira', 'ordem', 'ativo'])]
 class VideoDepoimento extends Model
 {
     protected $table = 'videos_depoimentos';

@@ -1,18 +1,37 @@
 import { Link } from '@inertiajs/react';
+import { useMemo } from 'react';
 import { adminNavGroups, mainNavItems } from '@/lib/admin-nav';
 import { isGetHref } from '@/lib/utils';
 
 const shortcuts = [
-    ...mainNavItems.map((item) => ({ ...item, group: 'Platform' })),
+    //...mainNavItems.map((item) => ({ ...item, group: 'Platforma' })),
     ...adminNavGroups.flatMap((group) =>
         group.items.map((item) => ({ ...item, group: group.label })),
     ),
 ].filter((item) => isGetHref(item.href));
 
-export function QuickAccess() {
+interface QuickAccessProps {
+    query: string;
+}
+
+export function QuickAccess({ query }: QuickAccessProps) {
+    const filteredShortcuts = useMemo(() => {
+        const normalized = query.trim().toLowerCase();
+
+        if (!normalized) {
+            return shortcuts;
+        }
+
+        return shortcuts.filter(
+            (item) =>
+                item.title.toLowerCase().includes(normalized) ||
+                item.group.toLowerCase().includes(normalized),
+        );
+    }, [query]);
+
     return (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-            {shortcuts.map((item) => {
+            {filteredShortcuts.map((item) => {
                 const Icon = item.icon;
 
                 return (

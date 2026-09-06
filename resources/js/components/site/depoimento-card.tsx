@@ -35,7 +35,7 @@ export default function DepoimentoCard({
     return (
         <div
             className={`rounded-xl p-8 text-left shadow-xl md:p-12 ${
-                dark ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'
+                dark ? 'bg-slate-900 text-white' : 'bg-slate-800 text-white'
             }`}
         >
             <div className="flex flex-col items-start gap-6 md:flex-row md:justify-center">

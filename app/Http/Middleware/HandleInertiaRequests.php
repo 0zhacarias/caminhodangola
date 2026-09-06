@@ -7,6 +7,7 @@ use App\Services\EstatisticaService;
 use App\Services\PorqueAngolaService;
 use App\Services\PorqueNosService;
 use App\Services\SobreNosService;
+use App\Services\TourGrupoService;
 use App\Services\TourPrivadoService;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -62,6 +63,9 @@ class HandleInertiaRequests extends Middleware
             'tours_privados' => fn (): array => $request->routeIs('admin.*')
                 ? []
                 : app(TourPrivadoService::class)->listarAtivos()->all(),
+            'tours_grupos' => fn (): array => $request->routeIs('admin.*')
+                ? []
+                : app(TourGrupoService::class)->listarAtivos()->all(),
             'estatisticas' => fn (): array => $request->routeIs('admin.*')
                 ? []
                 : app(EstatisticaService::class)->listarAtivas()->all(),

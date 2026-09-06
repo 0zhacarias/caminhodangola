@@ -1,12 +1,14 @@
 import { SearchIcon } from 'lucide-react';
-import { useState } from 'react';
 
-export function HeroSearch() {
-    const [query, setQuery] = useState('');
+interface HeroSearchProps {
+    query: string;
+    onQueryChange: (query: string) => void;
+}
 
+export function HeroSearch({ query, onQueryChange }: HeroSearchProps) {
     return (
-        <section className="bg-red-700 px-4 pt-8 pb-25 text-center lg:px-10">
-            <h2 className="text-2xl font-bold text-white">
+        <section className="bg-red-800 px-4 pt-8 pb-40 text-center lg:px-10">
+            <h2 className="text-2xl font-bold text-white sm:text-3xl lg:text-4xl pt-12">
                 Menus, Reservas e Configurações
             </h2>
 
@@ -17,7 +19,7 @@ export function HeroSearch() {
                     <input
                         type="text"
                         value={query}
-                        onChange={(event) => setQuery(event.target.value)}
+                        onChange={(event) => onQueryChange(event.target.value)}
                         placeholder="Pesquisar o menu..."
                         className="h-11 w-full rounded-l-full border-0 bg-white pr-4 pl-11 text-sm outline-none"
                     />

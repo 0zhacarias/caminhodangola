@@ -1,9 +1,10 @@
 import { Star } from 'lucide-react';
+import { useWhatsapp } from '@/lib/whatsapp';
+import Cultura from '../../assets/places/cultura.jpg';
 import Luanda from '../../assets/places/luanda2.jpg';
 import Mega from '../../assets/places/mega.jpg';
-import Cultura from '../../assets/places/cultura.jpg';
-import NorteESul from '../../assets/places/norteesul.jpg';
 import NamibeLubango from '../../assets/places/namibelubango.jpg';
+import NorteESul from '../../assets/places/norteesul.jpg';
 import Quedas2 from '../../assets/places/quedas2.jpg';
 
 interface Package {
@@ -75,17 +76,16 @@ const packages: Package[] = [
 ];
 
 export function TourPackages() {
-  const phone = "+244923469271";
+  const whatsapp = useWhatsapp();
 
   return (
     <section className="py-16 px-6 md:px-20 bg-white">
       <h2 className="text-3xl font-bold text-center mb-12">Available Packages</h2>
       <div className="flex flex-col gap-12">
         {packages.map((pkg) => {
-          const message = encodeURIComponent(
-            `Hello! I would like more information about the "${pkg.title}" package, please.`
+          const url = whatsapp.link(
+            `Hello! I would like more information about the "${pkg.title}" package, please.`,
           );
-          const url = `https://wa.me/${phone}?text=${message}`;
 
           return (
             <div

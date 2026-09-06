@@ -67,6 +67,7 @@ const labels: Record<string, string> = {
     instagram: 'Instagram',
     telefone: 'Telefone',
     email: 'E-mail',
+    bandeira: 'Bandeira',
     rotulo_dia: 'Dia',
     pacote: 'Pacote',
     pai: 'Item pai',
@@ -79,7 +80,7 @@ const labels: Record<string, string> = {
 
 const skipKeys = new Set(['pacotes', 'filhos', 'dias_itinerario', 'galerias']);
 
-const imageKeys = new Set(['imagem', 'foto', 'imagem_og', 'imagem_slide']);
+const imageKeys = new Set(['imagem', 'foto', 'imagem_og', 'imagem_slide', 'bandeira']);
 
 const dateKeys = new Set(['created_at', 'updated_at', 'data_pretendida']);
 

@@ -45,6 +45,9 @@ final class ConfiguracaoService
      */
     public function atualizar(Configuracao $configuracao, array $dados): Configuracao
     {
+
+
+  ///  dd($configuracao, $dados);
         $configuracao->update($dados);
 
         Cache::deleteMultiple(['configuracoes', 'configuracao.'.$configuracao->chave]);

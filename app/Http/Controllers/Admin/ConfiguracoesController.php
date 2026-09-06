@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Configuracao;
+use App\Services\ConfiguracaoService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -26,7 +27,8 @@ class ConfiguracoesController extends AdminController
 
     public function update(Request $request, Configuracao $configuracao): RedirectResponse
     {
-        $configuracao->update($this->validated($request, $configuracao));
+        app(ConfiguracaoService::class)->atualizar($configuracao,$request->toArray());
+      //  $configuracao->update($this->validated($request, $configuracao));
 
         return $this->backWithSuccess('Configuração atualizada com sucesso.');
     }

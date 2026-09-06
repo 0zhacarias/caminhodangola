@@ -3,7 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\PasswordInvitationNotification;
+use App\Notifications\ResetPasswordNotification;
 use Database\Factories\UserFactory;
+use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,6 +22,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property string $name
  * @property string $email
  * @property bool $ativo
+ * @property bool $convite_pendente
  * @property Carbon|null $email_verified_at
  * @property string $password
  * @property string|null $two_factor_secret
@@ -28,12 +32,21 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['name', 'email', 'password', 'email_verified_at', 'ativo'])]
+#[Fillable(['name', 'email', 'password', 'email_verified_at', 'ativo', 'convite_pendente'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable implements PasskeyUser
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable;
+    use HasFactory, MustVerifyEmail, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable;
+
+    public function sendPasswordResetNotification($token): void
+    {
+        $notification = $this->convite_pendente
+            ? new PasswordInvitationNotification($token)
+            : new ResetPasswordNotification($token);
+
+        $this->notify($notification);
+    }
 
     /**
      * Get the attributes that should be cast.
@@ -44,6 +57,7 @@ class User extends Authenticatable implements PasskeyUser
     {
         return [
             'ativo' => 'boolean',
+            'convite_pendente' => 'boolean',
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',

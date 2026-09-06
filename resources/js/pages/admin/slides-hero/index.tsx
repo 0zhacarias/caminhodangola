@@ -41,10 +41,10 @@ export default function Index({
 }) {
     return (
         <>
-            <Head title="Slides Hero" />
+            <Head title="Slides" />
 
             <ResourcePage
-                title="Slides Hero"
+                title="Slides"
                 description="Gerir os slides do carrossel principal do site."
                 createLabel="Novo slide"
                 data={slides}

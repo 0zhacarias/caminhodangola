@@ -22,7 +22,7 @@ export default function TeamSection({ membros }: TeamSectionProps) {
             >
               <div className="w-full h-64 md:h-72 lg:h-80 overflow-hidden">
                 <img
-                  src={member.foto ? storageUrl(member.foto) : ''}
+                  src={member.foto ? storageUrl(member.foto) : undefined}
                   alt={`${member.nome} photo`}
                   className="w-full h-full object-cover object-center rounded-t-2xl"
                   loading="lazy"
@@ -32,6 +32,7 @@ export default function TeamSection({ membros }: TeamSectionProps) {
               <div className="p-6 text-left">
                 <h3 className="text-xl font-semibold text-gray-800">{member.nome}</h3>
                 <p className="mt-1 text-sm font-medium text-yellow-600">{member.cargo}</p>
+                <p className="mt-1 text-sm font-medium text-yellow-600">{member?.email}</p>
               </div>
             </article>
           ))}

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('perguntas_frequentes', function (Blueprint $table) {
             $table->id();
-            $table->string('categoria');
+            $table->foreignId('categoria_id')->constrained('categorias_perguntas_frequentes')->cascadeOnDelete();
             $table->string('pergunta');
             $table->text('resposta');
             $table->unsignedInteger('ordem')->default(0);

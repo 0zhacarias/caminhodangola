@@ -12,7 +12,14 @@ final class PerguntaFrequenteService
      */
     public function listarAtivas(): EloquentCollection
     {
-        return PerguntaFrequente::query()->where('ativo', true)->orderBy('categoria')->orderBy('ordem')->get();
+        return PerguntaFrequente::query()
+            ->select('perguntas_frequentes.*')
+            ->join('categorias_perguntas_frequentes', 'perguntas_frequentes.categoria_id', '=', 'categorias_perguntas_frequentes.id')
+            ->where('perguntas_frequentes.ativo', true)
+            ->with('categoriaModelo:id,nome')
+            ->orderBy('categorias_perguntas_frequentes.ordem')
+            ->orderBy('perguntas_frequentes.ordem')
+            ->get();
     }
 
     /**
@@ -20,7 +27,12 @@ final class PerguntaFrequenteService
      */
     public function listarPorCategoria(string $categoria): EloquentCollection
     {
-        return PerguntaFrequente::query()->where('ativo', true)->where('categoria', $categoria)->orderBy('ordem')->get();
+        return PerguntaFrequente::query()
+            ->with('categoriaModelo:id,nome')
+            ->where('ativo', true)
+            ->whereHas('categoriaModelo', static fn ($query) => $query->where('nome', $categoria))
+            ->orderBy('ordem')
+            ->get();
     }
 
     /**
